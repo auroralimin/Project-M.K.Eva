@@ -6,8 +6,10 @@
 Face::Face(int x, int y, float angle)
 {
 	sp = new Sprite("img/penguinface.png");
-	box.x = x + (sp->getWidth()/2);
-	box.y = y + (sp->getHeight()/2);
+	box.w = sp->getWidth();
+	box.h = sp->getHeight();
+	box.x = x - (int)(box.w/2);
+	box.y = y - (int)(box.h/2);
 	hitPoints = 1;
 	this->angle = angle;
 }

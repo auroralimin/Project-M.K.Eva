@@ -39,7 +39,7 @@ void State::render(void)
 {
 	bg->render(0, 0, 0.0);
 	for (unsigned int i = 0; i < objectArray.size(); ++i)
-		((Face*)objectArray[i])->render();
+		objectArray[i]->render();
 }
 
 void State::input(void)
@@ -58,7 +58,7 @@ void State::input(void)
 		{
             for (int i = objectArray.size() - 1; i >= 0; --i)
 			{
-                Face* face = (Face*) objectArray[i];
+                Face* face = (Face*) objectArray[i].get();
                 if (face->box.isInside(mouseX, mouseY))
 				{
                     face->damage(rand() % 10 + 10);
@@ -79,6 +79,9 @@ void State::input(void)
 
 void State::addObject(int mouseX, int mouseY)
 {
-	objectArray.emplace_back(new Face(mouseX, mouseY, rand() % 360));		
+	Face *face = new Face(mouseX, mouseY, rand() % 360);
+	float angle = ((((float)(rand() % 360))*M_PI)/180.0);
+	face->box.rotate(200, 0, angle);
+	objectArray.emplace_back(face);		
 }
 

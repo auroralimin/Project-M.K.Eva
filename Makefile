@@ -8,7 +8,7 @@ _OBJ = Main.o Game.o State.o Sprite.o Vec2.o Rect.o Face.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 CFLAGS = -I$(HDIR) -Wall -Wextra -std=c++11
-LIBS = -lSDL2 -lSDL2_image
+LIBS = -lSDL2 -lSDL2_image -lm
 
 all: 130006408_T2
 

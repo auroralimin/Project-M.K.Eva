@@ -38,7 +38,7 @@ SDL_Renderer* Game::getRenderer(void)
 	return renderer;
 }
 
-State Game::getState(void)
+State& Game::getState(void)
 {
 	return *state;
 }

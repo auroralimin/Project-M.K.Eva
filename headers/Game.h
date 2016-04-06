@@ -10,7 +10,7 @@ class Game
 		static Game* getInstance(std::string title, int w, int h);
 		static Game* getInstance(void);
 		SDL_Renderer* getRenderer(void);
-		State getState(void);
+		State& getState(void);
 		void run(void);
 
 	private:

@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include "Vec2.h"
 
 class Rect
@@ -12,5 +11,6 @@ class Rect
 		Rect(int x, int y, int w, int h);
 		void sumWithVec2(Vec2 v);
 		bool isInside(int x, int y);
+		void rotate(int x, int y, float angle);
 };
 
