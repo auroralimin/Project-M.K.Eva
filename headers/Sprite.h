@@ -12,7 +12,7 @@ class Sprite
 		~Sprite(void);
 		void open(std::string file);
 		void setClip(int x, int y, int w, int h);
-		void render(int x, int y);
+		void render(int x, int y, float angle);
 		int getWidth(void);
 		int getHeight(void);
 		bool isOpen(void);

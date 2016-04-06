@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <ctime>
 
 #define FPS 33
 
@@ -12,6 +13,7 @@ Game* Game::_instance = nullptr;
  */
 Game::~Game(void)
 {
+	srand(time(NULL));
 	IMG_Quit();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);

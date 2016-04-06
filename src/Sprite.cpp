@@ -44,14 +44,14 @@ void Sprite::setClip(int x, int y, int w, int h)
 	clipRect.h = h;
 }
 
-void Sprite::render(int x, int y)
+void Sprite::render(int x, int y, float angle)
 {
 	dstRect.x = x;
 	dstRect.y = y;
 	dstRect.w = clipRect.w;
 	dstRect.h = clipRect.h;
 	
-	SDL_RenderCopy(Game::getInstance()->getRenderer(), texture, &clipRect, &dstRect);
+	SDL_RenderCopyEx(Game::getInstance()->getRenderer(), texture, &clipRect, &dstRect, angle, NULL, SDL_FLIP_NONE);
 }
 
 int Sprite::getWidth(void)
