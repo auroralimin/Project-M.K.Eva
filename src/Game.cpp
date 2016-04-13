@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Resources.h"
 
 #include <iostream>
 #include <string>
@@ -14,10 +15,11 @@ Game* Game::_instance = nullptr;
 Game::~Game(void)
 {
 	srand(time(NULL));
-	IMG_Quit();
+	delete state;
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
-	delete state;
+	SDL_Quit();
+	IMG_Quit();
 }
 
 Game* Game::getInstance(std::string title, int w, int h)
@@ -46,6 +48,7 @@ State& Game::getState(void)
 void Game::run(void)
 {
 	state = new State();
+
 	int lastTime = SDL_GetTicks();
 	while (!state->isQuitRequested())
 	{
@@ -60,6 +63,8 @@ void Game::run(void)
 			SDL_Delay(FPS - elapsed);
 		lastTime = current;
 	}
+
+	Resources::clearImages();
 }
 
 /*
@@ -72,7 +77,7 @@ Game::Game(std::string title, int w, int h)
 		std::cerr << "Unable to init SDL: " << SDL_GetError() << std::endl;
 		exit(EXIT_SUCCESS);
 	}
-	
+
 	int loaders = IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF);
 	if (loaders == 0)
 	{
@@ -95,6 +100,5 @@ Game::Game(std::string title, int w, int h)
 		exit(EXIT_SUCCESS);
 	}
 
-	state = nullptr;
 }
 

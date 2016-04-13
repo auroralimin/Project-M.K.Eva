@@ -4,6 +4,8 @@
 
 #include "Sprite.h"
 #include "GameObject.h"
+#include "TileSet.h"
+#include "TileMap.h"
 
 class State
 {
@@ -15,10 +17,11 @@ class State
 		void render(void);
 
 	private:
-		Sprite *bg;
+		Sprite bg;
 		bool quitRequested;
 		std::vector<std::unique_ptr<GameObject>> objectArray;
-		//std::vector<GameObject*> objectArray;
+		TileSet tileSet;
+		TileMap tileMap;
 
 		void input(void);
 		void addObject(int mouseX, int mouseY);

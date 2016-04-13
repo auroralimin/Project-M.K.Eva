@@ -1,36 +1,18 @@
 #include "Sprite.h"
 #include "Game.h"
+#include "Resources.h"
 
-Sprite::Sprite(void)
-{
-	Sprite::texture = nullptr;
-}
+Sprite::Sprite(void) : texture(nullptr) {}
 
 Sprite::Sprite(std::string file)
 {
-	Sprite::texture = nullptr;
-	Sprite::open(file);
-}
-
-Sprite::~Sprite(void)
-{
-	if (Sprite::texture)
-		SDL_DestroyTexture(Sprite::texture);
+	texture = nullptr;
+	open(file);
 }
 
 void Sprite::open(std::string file)
 {
-//	if (Sprite::texture)
-//		SDL_DestroyTexture(texture);
-	
-	Sprite::texture =
-		IMG_LoadTexture(Game::getInstance()->getRenderer(), file.c_str());
-	if (!Sprite::texture)
-	{
-		std::cerr << "Failed to load texture: " << SDL_GetError() << std::endl;
-		exit(EXIT_SUCCESS);
-	}
-
+	texture = Resources::getImage(file);
 	SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
 	setClip(0, 0, width, height);
 }
@@ -50,7 +32,7 @@ void Sprite::render(int x, int y, float angle)
 	dstRect.y = y;
 	dstRect.w = clipRect.w;
 	dstRect.h = clipRect.h;
-	
+
 	SDL_RenderCopyEx(Game::getInstance()->getRenderer(), texture, &clipRect, &dstRect, angle, NULL, SDL_FLIP_NONE);
 }
 

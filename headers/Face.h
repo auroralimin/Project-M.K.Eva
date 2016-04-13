@@ -6,7 +6,6 @@ class Face : public GameObject
 {
 	public:
 		Face(int x, int y, float angle);
-		~Face(void);
 		void damage(int damage);
 		void update(float dt);
 		void render(void);
@@ -14,7 +13,7 @@ class Face : public GameObject
 
 	private:
 		int hitPoints;
-		Sprite *sp;
+		Sprite sp;
 		float angle;
 };
 

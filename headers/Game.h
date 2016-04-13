@@ -15,9 +15,9 @@ class Game
 
 	private:
 		static Game *_instance;
+		State *state;
 		SDL_Window *window;
 		SDL_Renderer *renderer;
-		State *state;
 
 		Game(std::string title, int w, int h);
 };

@@ -3,20 +3,14 @@
 
 #define UNUSED_VAR (void)
 
-Face::Face(int x, int y, float angle)
+Face::Face(int x, int y, float angle) : sp("img/penguinface.png")
 {
-	sp = new Sprite("img/penguinface.png");
-	box.w = sp->getWidth();
-	box.h = sp->getHeight();
+	box.w = sp.getWidth();
+	box.h = sp.getHeight();
 	box.x = x - (int)(box.w/2);
 	box.y = y - (int)(box.h/2);
 	hitPoints = 1;
 	this->angle = angle;
-}
-
-Face::~Face(void)
-{
-	delete sp;
 }
 
 void Face::damage(int damage)
@@ -32,7 +26,7 @@ void Face::update(float dt)
 
 void Face::render(void)
 {
-	sp->render(box.x, box.y, angle);
+	sp.render(box.x, box.y, angle);
 }
 
 bool Face::isDead(void)

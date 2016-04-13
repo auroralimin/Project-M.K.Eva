@@ -9,6 +9,7 @@ int main(int argc, char **argv)
 
 	Game *game = Game::getInstance("Aurora Wang - 13/0006408", 1024, 600);
 	game->run();
+	delete game;
 
 	return 0;
 }

@@ -9,7 +9,6 @@ class Sprite
 	public:
 		Sprite(void);
 		Sprite(std::string file);
-		~Sprite(void);
 		void open(std::string file);
 		void setClip(int x, int y, int w, int h);
 		void render(int x, int y, float angle);
@@ -17,9 +16,8 @@ class Sprite
 		int getHeight(void);
 		bool isOpen(void);
 	private:
+		int width, height;
 		SDL_Texture *texture;
-		int width;
-		int height;
 		SDL_Rect clipRect;
 		SDL_Rect dstRect;
 };

@@ -4,7 +4,7 @@ class Vec2
 {
 	public:
 		float x, y;
-		
+
 		Vec2(void);
 		Vec2(float x, float y);
 		float getModule(void);
