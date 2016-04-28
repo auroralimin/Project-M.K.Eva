@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Face.h"
+#include "InputManager.h"
 
 #define UNUSED_VAR (void)
 
@@ -20,8 +21,12 @@ void Face::damage(int damage)
 
 void Face::update(float dt)
 {
-	//TODO implementar temporizacao
 	UNUSED_VAR dt;
+	InputManager input = InputManager::getInstance();
+
+	if (input.isMouseDown(LEFT_MOUSE_BUTTON) &&
+			box.isInside(input.getMouseX(), input.getMouseY()))
+    	damage(rand() % 10 + 10);
 }
 
 void Face::render(void)

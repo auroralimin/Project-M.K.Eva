@@ -1,6 +1,7 @@
+#include <iostream>
 #include "State.h"
 #include "Face.h"
-#include "SDL2/SDL.h"
+#include "InputManager.h"
 
 #define UNUSED_VAR (void)
 
@@ -8,7 +9,7 @@ State::State(void) : bg("img/ocean.jpg"),
 					 quitRequested(false),
 					 objectArray(),
 					 tileSet(64, 64, "img/tileset.png"),
-					 tileMap("map/tileMap.txt", &tileSet){}
+					 tileMap("map/tileMap.txt", &tileSet) {}
 
 State::~State(void)
 {
@@ -23,12 +24,19 @@ bool State::isQuitRequested(void)
 
 void State::update(float dt)
 {
+	InputManager input = InputManager::getInstance(); 
 	UNUSED_VAR dt;
 
-	input();
+	quitRequested = (input.isKeyDown(ESCAPE_KEY) || input.isQuitRequested());
+	if (input.keyPress(SPACEBAR))
+		addObject(input.getMouseX(), input.getMouseY());
+
 	for (unsigned int i = 0; i < objectArray.size(); ++i)
+	{
+		objectArray[i]->update(0.0);
 		if (objectArray[i]->isDead())
 			objectArray.erase(objectArray.begin() + i);
+	}
 
 	if (SDL_QuitRequested())
 		quitRequested = true;
@@ -42,41 +50,9 @@ void State::render(void)
 		objectArray[i]->render();
 }
 
-void State::input(void)
-{
-    SDL_Event event;
-    int mouseX = 0, mouseY = 0;
-
-    SDL_GetMouseState(&mouseX, &mouseY);
-
-    while (SDL_PollEvent(&event))
-	{
-        if (event.type == SDL_QUIT)
-            quitRequested = true;
-
-        if (event.type == SDL_MOUSEBUTTONDOWN)
-		{
-            for (int i = objectArray.size() - 1; i >= 0; --i)
-			{
-                Face* face = (Face*) objectArray[i].get();
-                if (face->box.isInside(mouseX, mouseY))
-				{
-                    face->damage(rand() % 10 + 10);
-                    break;
-                }
-            }
-        }
-
-        if (event.type == SDL_KEYDOWN)
-		{
-            if (event.key.keysym.sym == SDLK_ESCAPE)
-                quitRequested = true;
-            else
-                addObject(mouseX, mouseY);
-        }
-    }
-}
-
+/*
+ * PRIVATE METHODS
+ */
 void State::addObject(int mouseX, int mouseY)
 {
 	Face *face = new Face(mouseX, mouseY, rand() % 360);

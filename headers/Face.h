@@ -12,8 +12,8 @@ class Face : public GameObject
 		bool isDead(void);
 
 	private:
-		int hitPoints;
 		Sprite sp;
+		int hitPoints;
 		float angle;
 };
 

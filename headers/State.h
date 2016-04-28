@@ -23,7 +23,6 @@ class State
 		TileSet tileSet;
 		TileMap tileMap;
 
-		void input(void);
 		void addObject(int mouseX, int mouseY);
 };
 

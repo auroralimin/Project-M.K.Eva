@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Resources.h"
+#include "InputManager.h"
 
 #include <iostream>
 #include <string>
@@ -55,6 +56,7 @@ void Game::run(void)
 		int current = SDL_GetTicks();
 		int elapsed = current - lastTime;
 
+		InputManager::getInstance().update();
 		state->update(0.0);
 		state->render();
 		SDL_RenderPresent(renderer);
@@ -99,6 +101,5 @@ Game::Game(std::string title, int w, int h)
 		std::cerr << "Failed to create a renderer: " << SDL_GetError() << std::endl;
 		exit(EXIT_SUCCESS);
 	}
-
 }
 
