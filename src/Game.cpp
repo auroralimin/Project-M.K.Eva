@@ -50,20 +50,20 @@ void Game::run(void)
 {
 	state = new State();
 
-	int lastTime = SDL_GetTicks();
+	frameStart = SDL_GetTicks();
 	while (!state->isQuitRequested())
 	{
-		int current = SDL_GetTicks();
-		int elapsed = current - lastTime;
+		currentTime = SDL_GetTicks();
+		calculateDeltaTime();
 
 		InputManager::getInstance().update();
-		state->update(0.0);
+		state->update(dt);
 		state->render();
 		SDL_RenderPresent(renderer);
 
-		if (elapsed < FPS)
-			SDL_Delay(FPS - elapsed);
-		lastTime = current;
+		if (dt < FPS)
+			SDL_Delay(FPS - dt);
+		frameStart = currentTime;
 	}
 
 	Resources::clearImages();
@@ -101,5 +101,10 @@ Game::Game(std::string title, int w, int h)
 		std::cerr << "Failed to create a renderer: " << SDL_GetError() << std::endl;
 		exit(EXIT_SUCCESS);
 	}
+}
+
+void Game::calculateDeltaTime(void)
+{
+	dt = currentTime - frameStart;
 }
 

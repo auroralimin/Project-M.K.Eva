@@ -1,5 +1,4 @@
 #include "InputManager.h"
-#include "SDL2/SDL.h"
 
 InputManager& InputManager::getInstance(void)
 {
@@ -113,5 +112,11 @@ InputManager::InputManager(void) : quitRequested(false),
 {
 	keyUpdate[ESCAPE_KEY] = keyUpdate[SPACEBAR] = 0;
 	keyState[ESCAPE_KEY] = keyState[SPACEBAR] = false;
+
+	keyUpdate[LEFT_ARROW_KEY] = keyUpdate[RIGHT_ARROW_KEY] = 0;
+	keyState[LEFT_ARROW_KEY] = keyState[RIGHT_ARROW_KEY] = false;
+
+	keyUpdate[UP_ARROW_KEY] = keyUpdate[DOWN_ARROW_KEY] = 0;
+	keyState[UP_ARROW_KEY] = keyState[DOWN_ARROW_KEY] = false;
 }
 

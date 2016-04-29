@@ -4,8 +4,8 @@ SDIR = src
 HDIR = headers
 ODIR = obj
 
-_OBJ = Main.o Game.o State.o Sprite.o Vec2.o Rect.o Face.o TileSet.o TileMap.o
-_OBJ += Resources.o InputManager.o
+_OBJ = Main.o Game.o Camera.o State.o Sprite.o Vec2.o Rect.o Face.o TileSet.o
+_OBJ += TileMap.o Resources.o InputManager.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 CFLAGS = -I$(HDIR) -Wall -Wextra -std=c++11

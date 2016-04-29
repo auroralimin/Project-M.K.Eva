@@ -44,14 +44,12 @@ void TileMap::render(int cameraX, int cameraY)
 
 void TileMap::renderLayer(int layer, int cameraX, int cameraY)
 {
-	UNUSED_VAR cameraX;
-	UNUSED_VAR cameraY;
 	int tileWidth = tileSet->getTileWidth();
 	int tileHeight = tileSet->getTileHeight();
 
 	for (int j = 0; j < mapWidth; ++j)
 		for (int i = 0; i < mapHeight; ++i)
-			tileSet->render(at(i, j, layer), i*tileWidth, j*tileHeight);
+			tileSet->render(at(i, j, layer), (i*tileWidth)-cameraX, (j*tileHeight)-cameraY);
 }
 
 int TileMap::getWidth(void)

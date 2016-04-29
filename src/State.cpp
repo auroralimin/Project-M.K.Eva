@@ -2,6 +2,7 @@
 #include "State.h"
 #include "Face.h"
 #include "InputManager.h"
+#include "Camera.h"
 
 #define UNUSED_VAR (void)
 
@@ -29,25 +30,27 @@ void State::update(float dt)
 
 	quitRequested = (input.isKeyDown(ESCAPE_KEY) || input.isQuitRequested());
 	if (input.keyPress(SPACEBAR))
-		addObject(input.getMouseX(), input.getMouseY());
+		addObject(input.getMouseX() + Camera::pos.x,
+				  input.getMouseY() + Camera::pos.y);
 
 	for (unsigned int i = 0; i < objectArray.size(); ++i)
 	{
-		objectArray[i]->update(0.0);
+		objectArray[i]->update((float)(dt/1000));
 		if (objectArray[i]->isDead())
 			objectArray.erase(objectArray.begin() + i);
 	}
-
-	if (SDL_QuitRequested())
-		quitRequested = true;
+	Camera::update(dt,
+				   tileMap.getWidth()*tileSet.getTileWidth(),
+				   tileMap.getHeight()*tileSet.getTileWidth());
 }
 
 void State::render(void)
 {
 	bg.render(0, 0, 0.0);
-	tileMap.render();
+	tileMap.renderLayer(0, Camera::pos.x, Camera::pos.y);
 	for (unsigned int i = 0; i < objectArray.size(); ++i)
 		objectArray[i]->render();
+	tileMap.renderLayer(1, Camera::pos.x*1.5, Camera::pos.y*1.5);
 }
 
 /*

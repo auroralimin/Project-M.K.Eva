@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <unordered_map>
+#include "SDL2/SDL.h"
 
 #define LEFT_ARROW_KEY SDLK_LEFT
 #define RIGHT_ARROW_KEY SDLK_RIGHT

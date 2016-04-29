@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Face.h"
 #include "InputManager.h"
+#include "Camera.h"
 
 #define UNUSED_VAR (void)
 
@@ -25,13 +26,14 @@ void Face::update(float dt)
 	InputManager input = InputManager::getInstance();
 
 	if (input.isMouseDown(LEFT_MOUSE_BUTTON) &&
-			box.isInside(input.getMouseX(), input.getMouseY()))
+			box.isInside(input.getMouseX() + Camera::pos.x,
+					   	 input.getMouseY() + Camera::pos.y))
     	damage(rand() % 10 + 10);
 }
 
 void Face::render(void)
 {
-	sp.render(box.x, box.y, angle);
+	sp.render(box.x - Camera::pos.x, box.y - Camera::pos.y, angle);
 }
 
 bool Face::isDead(void)
