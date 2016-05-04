@@ -5,7 +5,7 @@
 #define PRECISION 0.001
 
 Bullet::Bullet(Vec2 pos, float angle, float speed, float maxDistance, std::string sprite) :
-	sp(sprite), distanceLeft(maxDistance), moving(true)
+	sp(sprite, 3, 1.0), distanceLeft(maxDistance), moving(true)
 {
 	rotation = angle*(180/M_PI);
 	box.pos = pos;
@@ -30,6 +30,7 @@ void Bullet::update(float dt)
 			moving = false;
 		}
 	}
+	sp.update(dt);
 }
 
 void Bullet::render(void)

@@ -12,7 +12,7 @@ DIRECTIVES = -std=c++11 -Wall -Wextra -c -I $(HEADER_PATH)
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_PATH)/$*.Td
 LIBS = -lSDL2 -lSDL2_image -lm
 
-FINAL_EXEC = 130006408_T5
+FINAL_EXEC = 130006408_T6
 all: $(FINAL_EXEC)
 $(FINAL_EXEC): $(OBJ)
 	$(CC) -o $@ $^ $(LIBS)

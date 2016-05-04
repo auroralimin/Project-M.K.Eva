@@ -42,6 +42,6 @@ void Minion::shoot(Vec2 pos)
 {
 	float angle = atan2(pos.y - box.pos.y, pos.x - box.pos.x);
 	Game::getInstance()->getState().addObject(new Bullet(box.pos,
-				angle, 200, 200, "img/minionbullet1.png"));
+				angle, 200, 200, "img/minionbullet2.png"));
 }
 
