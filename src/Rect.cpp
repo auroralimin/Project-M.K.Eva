@@ -4,35 +4,27 @@
 
 Rect::Rect(void)
 {
-	x = y = w = h = 0.0;
+	pos.x = pos.y = dim.x = dim.y = 0.0;
 }
 
-Rect::Rect(int x, int y, int w, int h)
-{
-	this->x = x;
-	this->y = y;
-
-	this->w = w;
-	this->h = h;
-}
+Rect::Rect(Vec2 pos, Vec2 dim) : pos(pos), dim(dim) {}
 
 void Rect::sumWithVec2(Vec2 v)
 {
-	x = v.x;
-	y = v.y;
+	pos += v;
 }
 
-bool Rect::isInside(int x, int y)
+bool Rect::isInside(Vec2 area)
 {
-	if ((this->x <= x) && (this->x > x - w) &&
-		(this->y <= y) && (this->y > y - h))
+	if ((pos.x <= area.x) && (pos.x > area.x - dim.x) &&
+		(pos.y <= area.y) && (pos.y > area.y - dim.y))
 		return true;
 	return false;
 }
 
-void Rect::rotate(int x, int y, float angle)
+void Rect::rotate(Vec2 pos, float angle)
 {
-	this->x += (int)(x*cos(angle) - y*sin(angle));
-	this->y += (int)(y*cos(angle) + x*sin(angle));
+	this->pos.x += (int)(pos.x*cos(angle) - pos.y*sin(angle));
+	this->pos.y += (int)(pos.y*cos(angle) + pos.x*sin(angle));
 }
 

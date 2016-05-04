@@ -3,6 +3,7 @@
 #include "Face.h"
 #include "InputManager.h"
 #include "Camera.h"
+#include "Alien.h"
 
 #define UNUSED_VAR (void)
 
@@ -10,7 +11,10 @@ State::State(void) : bg("img/ocean.jpg"),
 					 quitRequested(false),
 					 objectArray(),
 					 tileSet(64, 64, "img/tileset.png"),
-					 tileMap("map/tileMap.txt", &tileSet) {}
+					 tileMap("map/tileMap.txt", &tileSet)
+{
+	objectArray.emplace_back(new Alien(512, 300, 7));
+}
 
 State::~State(void)
 {
@@ -29,9 +33,6 @@ void State::update(float dt)
 	UNUSED_VAR dt;
 
 	quitRequested = (input.isKeyDown(ESCAPE_KEY) || input.isQuitRequested());
-	if (input.keyPress(SPACEBAR))
-		addObject(input.getMouseX() + Camera::pos.x,
-				  input.getMouseY() + Camera::pos.y);
 
 	for (unsigned int i = 0; i < objectArray.size(); ++i)
 	{
@@ -53,14 +54,8 @@ void State::render(void)
 	tileMap.renderLayer(1, Camera::pos.x*1.5, Camera::pos.y*1.5);
 }
 
-/*
- * PRIVATE METHODS
- */
-void State::addObject(int mouseX, int mouseY)
+void State::addObject(GameObject *ptr)
 {
-	Face *face = new Face(mouseX, mouseY, rand() % 360);
-	float angle = ((((float)(rand() % 360))*M_PI)/180.0);
-	face->box.rotate(200, 0, angle);
-	objectArray.emplace_back(face);
+	objectArray.emplace_back(ptr);
 }
 

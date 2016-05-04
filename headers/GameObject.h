@@ -6,6 +6,7 @@ class GameObject
 {
 	public:
 		Rect box;
+		float rotation;
 
 		virtual ~GameObject(void) {};
 		virtual void render(void) = 0;

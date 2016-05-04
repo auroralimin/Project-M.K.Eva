@@ -4,13 +4,12 @@
 class Rect
 {
 	public:
-		int x, y;
-		int w, h;
+		Vec2 pos, dim;
 
 		Rect(void);
-		Rect(int x, int y, int w, int h);
+		Rect(Vec2 pos, Vec2 dim);
 		void sumWithVec2(Vec2 v);
-		bool isInside(int x, int y);
-		void rotate(int x, int y, float angle);
+		bool isInside(Vec2 area);
+		void rotate(Vec2 pos, float angle);
 };
 

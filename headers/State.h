@@ -15,6 +15,7 @@ class State
 		bool isQuitRequested(void);
 		void update(float dt);
 		void render(void);
+		void addObject(GameObject *ptr);
 
 	private:
 		Sprite bg;
@@ -22,7 +23,5 @@ class State
 		std::vector<std::unique_ptr<GameObject>> objectArray;
 		TileSet tileSet;
 		TileMap tileMap;
-
-		void addObject(int mouseX, int mouseY);
 };
 

@@ -12,13 +12,13 @@ void InputManager::update(void)
 
 	quitRequested = false;
 	updateCounter++;
-	SDL_GetMouseState(&mouseX, &mouseY);
 
 	while (SDL_PollEvent(&event))
 	{
 		if (event.key.repeat == 1)
 			continue;
 	
+		SDL_GetMouseState(&mouseX, &mouseY);
 		switch(event.type)
 		{
 			case SDL_QUIT:

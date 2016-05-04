@@ -24,3 +24,8 @@ void Vec2::normalize(void)
 	y = y/module;
 }
 
+float Vec2::distanceFromPoint(Vec2 p)
+{
+	return sqrt(pow(p.x - x, 2) + pow(p.y - y, 2));
+}
+

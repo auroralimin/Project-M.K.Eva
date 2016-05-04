@@ -4,8 +4,9 @@
 
 Sprite::Sprite(void) : texture(nullptr) {}
 
-Sprite::Sprite(std::string file)
+Sprite::Sprite(std::string file) 
 {
+	scaleX = scaleY = 1.0;
 	texture = nullptr;
 	open(file);
 }
@@ -30,20 +31,20 @@ void Sprite::render(int x, int y, float angle)
 {
 	dstRect.x = x;
 	dstRect.y = y;
-	dstRect.w = clipRect.w;
-	dstRect.h = clipRect.h;
+	dstRect.w = clipRect.w*scaleX;
+	dstRect.h = clipRect.h*scaleY;
 
 	SDL_RenderCopyEx(Game::getInstance()->getRenderer(), texture, &clipRect, &dstRect, angle, NULL, SDL_FLIP_NONE);
 }
 
 int Sprite::getWidth(void)
 {
-	return width;
+	return width*scaleX;
 }
 
 int Sprite::getHeight(void)
 {
-	return height;
+	return height*scaleY;
 }
 
 bool Sprite::isOpen(void)
@@ -51,5 +52,15 @@ bool Sprite::isOpen(void)
 	if (!Sprite::texture)
 		return false;
 	return true;
+}
+
+void Sprite::setScaleX(float x)
+{
+	scaleX = x;
+}
+
+void Sprite::setScaleY(float y)
+{
+	scaleY = y;
 }
 
