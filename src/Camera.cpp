@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Game.h"
 #include "InputManager.h"
 #include <iostream>
 
@@ -24,7 +25,8 @@ void Camera::update(float dt, int mapWidth, int mapHeight)
 	InputManager input = InputManager::getInstance();
 	
 	if (focus)
-		pos = Vec2(focus->box.pos.x, focus->box.pos.y);
+		pos = Vec2(focus->box.pos.x-Game::getInstance()->getWinWidth()/2,
+				focus->box.pos.y-Game::getInstance()->getWinHeight()/2);
 	else
 	{
 		speed = Vec2(0.0, 0.0);

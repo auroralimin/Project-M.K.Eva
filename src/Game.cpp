@@ -69,6 +69,16 @@ void Game::run(void)
 	Resources::clearImages();
 }
 
+int Game::getWinWidth(void)
+{
+	return winWidth;
+}
+
+int Game::getWinHeight(void)
+{
+	return winHeight;
+}
+
 /*
  * PRIVATE METHODS
  */
@@ -101,6 +111,7 @@ Game::Game(std::string title, int w, int h)
 		std::cerr << "Failed to create a renderer: " << SDL_GetError() << std::endl;
 		exit(EXIT_SUCCESS);
 	}
+	winWidth = w, winHeight = h;
 }
 
 void Game::calculateDeltaTime(void)

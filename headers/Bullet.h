@@ -6,7 +6,8 @@
 class Bullet : public GameObject
 {
 	public:
-		Bullet(Vec2 pos, float angle, float speed, float maxDistance, std::string sprite);
+		Bullet(Vec2 pos, float angle, float speed, float maxDistance, std::string sprite,
+				int frameCount = 3, float frameTime = 1.0);
 		void update(float dt);
 		void render(void);
 		bool isDead(void);

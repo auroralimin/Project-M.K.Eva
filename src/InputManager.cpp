@@ -118,5 +118,11 @@ InputManager::InputManager(void) : quitRequested(false),
 
 	keyUpdate[UP_ARROW_KEY] = keyUpdate[DOWN_ARROW_KEY] = 0;
 	keyState[UP_ARROW_KEY] = keyState[DOWN_ARROW_KEY] = false;
+
+	keyUpdate[W_KEY] = keyUpdate[S_KEY] = 0;
+	keyUpdate[A_KEY] = keyUpdate[D_KEY] = 0;
+
+	keyState[W_KEY] = keyState[S_KEY] = false;
+	keyState[A_KEY] = keyState[D_KEY] = false;
 }
 

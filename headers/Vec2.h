@@ -10,6 +10,7 @@ class Vec2
 		float getModule(void);
 		void normalize(void);
 		float distanceFromPoint(Vec2 p);
+		Vec2 rotate(float angle);
 
 		Vec2 operator+(const Vec2& v)
 		{

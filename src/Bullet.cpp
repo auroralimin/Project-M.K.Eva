@@ -4,8 +4,9 @@
 
 #define PRECISION 0.001
 
-Bullet::Bullet(Vec2 pos, float angle, float speed, float maxDistance, std::string sprite) :
-	sp(sprite, 3, 1.0), distanceLeft(maxDistance), moving(true)
+Bullet::Bullet(Vec2 pos, float angle, float speed, float maxDistance, std::string sprite,
+int frameCount, float frameTime) :
+	sp(sprite, frameCount, frameTime), distanceLeft(maxDistance), moving(true)
 {
 	rotation = angle*(180/M_PI);
 	box.pos = pos;

@@ -29,3 +29,9 @@ float Vec2::distanceFromPoint(Vec2 p)
 	return sqrt(pow(p.x - x, 2) + pow(p.y - y, 2));
 }
 
+Vec2 Vec2::rotate(float angle)
+{
+	float c = cos(angle), s = sin(angle);
+	return Vec2(x*c + y*s, y*c + x*s);
+}
+

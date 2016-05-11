@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include "Camera.h"
 #include "Alien.h"
+#include "Penguins.h"
 
 #define UNUSED_VAR (void)
 
@@ -14,6 +15,9 @@ State::State(void) : bg("img/ocean.jpg"),
 					 tileMap("map/tileMap.txt", &tileSet)
 {
 	objectArray.emplace_back(new Alien(512, 300, 7));
+	Penguins *penguins = new Penguins(704, 640);
+	objectArray.emplace_back(penguins);
+	Camera::follow(penguins);
 }
 
 State::~State(void)
