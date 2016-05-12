@@ -4,7 +4,7 @@ SRC_PATH = src
 BIN_PATH = bin
 DEP_PATH = dep
 
-_OBJ = Main.o Game.o Camera.o State.o Sprite.o Vec2.o Rect.o Face.o TileSet.o
+_OBJ = Main.o Game.o Camera.o State.o Sprite.o Vec2.o Rect.o TileSet.o
 _OBJ += TileMap.o Resources.o InputManager.o Alien.o Minion.o Bullet.o
 _OBJ += Penguins.o
 OBJ = $(patsubst %,$(BIN_PATH)/%,$(_OBJ))
@@ -24,7 +24,11 @@ $(BIN_PATH)/%.o: $(SRC_PATH)/%.cpp
 	@mv -f $(DEP_PATH)/$*.Td $(DEP_PATH)/$*.d
 
 debug: DIRECTIVES += -ggdb
+	CC = clang++
 debug: all
+
+release: DIRECTIVES += -O3 -mtune=native
+release: all
 
 .PHONY: clean
 clean:

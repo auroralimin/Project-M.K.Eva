@@ -11,5 +11,6 @@ class Rect
 		void sumWithVec2(Vec2 v);
 		bool isInside(Vec2 area);
 		void rotate(Vec2 pos, float angle);
+		Vec2 getCenter(void);
 };
 

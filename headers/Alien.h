@@ -15,6 +15,9 @@ class Alien : public GameObject
 		void update(float dt);
 		void render(void);
 		bool isDead(void);
+		void notifyCollision(GameObject &other);
+		bool is(std::string className);
+		void takeDamage(int dmg = 1);
 	
 	private:
 		class Action
@@ -33,7 +36,6 @@ class Alien : public GameObject
 
 		Sprite sp;
 		Vec2 speed, finalPos;
-		int hp;
 		bool moving;
 		std::queue<Action> taskQueue;
 		std::vector<std::unique_ptr<Minion>> minionArray;

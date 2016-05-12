@@ -1,18 +1,17 @@
-#include <math.h>
-
 #include "Alien.h"
 #include "InputManager.h"
 #include "Camera.h"
 
+#define UNUSED_VAR (void)
 #define SPEED 100
 #define PRECISION 0.001
 
 Alien::Alien(float x, float y, int nMinions) : sp("img/alien.png"),
 											   speed(0.0, 0.0),
 											   finalPos(x, y),
-											   hp(1000),
 											   moving(false)
 {
+	hp = 10;
 	rotation = 0;
 	box.dim.x = sp.getWidth();
 	box.dim.y = sp.getHeight();
@@ -24,8 +23,8 @@ Alien::Alien(float x, float y, int nMinions) : sp("img/alien.png"),
 
 void Alien::update(float dt)
 {
-	getTaskFromInput();
-	handleFirstTaskfromQueue();
+	//getTaskFromInput();
+	//handleFirstTaskfromQueue();
 
 	rotation -= 0.25;
 
@@ -59,6 +58,25 @@ bool Alien::isDead(void)
 	return (hp > 0) ? false : true;
 }
 
+void Alien::notifyCollision(GameObject &other)
+{
+	UNUSED_VAR other;
+}
+
+bool Alien::is(std::string className)
+{
+	return (className == "Alien");
+}
+
+void Alien::takeDamage(int dmg)
+{
+	hp = hp - dmg;
+}
+
+/*
+ * PRIVATE METHODS
+ */
+
 Alien::Action::Action(ActionType type, float x, float y)
 {
 	this->type = type;
@@ -66,9 +84,6 @@ Alien::Action::Action(ActionType type, float x, float y)
 	pos.y = y;
 }
 
-/*
- * PRIVATE METHODS
- */
 void Alien::getTaskFromInput(void)
 {
 	InputManager input = InputManager::getInstance();
@@ -112,7 +127,7 @@ void Alien::handleFirstTaskfromQueue(void)
 				index = i;
 			}
 		}
-		minionArray[index]->shoot(mousePos);
+		//minionArray[index]->shoot(mousePos);
 	}
 	taskQueue.pop();
 }

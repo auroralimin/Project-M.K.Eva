@@ -11,6 +11,9 @@ class Minion : public GameObject
 		void render(void);
 		bool isDead(void);
 		void shoot(Vec2 pos);
+		void notifyCollision(GameObject &other);
+		bool is(std::string className);
+		void takeDamage(int dmg = 1);
 
 	private:
 		GameObject *center;

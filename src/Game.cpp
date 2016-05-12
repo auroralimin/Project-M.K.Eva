@@ -6,7 +6,7 @@
 #include <string>
 #include <ctime>
 
-#define FPS 33
+#define FPS 40
 
 Game* Game::_instance = nullptr;
 

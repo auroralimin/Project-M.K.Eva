@@ -1,9 +1,9 @@
 #include <iostream>
 #include "State.h"
-#include "Face.h"
 #include "InputManager.h"
 #include "Camera.h"
 #include "Alien.h"
+#include "Collision.h"
 #include "Penguins.h"
 
 #define UNUSED_VAR (void)
@@ -41,12 +41,22 @@ void State::update(float dt)
 	for (unsigned int i = 0; i < objectArray.size(); ++i)
 	{
 		objectArray[i]->update((float)(dt/1000));
+		for (unsigned int j = 0; j < objectArray.size(); ++j)
+			if (i != j && objectArray[i]->is("Bullet") &&
+					Collision::isColliding(objectArray[i]->box, objectArray[j]->box,
+						objectArray[i]->rotation, objectArray[j]->rotation))
+				objectArray[i]->notifyCollision(*objectArray[j]);
+
 		if (objectArray[i]->isDead())
+		{
+			if (objectArray[i]->is("Penguins"))
+				Camera::unfollow();
 			objectArray.erase(objectArray.begin() + i);
+		}
 	}
 	Camera::update(dt,
-				   tileMap.getWidth()*tileSet.getTileWidth(),
-				   tileMap.getHeight()*tileSet.getTileWidth());
+			tileMap.getWidth()*tileSet.getTileWidth(),
+			tileMap.getHeight()*tileSet.getTileWidth());
 }
 
 void State::render(void)

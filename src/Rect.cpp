@@ -1,6 +1,6 @@
 #include "Rect.h"
 #include <iostream>
-#include <math.h>
+#include <cmath>
 
 Rect::Rect(void)
 {
@@ -22,9 +22,14 @@ bool Rect::isInside(Vec2 area)
 	return false;
 }
 
+Vec2 Rect::getCenter(void)
+{
+	return pos + dim/2;
+}
+
 void Rect::rotate(Vec2 pos, float angle)
 {
-	this->pos.x += (int)(pos.x*cos(angle) - pos.y*sin(angle));
-	this->pos.y += (int)(pos.y*cos(angle) + pos.x*sin(angle));
+	this->pos.x += (int)(pos.x*std::cos(angle) - pos.y*std::sin(angle));
+	this->pos.y += (int)(pos.y*std::cos(angle) + pos.x*std::sin(angle));
 }
 

@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Game.h"
 
+#define UNUSED_VAR (void)
 #define D_RADIUS 100
 #define SPEED M_PI/7
 
@@ -11,6 +12,7 @@ Minion::Minion(GameObject *minionCenter, float arcOffSet) :
 	sp("img/minion.png"),
 	arc(arcOffSet)
 {
+	hp = 0;
 	box.dim.x = sp.getWidth();
 	box.dim.y = sp.getHeight();
 	update(0.0);
@@ -42,6 +44,22 @@ void Minion::shoot(Vec2 pos)
 {
 	float angle = atan2(pos.y - box.pos.y, pos.x - box.pos.x);
 	Game::getInstance()->getState().addObject(new Bullet(box.pos,
-				angle, 200, 200, "img/minionbullet2.png"));
+				angle, 200, 200, "img/minionbullet2.png", true));
+}
+
+void Minion::notifyCollision(GameObject &other)
+{
+	UNUSED_VAR other;
+}
+
+bool Minion::is(std::string className)
+{
+	return (className == "Minion");
+}
+
+void Minion::takeDamage(int dmg)
+{
+	UNUSED_VAR dmg;
+	//D0 NOTHING
 }
 
