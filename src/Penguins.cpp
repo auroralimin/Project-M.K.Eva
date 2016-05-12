@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Bullet.h"
 #include "Timer.h"
+#include "Animation.h"
 
 #include <iostream>
 
@@ -14,6 +15,8 @@
 
 Penguins::Penguins(float x, float y) : bodySp("img/penguin.png"), cannonSp("img/cubngun.png")
 {
+	animationImg = "img/penguindeath.png";
+	frameCount = 5;
 	speed = Vec2(0.0, 0.0);
 	hp = 10;
 	linearSpeed = cannonAngle = 0.0;
@@ -75,7 +78,13 @@ void Penguins::render(void)
 
 bool Penguins::isDead(void)
 {
-	return (hp > 0) ? false : true;
+	if (hp > 0)
+		return false;
+
+	Game::getInstance()->getState().addObject(
+			new Animation(box.pos, rotation, animationImg, frameCount));
+
+	return true;
 }
 
 void Penguins::shoot(void)

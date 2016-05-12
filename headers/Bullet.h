@@ -7,7 +7,7 @@ class Bullet : public GameObject
 {
 	public:
 		Bullet(Vec2 pos, float angle, float speed, float maxDistance, std::string sprite,
-				bool targetsPlayer = false, int frameCount = 3, float frameTime = 1.0);
+				bool targetsPlayer = false, int frameCount = 3, float frameTime = 0.3);
 		
 		void update(float dt);
 		void render(void);

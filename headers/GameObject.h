@@ -7,6 +7,8 @@ class GameObject
 	public:
 		Rect box;
 		float rotation;
+		std::string animationImg;
+		int frameCount;
 
 		virtual ~GameObject(void) {};
 		virtual void render(void) = 0;

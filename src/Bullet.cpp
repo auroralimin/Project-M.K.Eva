@@ -12,7 +12,9 @@ Bullet::Bullet(Vec2 pos, float angle, float speed, float maxDistance,
 	targetsPlayer(targetsPlayer), sp(sprite, frameCount, frameTime),
 	distanceLeft(maxDistance), moving(true)
 {
+	animationImg = "";
 	rotation = angle*(180/M_PI);
+	frameCount = 0;
 	box.pos = pos;
 	box.dim.x = sp.getWidth();
 	box.dim.y = sp.getHeight();

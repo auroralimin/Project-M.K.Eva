@@ -1,6 +1,8 @@
 #include "Alien.h"
 #include "InputManager.h"
 #include "Camera.h"
+#include "Game.h"
+#include "Animation.h"
 
 #define UNUSED_VAR (void)
 #define SPEED 100
@@ -11,6 +13,8 @@ Alien::Alien(float x, float y, int nMinions) : sp("img/alien.png"),
 											   finalPos(x, y),
 											   moving(false)
 {
+	animationImg = "img/aliendeath.png";
+	frameCount = 4;
 	hp = 10;
 	rotation = 0;
 	box.dim.x = sp.getWidth();
@@ -55,7 +59,16 @@ void Alien::render(void)
 
 bool Alien::isDead(void)
 {
-	return (hp > 0) ? false : true;
+	if (hp > 0)
+		return false;
+
+	Game::getInstance()->getState().addObject(
+			new Animation(box.pos, rotation, animationImg, frameCount));
+	for (unsigned int i = 0; i < minionArray.size(); ++i)
+		Game::getInstance()->getState().addObject(
+				new Animation(minionArray[i]->box.pos, minionArray[i]->rotation,
+					minionArray[i]->animationImg, minionArray[i]->frameCount));
+	return true;
 }
 
 void Alien::notifyCollision(GameObject &other)

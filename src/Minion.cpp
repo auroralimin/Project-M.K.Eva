@@ -12,6 +12,8 @@ Minion::Minion(GameObject *minionCenter, float arcOffSet) :
 	sp("img/minion.png"),
 	arc(arcOffSet)
 {
+	animationImg = "img/miniondeath.png";
+	frameCount = 4;
 	hp = 0;
 	box.dim.x = sp.getWidth();
 	box.dim.y = sp.getHeight();

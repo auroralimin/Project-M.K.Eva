@@ -5,6 +5,8 @@
 #include "Alien.h"
 #include "Collision.h"
 #include "Penguins.h"
+#include "Animation.h"
+#include "Game.h"
 
 #define UNUSED_VAR (void)
 
