@@ -6,7 +6,7 @@ DEP_PATH = dep
 
 _OBJ = Main.o Game.o Camera.o State.o Sprite.o Vec2.o Rect.o TileSet.o
 _OBJ += TileMap.o Resources.o InputManager.o Alien.o Minion.o Bullet.o
-_OBJ += Penguins.o
+_OBJ += Penguins.o Timer.o
 OBJ = $(patsubst %,$(BIN_PATH)/%,$(_OBJ))
 
 DIRECTIVES = -std=c++11 -Wall -Wextra -c -I $(HEADER_PATH)
@@ -27,7 +27,7 @@ debug: DIRECTIVES += -ggdb
 	CC = clang++
 debug: all
 
-release: DIRECTIVES += -O3 -mtune=native
+release: DIRECTIVES += -Ofast -mtune=native
 release: all
 
 .PHONY: clean

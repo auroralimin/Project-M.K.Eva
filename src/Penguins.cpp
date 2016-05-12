@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Game.h"
 #include "Bullet.h"
+#include "Timer.h"
 
 #include <iostream>
 
@@ -31,16 +32,26 @@ Penguins::~Penguins(void)
 
 void Penguins::update(float dt)
 {
+	const float cooldown = 0.25;
+	static float oldTime = 0.0;
+	static Timer timer = Timer();
+
+	timer.update(dt);
 	InputManager input = InputManager::getInstance();
 
 	cannonAngle = atan2((input.getMouseY()+Camera::pos.y)-box.pos.y,
 			(input.getMouseX()+Camera::pos.x)-box.pos.x);
-	if (input.mousePress(LEFT_MOUSE_BUTTON))
+	if (input.mousePress(LEFT_MOUSE_BUTTON) && timer.get()-oldTime >= cooldown)
+	{
+		oldTime = timer.get();
 		shoot();
+	}
+
 	if (input.isKeyDown(D_KEY))
 		rotation += ANG_V*dt;
 	if (input.isKeyDown(A_KEY))
 		rotation -= ANG_V*dt;
+
 	if (input.isKeyDown(W_KEY))
 		speed += Vec2(ACC, 0).rotate(rotation)*dt;
 	if (input.isKeyDown(S_KEY))
