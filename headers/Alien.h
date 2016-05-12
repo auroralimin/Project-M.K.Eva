@@ -7,11 +7,15 @@
 #include "Sprite.h"
 #include "Vec2.h"
 #include "Minion.h"
+#include "Timer.h"
 
 class Alien : public GameObject
 {
 	public:
-		Alien(float x, float y, int nMinions);
+		static int alienCount;
+
+		Alien(GameObject *focus, float x, float y, int nMinions);
+		~Alien(void);	
 		void update(float dt);
 		void render(void);
 		bool isDead(void);
@@ -20,28 +24,20 @@ class Alien : public GameObject
 		void takeDamage(int dmg = 1);
 	
 	private:
-		class Action
+		enum AlienState
 		{
-			public:
-				enum ActionType {
-					MOVE, 
-					SHOOT
-				};
-
-				Action(ActionType type, float x, float y);
-
-				ActionType type;
-				Vec2 pos;
+			MOVING,
+			RESTING
 		};
-
+		
+		GameObject *focus;
 		Sprite sp;
-		Vec2 speed, finalPos;
-		bool moving;
-		std::queue<Action> taskQueue;
+		Vec2 speed, destination;
 		std::vector<std::unique_ptr<Minion>> minionArray;
+		AlienState state;
+		Timer restTimer;
 
-		void getTaskFromInput(void);
-		void handleFirstTaskfromQueue(void);
-		void updateMovement(void);
+		void shoot(float dt);
+		void move(float dt);
 };
 

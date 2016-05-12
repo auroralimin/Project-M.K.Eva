@@ -16,9 +16,10 @@ State::State(void) : bg("img/ocean.jpg"),
 					 tileSet(64, 64, "img/tileset.png"),
 					 tileMap("map/tileMap.txt", &tileSet)
 {
-	objectArray.emplace_back(new Alien(512, 300, 7));
 	Penguins *penguins = new Penguins(704, 640);
 	objectArray.emplace_back(penguins);
+	for (int i = 0; i < 5; i++)
+		objectArray.emplace_back(new Alien(penguins, 372*i, 237*i, 7));
 	Camera::follow(penguins);
 }
 

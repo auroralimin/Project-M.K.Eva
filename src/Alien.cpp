@@ -8,11 +8,12 @@
 #define SPEED 100
 #define PRECISION 0.001
 
-Alien::Alien(float x, float y, int nMinions) : sp("img/alien.png"),
-											   speed(0.0, 0.0),
-											   finalPos(x, y),
-											   moving(false)
+int Alien::alienCount = 0;
+
+Alien::Alien(GameObject *focus, float x, float y, int nMinions) :
+	focus(focus), sp("img/alien.png"), speed(0.0, 0.0), destination(x, y)
 {
+	alienCount++;
 	animationImg = "img/aliendeath.png";
 	frameCount = 4;
 	hp = 10;
@@ -21,29 +22,41 @@ Alien::Alien(float x, float y, int nMinions) : sp("img/alien.png"),
 	box.dim.y = sp.getHeight();
 	box.pos.x = x - box.dim.x/2;
 	box.pos.y = y - box.dim.y/2;
+	state = AlienState::RESTING;
+	restTimer = Timer();
 	for (int i = 0; i < nMinions; i++)
 		minionArray.emplace_back(new Minion(this, i*(2*M_PI/nMinions)));
 }
 
+Alien::~Alien(void)
+{
+	alienCount--;
+}
+
 void Alien::update(float dt)
 {
-	//getTaskFromInput();
-	//handleFirstTaskfromQueue();
-
+	const float cooldown = 10.0;
 	rotation -= 0.25;
 
-	if (moving)
+	if (state == AlienState::RESTING)
 	{
-		box.pos += speed*dt;
-		if (((box.pos.x > finalPos.x && speed.x >= 0) ||
-			(box.pos.x < finalPos.x && speed.x <= 0)) &&
-		   	((box.pos.y > finalPos.y && speed.y >= 0) ||
-			(box.pos.y < finalPos.y && speed.y <= 0)))
-		{
-			box.pos = finalPos;
-			moving = false;
-		}
+		restTimer.update(dt);
+		destination = focus->box.pos;
+		shoot(dt);
 	}
+
+	if (restTimer.get() > cooldown)
+	{
+		state = AlienState::MOVING;
+		destination = focus->box.pos;
+		Vec2 route = box.pos - destination;
+		route = route/route.getModule();
+		speed = route*SPEED;
+		restTimer.restart();
+	}
+
+	if (state == AlienState::MOVING)
+		move(dt);
 
 	for (unsigned int i = 0; i < minionArray.size(); ++i)
 		minionArray[i]->update(dt);
@@ -89,59 +102,42 @@ void Alien::takeDamage(int dmg)
 /*
  * PRIVATE METHODS
  */
-
-Alien::Action::Action(ActionType type, float x, float y)
+void Alien::shoot(float dt)
 {
-	this->type = type;
-	pos.x = x;
-	pos.y = y;
-}
-
-void Alien::getTaskFromInput(void)
-{
-	InputManager input = InputManager::getInstance();
-
-	if (input.isMouseDown(RIGHT_MOUSE_BUTTON))
-		taskQueue.emplace(Action(Action::MOVE,
-					input.getMouseX() + Camera::pos.x,
-					input.getMouseY() + Camera::pos.y));
-	if (input.mousePress(LEFT_MOUSE_BUTTON))
-		taskQueue.emplace(Action(Action::SHOOT,
-					input.getMouseX() + Camera::pos.x,
-					input.getMouseY() + Camera::pos.y));
-}
-
-void Alien::handleFirstTaskfromQueue(void)
-{
-	if (taskQueue.empty())
-		return;
-
-	Vec2 mousePos = taskQueue.front().pos;
-	if ((taskQueue.front().type == Action::MOVE) &&
-			(!((int)box.pos.x == (int)mousePos.x &&
-			   (int)box.pos.y == (int)mousePos.y)))
+	static Timer timer = Timer();
+	const float shootCooldown = 1;
+	static float oldTime = 0.0;
+	
+	timer.update(dt);
+	if (timer.get() - oldTime >= shootCooldown)
 	{
-		finalPos = mousePos;
-		Vec2 route = box.pos - finalPos;
-		route = route/route.getModule();
-		speed = route*SPEED;
-		moving = true;
-	}
-	else if (taskQueue.front().type == Action::SHOOT)
-	{
+		oldTime = timer.get();
 		int index = 0;
 		float closest = 9999999999999.9;
 		for (unsigned int i = 0; i < minionArray.size(); i++)
 		{
-			float d = (mousePos - minionArray[i]->box.pos).getModule();
+			float d = (destination - minionArray[i]->box.pos).getModule();
 			if (d < closest)
 			{
 				closest = d;
 				index = i;
 			}
 		}
-		//minionArray[index]->shoot(mousePos);
+		minionArray[index]->shoot(destination);
 	}
-	taskQueue.pop();
+}
+
+void Alien::move(float dt)
+{
+	box.pos += speed*dt;
+	if (((box.pos.x > destination.x && speed.x >= 0) ||
+				(box.pos.x < destination.x && speed.x <= 0)) &&
+			((box.pos.y > destination.y && speed.y >= 0) ||
+			 (box.pos.y < destination.y && speed.y <= 0)))
+	{
+		box.pos = destination;
+		state = AlienState::RESTING;
+		restTimer.restart();
+	}
 }
 
