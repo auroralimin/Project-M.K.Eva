@@ -9,18 +9,18 @@ class Sprite
 	public:
 		Sprite(void);
 		Sprite(std::string file, int frameCount = 1, float frameTime = 1.0);
-		void open(std::string file);
-		void update(float dt);
-		void setFrame(int frame);
-		void setFrameCount(int frameCount);
-		void setFrameTime(float frameTime);
-		void setClip(int x, int y, int w, int h);
-		void render(int x, int y, float angle = 0.0);
-		int getWidth(void);
-		int getHeight(void);
-		bool isOpen(void);
-		void setScaleX(float x);
-		void setScaleY(float y);
+		void Open(std::string file);
+		void Update(float dt);
+		void SetFrame(int frame);
+		void SetFrameCount(int frameCount);
+		void SetFrameTime(float frameTime);
+		void SetClip(int x, int y, int w, int h);
+		void Render(int x, int y, float angle = 0.0);
+		int GetWidth(void);
+		int GetHeight(void);
+		bool IsOpen(void);
+		void SetScaleX(float x);
+		void SetScaleY(float y);
 
 	private:
 		int width, height, frameCount, currentFrame;

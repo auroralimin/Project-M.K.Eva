@@ -19,17 +19,17 @@
 class InputManager
 {
 	public:
-		static InputManager& getInstance(void);
-		void update(void);
-		bool keyPress(int key);
-		bool keyRelease(int key);
-		bool isKeyDown(int key);
-		bool mousePress(int button);
-		bool mouseRelease(int button);
-		bool isMouseDown(int button);
-		int getMouseX(void);
-		int getMouseY(void);
-		bool isQuitRequested(void);
+		static InputManager& GetInstance(void);
+		void Update(void);
+		bool KeyPress(int key);
+		bool KeyRelease(int key);
+		bool IsKeyDown(int key);
+		bool MousePress(int button);
+		bool MouseRelease(int button);
+		bool IsMouseDown(int button);
+		int GetMouseX(void);
+		int GetMouseY(void);
+		bool IsQuitRequested(void);
 	private:
 		InputManager(void);
 

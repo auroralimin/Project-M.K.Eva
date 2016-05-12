@@ -7,13 +7,13 @@ class Minion : public GameObject
 {
 	public:
 		Minion(GameObject *minionCenter, float arcOffSet = 0);
-		void update(float dt);
-		void render(void);
-		bool isDead(void);
-		void shoot(Vec2 pos);
-		void notifyCollision(GameObject &other);
-		bool is(std::string className);
-		void takeDamage(int dmg = 1);
+		void Update(float dt);
+		void Render(void);
+		bool IsDead(void);
+		void Shoot(Vec2 pos);
+		void NotifyCollision(GameObject &other);
+		bool Is(std::string className);
+		void TakeDamage(int dmg = 1);
 
 	private:
 		GameObject *center;

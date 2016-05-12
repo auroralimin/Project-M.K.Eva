@@ -6,8 +6,8 @@
 class Resources
 {
 	public:
-		static SDL_Texture* getImage(std::string file);
-		static void clearImages(void);
+		static SDL_Texture* GetImage(std::string file);
+		static void ClearImages(void);
 
 	private:
 		static std::unordered_map<std::string, SDL_Texture*> imageTable;

@@ -2,17 +2,17 @@
 
 Timer::Timer() : time(0.0) {}
 
-void Timer::update(float dt)
+void Timer::Update(float dt)
 {
 	time += dt;
 }
 
-void Timer::restart(void)
+void Timer::Restart(void)
 {
 	time = 0.0;
 }
 
-float Timer::get(void)
+float Timer::Get(void)
 {
 	return time;
 }

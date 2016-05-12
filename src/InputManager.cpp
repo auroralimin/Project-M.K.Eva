@@ -1,12 +1,12 @@
 #include "InputManager.h"
 
-InputManager& InputManager::getInstance(void)
+InputManager& InputManager::GetInstance(void)
 {
 	static InputManager *_instance = new InputManager();
 	return *_instance;
 }
 
-void InputManager::update(void)
+void InputManager::Update(void)
 {
     SDL_Event event;
 
@@ -55,49 +55,49 @@ void InputManager::update(void)
 		quitRequested = true;
 }
 
-bool InputManager::keyPress(int key)
+bool InputManager::KeyPress(int key)
 {
 	return (updateCounter == keyUpdate.find(key)->second) ?
 		   keyState.find(key)->second : false;
 }
 
-bool InputManager::keyRelease(int key)
+bool InputManager::KeyRelease(int key)
 {
 	return (updateCounter == keyUpdate.find(key)->second) ?
 		   !keyState.find(key)->second : false;
 }
 
-bool InputManager::isKeyDown(int key)
+bool InputManager::IsKeyDown(int key)
 {
 	return keyState.find(key)->second;
 }
 
-bool InputManager::mousePress(int button)
+bool InputManager::MousePress(int button)
 {
 	return (updateCounter == mouseUpdate[button]) ? mouseState[button] : false;
 }
 
-bool InputManager::mouseRelease(int button)
+bool InputManager::MouseRelease(int button)
 {
 	return (updateCounter == mouseUpdate[button]) ? !mouseState[button] : false;
 }
 
-bool InputManager::isMouseDown(int button)
+bool InputManager::IsMouseDown(int button)
 {
 	return mouseState[button];
 }
 
-int InputManager::getMouseX(void)
+int InputManager::GetMouseX(void)
 {
 	return mouseX;
 }
 
-int InputManager::getMouseY(void)
+int InputManager::GetMouseY(void)
 {
 	return mouseY;
 }
 
-bool InputManager::isQuitRequested(void)
+bool InputManager::IsQuitRequested(void)
 {
 	return quitRequested;
 }

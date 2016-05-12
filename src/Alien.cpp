@@ -18,8 +18,8 @@ Alien::Alien(GameObject *focus, float x, float y, int nMinions) :
 	frameCount = 4;
 	hp = 10;
 	rotation = 0;
-	box.dim.x = sp.getWidth();
-	box.dim.y = sp.getHeight();
+	box.dim.x = sp.GetWidth();
+	box.dim.y = sp.GetHeight();
 	box.pos.x = x - box.dim.x/2;
 	box.pos.y = y - box.dim.y/2;
 	state = AlienState::RESTING;
@@ -33,68 +33,68 @@ Alien::~Alien(void)
 	alienCount--;
 }
 
-void Alien::update(float dt)
+void Alien::Update(float dt)
 {
 	const float cooldown = 10.0;
 	rotation -= 0.25;
 
 	if (state == AlienState::RESTING)
 	{
-		restTimer.update(dt);
+		restTimer.Update(dt);
 		destination = focus->box.pos;
-		shoot(dt);
+		Shoot(dt);
 	}
 
-	if (restTimer.get() > cooldown)
+	if (restTimer.Get() > cooldown)
 	{
 		state = AlienState::MOVING;
 		destination = focus->box.pos;
 		Vec2 route = box.pos - destination;
-		route = route/route.getModule();
+		route = route/route.GetModule();
 		speed = route*SPEED;
-		restTimer.restart();
+		restTimer.Restart();
 	}
 
 	if (state == AlienState::MOVING)
-		move(dt);
+		Move(dt);
 
 	for (unsigned int i = 0; i < minionArray.size(); ++i)
-		minionArray[i]->update(dt);
+		minionArray[i]->Update(dt);
 }
 
-void Alien::render(void)
+void Alien::Render(void)
 {
-	sp.render(box.pos.x - box.dim.x/2 - Camera::pos.x,
+	sp.Render(box.pos.x - box.dim.x/2 - Camera::pos.x,
 			box.pos.y - box.dim.y/2 - Camera::pos.y, rotation);
 	for (unsigned int i = 0; i < minionArray.size(); ++i)
-		minionArray[i]->render();
+		minionArray[i]->Render();
 }
 
-bool Alien::isDead(void)
+bool Alien::IsDead(void)
 {
 	if (hp > 0)
 		return false;
 
-	Game::getInstance()->getState().addObject(
+	Game::GetInstance()->GetState().AddObject(
 			new Animation(box.pos, rotation, animationImg, frameCount));
 	for (unsigned int i = 0; i < minionArray.size(); ++i)
-		Game::getInstance()->getState().addObject(
+		Game::GetInstance()->GetState().AddObject(
 				new Animation(minionArray[i]->box.pos, minionArray[i]->rotation,
 					minionArray[i]->animationImg, minionArray[i]->frameCount));
 	return true;
 }
 
-void Alien::notifyCollision(GameObject &other)
+void Alien::NotifyCollision(GameObject &other)
 {
 	UNUSED_VAR other;
 }
 
-bool Alien::is(std::string className)
+bool Alien::Is(std::string className)
 {
 	return (className == "Alien");
 }
 
-void Alien::takeDamage(int dmg)
+void Alien::TakeDamage(int dmg)
 {
 	hp = hp - dmg;
 }
@@ -102,32 +102,32 @@ void Alien::takeDamage(int dmg)
 /*
  * PRIVATE METHODS
  */
-void Alien::shoot(float dt)
+void Alien::Shoot(float dt)
 {
 	static Timer timer = Timer();
 	const float shootCooldown = 1;
 	static float oldTime = 0.0;
 	
-	timer.update(dt);
-	if (timer.get() - oldTime >= shootCooldown)
+	timer.Update(dt);
+	if (timer.Get() - oldTime >= shootCooldown)
 	{
-		oldTime = timer.get();
+		oldTime = timer.Get();
 		int index = 0;
 		float closest = 9999999999999.9;
 		for (unsigned int i = 0; i < minionArray.size(); i++)
 		{
-			float d = (destination - minionArray[i]->box.pos).getModule();
+			float d = (destination - minionArray[i]->box.pos).GetModule();
 			if (d < closest)
 			{
 				closest = d;
 				index = i;
 			}
 		}
-		minionArray[index]->shoot(destination);
+		minionArray[index]->Shoot(destination);
 	}
 }
 
-void Alien::move(float dt)
+void Alien::Move(float dt)
 {
 	box.pos += speed*dt;
 	if (((box.pos.x > destination.x && speed.x >= 0) ||
@@ -137,7 +137,7 @@ void Alien::move(float dt)
 	{
 		box.pos = destination;
 		state = AlienState::RESTING;
-		restTimer.restart();
+		restTimer.Restart();
 	}
 }
 

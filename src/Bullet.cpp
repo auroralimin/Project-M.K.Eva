@@ -16,60 +16,60 @@ Bullet::Bullet(Vec2 pos, float angle, float speed, float maxDistance,
 	rotation = angle*(180/M_PI);
 	frameCount = 0;
 	box.pos = pos;
-	box.dim.x = sp.getWidth();
-	box.dim.y = sp.getHeight();
+	box.dim.x = sp.GetWidth();
+	box.dim.y = sp.GetHeight();
 	this->speed = Vec2(cos(angle), sin(angle))*speed;
 	finalPos = Vec2(pos.x + (maxDistance*cos(angle)),
 		  		    pos.y + (maxDistance*sin(angle)));
 }
 
-void Bullet::update(float dt)
+void Bullet::Update(float dt)
 {
 	if (moving)
 	{
-		distanceLeft -= speed.getModule()*dt;
+		distanceLeft -= speed.GetModule()*dt;
 		box.pos += speed*dt;
 		if (((box.pos.x > finalPos.x && speed.x >= 0) ||
 			(box.pos.x < finalPos.x && speed.x <= 0)) &&
 		   	((box.pos.y > finalPos.y && speed.y >= 0) ||
 			(box.pos.y < finalPos.y && speed.y <= 0)))
-			killBullet();
+			KillBullet();
 	}
-	sp.update(dt);
+	sp.Update(dt);
 }
 
-void Bullet::render(void)
+void Bullet::Render(void)
 {
-	sp.render(box.pos.x - box.dim.x/2 - Camera::pos.x,
+	sp.Render(box.pos.x - box.dim.x/2 - Camera::pos.x,
 			box.pos.y - box.dim.y/2 - Camera::pos.y, rotation);
 }
 
-bool Bullet::isDead(void)
+bool Bullet::IsDead(void)
 {
 	return !moving;
 }
 
-void Bullet::notifyCollision(GameObject &other)
+void Bullet::NotifyCollision(GameObject &other)
 {
-	if ((!targetsPlayer && other.is("Alien")) ||
-			(targetsPlayer && other.is("Penguins")))
+	if ((!targetsPlayer && other.Is("Alien")) ||
+			(targetsPlayer && other.Is("Penguins")))
 	{
-		killBullet();
-		other.takeDamage(1);
+		KillBullet();
+		other.TakeDamage(1);
 	}
 }
 
-bool Bullet::is(std::string className)
+bool Bullet::Is(std::string className)
 {
 	return (className == "Bullet");
 }
 
-bool Bullet::isTargetingPlayer(void)
+bool Bullet::IsTargetingPlayer(void)
 {
 	return targetsPlayer;
 }
 
-void Bullet::takeDamage(int dmg)
+void Bullet::TakeDamage(int dmg)
 {
 	UNUSED_VAR dmg;
 	//DO NOTHING
@@ -78,7 +78,7 @@ void Bullet::takeDamage(int dmg)
 /*
  *	PRIVATE METHODS
  */
-void Bullet::killBullet(void)
+void Bullet::KillBullet(void)
 {
 	box.pos = finalPos;
 	distanceLeft = 0.0;

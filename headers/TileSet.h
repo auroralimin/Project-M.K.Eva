@@ -5,9 +5,9 @@ class TileSet
 {
 	public:
 		TileSet(int tileWidth, int tileHeight, std::string file);
-		void render(int index, float x, float y);
-		int getTileWidth(void);
-		int getTileHeight(void);
+		void Render(int index, float x, float y);
+		int GetTileWidth(void);
+		int GetTileHeight(void);
 
 	private:
 		Sprite tileSet;

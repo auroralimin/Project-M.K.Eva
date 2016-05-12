@@ -12,44 +12,44 @@ Sprite::Sprite(std::string file, int frameCount, float frameTime)
 	timeElapsed = 0.0;
 	scaleX = scaleY = 1.0;
 	texture = nullptr;
-	open(file);
+	Open(file);
 }
 
-void Sprite::open(std::string file)
+void Sprite::Open(std::string file)
 {
-	texture = Resources::getImage(file);
+	texture = Resources::GetImage(file);
 	SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
-	setClip(0, 0, width/frameCount, height);
+	SetClip(0, 0, width/frameCount, height);
 	width = width/frameCount;
 }
 
-void Sprite::update(float dt)
+void Sprite::Update(float dt)
 {
 	timeElapsed+=dt;
 	if (timeElapsed >= frameTime)
 	{
-		setFrame(++currentFrame >= frameCount ? 0 : currentFrame);
+		SetFrame(++currentFrame >= frameCount ? 0 : currentFrame);
 		timeElapsed = 0.0;
 	}
 }
 
-void Sprite::setFrame(int frame)
+void Sprite::SetFrame(int frame)
 {
 	currentFrame = frame;
-	setClip(frame*width, 0.0, width, height);
+	SetClip(frame*width, 0.0, width, height);
 }
 
-void Sprite::setFrameCount(int frameCount)
+void Sprite::SetFrameCount(int frameCount)
 {
 	this->frameCount = frameCount;
 }
 
-void Sprite::setFrameTime(float frameTime)
+void Sprite::SetFrameTime(float frameTime)
 {
 	this->frameTime = frameTime;
 }
 
-void Sprite::setClip(int x, int y, int w, int h)
+void Sprite::SetClip(int x, int y, int w, int h)
 {
 	clipRect.x = x;
 	clipRect.y = y;
@@ -57,39 +57,39 @@ void Sprite::setClip(int x, int y, int w, int h)
 	clipRect.h = h;
 }
 
-void Sprite::render(int x, int y, float angle)
+void Sprite::Render(int x, int y, float angle)
 {
 	dstRect.x = x;
 	dstRect.y = y;
 	dstRect.w = clipRect.w*scaleX;
 	dstRect.h = clipRect.h*scaleY;
 
-	SDL_RenderCopyEx(Game::getInstance()->getRenderer(), texture, &clipRect, &dstRect, angle, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(Game::GetInstance()->GetRenderer(), texture, &clipRect, &dstRect, angle, NULL, SDL_FLIP_NONE);
 }
 
-int Sprite::getWidth(void)
+int Sprite::GetWidth(void)
 {
 	return width*scaleX;
 }
 
-int Sprite::getHeight(void)
+int Sprite::GetHeight(void)
 {
 	return height*scaleY;
 }
 
-bool Sprite::isOpen(void)
+bool Sprite::IsOpen(void)
 {
 	if (!Sprite::texture)
 		return false;
 	return true;
 }
 
-void Sprite::setScaleX(float x)
+void Sprite::SetScaleX(float x)
 {
 	scaleX = x;
 }
 
-void Sprite::setScaleY(float y)
+void Sprite::SetScaleY(float y)
 {
 	scaleY = y;
 }

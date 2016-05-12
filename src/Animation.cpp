@@ -10,40 +10,40 @@ Animation::Animation(Vec2 pos, float rotation, std::string sprite,
 	animationImg = "";
 	box.pos = pos;
 	this->rotation = rotation;
-	box.dim.x = sp.getWidth();
-	box.dim.y = sp.getHeight();
+	box.dim.x = sp.GetWidth();
+	box.dim.y = sp.GetHeight();
 	timeLimit = frameCount*frameTime;
 }
 
-void Animation::update(float dt)
+void Animation::Update(float dt)
 {
-	sp.update(dt);
-	endTimer.update(dt);
+	sp.Update(dt);
+	endTimer.Update(dt);
 }
 
-void Animation::render(void)
+void Animation::Render(void)
 {
-	sp.render(box.pos.x - Camera::pos.x - box.dim.x/2,
+	sp.Render(box.pos.x - Camera::pos.x - box.dim.x/2,
 			box.pos.y - Camera::pos.y - box.dim.y/2, rotation);
 }
 
-bool Animation::isDead(void)
+bool Animation::IsDead(void)
 {
-	return (oneTimeOnly && endTimer.get() >= timeLimit);
+	return (oneTimeOnly && endTimer.Get() >= timeLimit);
 }
 
-void Animation::notifyCollision(GameObject &other)
+void Animation::NotifyCollision(GameObject &other)
 {
 	UNUSED_VAR other;
 	//D0 NOTHING
 }
 
-bool Animation::is(std::string className)
+bool Animation::Is(std::string className)
 {
 	return (className == "Animation");
 }
 
-void Animation::takeDamage(int dmg)
+void Animation::TakeDamage(int dmg)
 {
 	UNUSED_VAR dmg;
 	//D0 NOTHING

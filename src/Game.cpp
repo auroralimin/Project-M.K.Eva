@@ -23,42 +23,42 @@ Game::~Game(void)
 	IMG_Quit();
 }
 
-Game* Game::getInstance(std::string title, int w, int h)
+Game* Game::GetInstance(std::string title, int w, int h)
 {
 	if (!_instance)
 		_instance = new Game(title, w, h);
 	return _instance;
 }
 
-Game* Game::getInstance(void)
+Game* Game::GetInstance(void)
 {
 	return _instance;
 }
 
 
-SDL_Renderer* Game::getRenderer(void)
+SDL_Renderer* Game::GetRenderer(void)
 {
 	return renderer;
 }
 
-State& Game::getState(void)
+State& Game::GetState(void)
 {
 	return *state;
 }
 
-void Game::run(void)
+void Game::Run(void)
 {
 	state = new State();
 
 	frameStart = SDL_GetTicks();
-	while (!state->isQuitRequested())
+	while (!state->IsQuitRequested())
 	{
 		currentTime = SDL_GetTicks();
-		calculateDeltaTime();
+		CalculateDeltaTime();
 
-		InputManager::getInstance().update();
-		state->update(dt);
-		state->render();
+		InputManager::GetInstance().Update();
+		state->Update(dt);
+		state->Render();
 		SDL_RenderPresent(renderer);
 
 		if (dt < FPS)
@@ -66,15 +66,15 @@ void Game::run(void)
 		frameStart = currentTime;
 	}
 
-	Resources::clearImages();
+	Resources::ClearImages();
 }
 
-int Game::getWinWidth(void)
+int Game::GetWinWidth(void)
 {
 	return winWidth;
 }
 
-int Game::getWinHeight(void)
+int Game::GetWinHeight(void)
 {
 	return winHeight;
 }
@@ -114,7 +114,7 @@ Game::Game(std::string title, int w, int h)
 	winWidth = w, winHeight = h;
 }
 
-void Game::calculateDeltaTime(void)
+void Game::CalculateDeltaTime(void)
 {
 	dt = currentTime - frameStart;
 }

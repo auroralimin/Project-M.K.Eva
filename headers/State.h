@@ -12,10 +12,10 @@ class State
 	public:
 		State(void);
 		~State(void);
-		bool isQuitRequested(void);
-		void update(float dt);
-		void render(void);
-		void addObject(GameObject *ptr);
+		bool IsQuitRequested(void);
+		void Update(float dt);
+		void Render(void);
+		void AddObject(GameObject *ptr);
 
 	private:
 		Sprite bg;

@@ -15,15 +15,15 @@ Minion::Minion(GameObject *minionCenter, float arcOffSet) :
 	animationImg = "img/miniondeath.png";
 	frameCount = 4;
 	hp = 0;
-	box.dim.x = sp.getWidth();
-	box.dim.y = sp.getHeight();
-	update(0.0);
+	box.dim.x = sp.GetWidth();
+	box.dim.y = sp.GetHeight();
+	Update(0.0);
 	float scale = 1.0 + (rand() % 5)/10.0;
-	sp.setScaleX(scale);
-	sp.setScaleY(scale);
+	sp.SetScaleX(scale);
+	sp.SetScaleY(scale);
 }
 
-void Minion::update(float dt)
+void Minion::Update(float dt)
 {
 	arc += dt*SPEED;
 	rotation = arc*(180/M_PI);
@@ -31,35 +31,35 @@ void Minion::update(float dt)
 	box.pos.y = D_RADIUS*sin(arc) + center->box.pos.y;
 }
 
-void Minion::render(void)
+void Minion::Render(void)
 {
-	sp.render(box.pos.x - Camera::pos.x - box.dim.x/2,
+	sp.Render(box.pos.x - Camera::pos.x - box.dim.x/2,
 			box.pos.y - Camera::pos.y - box.dim.y/2, rotation);
 }
 
-bool Minion::isDead(void)
+bool Minion::IsDead(void)
 {
 	return false;
 }
 
-void Minion::shoot(Vec2 pos)
+void Minion::Shoot(Vec2 pos)
 {
 	float angle = atan2(pos.y - box.pos.y, pos.x - box.pos.x);
-	Game::getInstance()->getState().addObject(new Bullet(box.pos,
+	Game::GetInstance()->GetState().AddObject(new Bullet(box.pos,
 				angle, 200, 200, "img/minionbullet2.png", true));
 }
 
-void Minion::notifyCollision(GameObject &other)
+void Minion::NotifyCollision(GameObject &other)
 {
 	UNUSED_VAR other;
 }
 
-bool Minion::is(std::string className)
+bool Minion::Is(std::string className)
 {
 	return (className == "Minion");
 }
 
-void Minion::takeDamage(int dmg)
+void Minion::TakeDamage(int dmg)
 {
 	UNUSED_VAR dmg;
 	//D0 NOTHING

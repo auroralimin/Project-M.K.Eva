@@ -7,13 +7,13 @@ class Vec2
 
 		Vec2(void);
 		Vec2(float x, float y);
-		float getModule(void);
-		Vec2 normalize(void);
-		float distanceFromPoint(Vec2 p);
-		Vec2 rotate(float angle);
-		float mag(void);
-		Vec2 norm(void);
-		float dot(Vec2 p);
+		float GetModule(void);
+		Vec2 Normalize(void);
+		float DistanceFromPoint(Vec2 p);
+		Vec2 Rotate(float angle);
+		float Mag(void);
+		Vec2 Norm(void);
+		float Dot(Vec2 p);
 
 		Vec2 operator+(const Vec2& v)
 		{

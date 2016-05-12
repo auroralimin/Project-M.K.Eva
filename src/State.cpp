@@ -20,7 +20,7 @@ State::State(void) : bg("img/ocean.jpg"),
 	objectArray.emplace_back(penguins);
 	for (int i = 0; i < 5; i++)
 		objectArray.emplace_back(new Alien(penguins, 372*i, 237*i, 7));
-	Camera::follow(penguins);
+	Camera::Follow(penguins);
 }
 
 State::~State(void)
@@ -29,49 +29,49 @@ State::~State(void)
 }
 
 
-bool State::isQuitRequested(void)
+bool State::IsQuitRequested(void)
 {
 	return quitRequested;
 }
 
-void State::update(float dt)
+void State::Update(float dt)
 {
-	InputManager input = InputManager::getInstance(); 
+	InputManager input = InputManager::GetInstance(); 
 	UNUSED_VAR dt;
 
-	quitRequested = (input.isKeyDown(ESCAPE_KEY) || input.isQuitRequested());
+	quitRequested = (input.IsKeyDown(ESCAPE_KEY) || input.IsQuitRequested());
 
 	for (unsigned int i = 0; i < objectArray.size(); ++i)
 	{
-		objectArray[i]->update((float)(dt/1000));
+		objectArray[i]->Update((float)(dt/1000));
 		for (unsigned int j = 0; j < objectArray.size(); ++j)
-			if (i != j && objectArray[i]->is("Bullet") &&
-					Collision::isColliding(objectArray[i]->box, objectArray[j]->box,
+			if (i != j && objectArray[i]->Is("Bullet") &&
+					Collision::IsColliding(objectArray[i]->box, objectArray[j]->box,
 						objectArray[i]->rotation, objectArray[j]->rotation))
-				objectArray[i]->notifyCollision(*objectArray[j]);
+				objectArray[i]->NotifyCollision(*objectArray[j]);
 
-		if (objectArray[i]->isDead())
+		if (objectArray[i]->IsDead())
 		{
-			if (objectArray[i]->is("Penguins"))
-				Camera::unfollow();
+			if (objectArray[i]->Is("Penguins"))
+				Camera::Unfollow();
 			objectArray.erase(objectArray.begin() + i);
 		}
 	}
-	Camera::update(dt,
-			tileMap.getWidth()*tileSet.getTileWidth(),
-			tileMap.getHeight()*tileSet.getTileWidth());
+	Camera::Update(dt,
+			tileMap.GetWidth()*tileSet.GetTileWidth(),
+			tileMap.GetHeight()*tileSet.GetTileWidth());
 }
 
-void State::render(void)
+void State::Render(void)
 {
-	bg.render(0, 0, 0.0);
-	tileMap.renderLayer(0, Camera::pos.x, Camera::pos.y);
+	bg.Render(0, 0, 0.0);
+	tileMap.RenderLayer(0, Camera::pos.x, Camera::pos.y);
 	for (unsigned int i = 0; i < objectArray.size(); ++i)
-		objectArray[i]->render();
-	tileMap.renderLayer(1, Camera::pos.x*1.5, Camera::pos.y*1.5);
+		objectArray[i]->Render();
+	tileMap.RenderLayer(1, Camera::pos.x*1.5, Camera::pos.y*1.5);
 }
 
-void State::addObject(GameObject *ptr)
+void State::AddObject(GameObject *ptr)
 {
 	objectArray.emplace_back(ptr);
 }

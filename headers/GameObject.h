@@ -11,12 +11,12 @@ class GameObject
 		int frameCount;
 
 		virtual ~GameObject(void) {};
-		virtual void render(void) = 0;
-		virtual bool isDead(void) = 0;
-		virtual void update(float dt) = 0;
-		virtual void notifyCollision(GameObject &other) = 0;
-		virtual bool is(std::string className) = 0;
-		virtual void takeDamage(int dmg = 1) = 0;
+		virtual void Render(void) = 0;
+		virtual bool IsDead(void) = 0;
+		virtual void Update(float dt) = 0;
+		virtual void NotifyCollision(GameObject &other) = 0;
+		virtual bool Is(std::string className) = 0;
+		virtual void TakeDamage(int dmg = 1) = 0;
 
 	protected:
 		int hp;

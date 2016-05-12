@@ -8,7 +8,7 @@ class Collision {
 		// Observação: IsColliding espera ângulos em radianos!
 		// Para usar graus, forneça a sua própria implementação de Rotate,
 		// ou transforme os ângulos no corpo de IsColliding.
-		static inline bool isColliding(Rect& a, Rect& b, float angleOfA, float angleOfB)
+		static inline bool IsColliding(Rect& a, Rect& b, float angleOfA, float angleOfB)
 		{
 			Vec2 A[] =
 			{
@@ -27,17 +27,17 @@ class Collision {
 			};
 
 			for (auto& v : A)
-				v = (v - a.getCenter()).rotate(angleOfA) + a.getCenter();
+				v = (v - a.GetCenter()).Rotate(angleOfA) + a.GetCenter();
 
 			for (auto& v : B)
-				v = (v - b.getCenter()).rotate(angleOfB) + b.getCenter();
+				v = (v - b.GetCenter()).Rotate(angleOfB) + b.GetCenter();
 
 			Vec2 axes[] =
 			{
-				(A[0] - A[1]).norm(),
-				(A[1] - A[2]).norm(),
-				(B[0] - B[1]).norm(),
-				(B[1] - B[2]).norm()
+				(A[0] - A[1]).Norm(),
+				(A[1] - A[2]).Norm(),
+				(B[0] - B[1]).Norm(),
+				(B[1] - B[2]).Norm()
 			};
 
 			for (auto& axis : axes)
@@ -45,13 +45,13 @@ class Collision {
 				float P[4];
 
 				for (int i = 0; i < 4; ++i)
-					P[i] = A[i].dot(axis);
+					P[i] = A[i].Dot(axis);
 
 				float minA = *std::min_element(P, P + 4);
 				float maxA = *std::max_element(P, P + 4);
 
 				for (int i = 0; i < 4; ++i)
-					P[i] = B[i].dot(axis);
+					P[i] = B[i].Dot(axis);
 
 				float minB = *std::min_element(P, P + 4);
 				float maxB = *std::max_element(P, P + 4);

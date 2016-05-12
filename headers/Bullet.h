@@ -9,13 +9,13 @@ class Bullet : public GameObject
 		Bullet(Vec2 pos, float angle, float speed, float maxDistance, std::string sprite,
 				bool targetsPlayer = false, int frameCount = 3, float frameTime = 0.3);
 		
-		void update(float dt);
-		void render(void);
-		bool isDead(void);
-		void notifyCollision(GameObject &other);
-		bool is(std::string className);
-		bool isTargetingPlayer(void);
-		void takeDamage(int dmg = 1);
+		void Update(float dt);
+		void Render(void);
+		bool IsDead(void);
+		void NotifyCollision(GameObject &other);
+		bool Is(std::string className);
+		bool IsTargetingPlayer(void);
+		void TakeDamage(int dmg = 1);
 
 	private:
 		bool targetsPlayer;
@@ -24,6 +24,6 @@ class Bullet : public GameObject
 		bool moving;
 		Vec2 speed, finalPos;
 
-		void killBullet(void);
+		void KillBullet(void);
 };
 

@@ -7,14 +7,14 @@ class Game
 {
 	public:
 		~Game(void);
-		static Game* getInstance(std::string title, int w, int h);
-		static Game* getInstance(void);
-		SDL_Renderer* getRenderer(void);
-		State& getState(void);
-		void run(void);
-		int getDeltaTime(void);
-		int getWinWidth(void);
-		int getWinHeight(void);
+		static Game* GetInstance(std::string title, int w, int h);
+		static Game* GetInstance(void);
+		SDL_Renderer* GetRenderer(void);
+		State& GetState(void);
+		void Run(void);
+		int GetDeltaTime(void);
+		int GetWinWidth(void);
+		int GetWinHeight(void);
 
 	private:
 		static Game *_instance;
@@ -25,6 +25,6 @@ class Game
 		int dt, winWidth, winHeight;
 
 		Game(std::string title, int w, int h);
-		void calculateDeltaTime(void);
+		void CalculateDeltaTime(void);
 };
 

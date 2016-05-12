@@ -3,7 +3,7 @@
 
 std::unordered_map<std::string, SDL_Texture*> Resources::imageTable;
 
-SDL_Texture* Resources::getImage(std::string file)
+SDL_Texture* Resources::GetImage(std::string file)
 {
 	SDL_Texture *img;
 	std::unordered_map<std::string, SDL_Texture*>::const_iterator element =
@@ -11,7 +11,7 @@ SDL_Texture* Resources::getImage(std::string file)
 
 	if (element == imageTable.end())
 	{
-		img = IMG_LoadTexture(Game::getInstance()->getRenderer(), file.c_str());
+		img = IMG_LoadTexture(Game::GetInstance()->GetRenderer(), file.c_str());
 		if (!img)
 		{
 			std::cerr << "Failed to get image: " << SDL_GetError() << std::endl;
@@ -24,7 +24,7 @@ SDL_Texture* Resources::getImage(std::string file)
 	return element->second;
 }
 
-void Resources::clearImages(void)
+void Resources::ClearImages(void)
 {
 	for (auto element : imageTable)
 		SDL_DestroyTexture(element.second);

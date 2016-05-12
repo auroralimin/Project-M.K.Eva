@@ -4,9 +4,9 @@ class Timer
 {
 	public:
 		Timer();
-		void update(float dt);
-		void restart(void);
-		float get(void);
+		void Update(float dt);
+		void Restart(void);
+		float Get(void);
 
 	private:
 		float time;

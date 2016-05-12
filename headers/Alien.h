@@ -16,12 +16,12 @@ class Alien : public GameObject
 
 		Alien(GameObject *focus, float x, float y, int nMinions);
 		~Alien(void);	
-		void update(float dt);
-		void render(void);
-		bool isDead(void);
-		void notifyCollision(GameObject &other);
-		bool is(std::string className);
-		void takeDamage(int dmg = 1);
+		void Update(float dt);
+		void Render(void);
+		bool IsDead(void);
+		void NotifyCollision(GameObject &other);
+		bool Is(std::string className);
+		void TakeDamage(int dmg = 1);
 	
 	private:
 		enum AlienState
@@ -37,7 +37,7 @@ class Alien : public GameObject
 		AlienState state;
 		Timer restTimer;
 
-		void shoot(float dt);
-		void move(float dt);
+		void Shoot(float dt);
+		void Move(float dt);
 };
 

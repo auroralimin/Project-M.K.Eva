@@ -22,8 +22,8 @@ Penguins::Penguins(float x, float y) : bodySp("img/penguin.png"), cannonSp("img/
 	linearSpeed = cannonAngle = 0.0;
 	box.pos.x = x;
 	box.pos.y = y;
-	box.dim.x = bodySp.getWidth();
-	box.dim.y = bodySp.getHeight();
+	box.dim.x = bodySp.GetWidth();
+	box.dim.y = bodySp.GetHeight();
 	player = this;
 	cannonAngle = 0;
 }
@@ -33,79 +33,79 @@ Penguins::~Penguins(void)
 	player = nullptr;
 }
 
-void Penguins::update(float dt)
+void Penguins::Update(float dt)
 {
 	const float cooldown = 0.25;
 	static float oldTime = 0.0;
 	static Timer timer = Timer();
 
-	timer.update(dt);
-	InputManager input = InputManager::getInstance();
+	timer.Update(dt);
+	InputManager input = InputManager::GetInstance();
 
-	cannonAngle = atan2((input.getMouseY()+Camera::pos.y)-box.pos.y,
-			(input.getMouseX()+Camera::pos.x)-box.pos.x);
-	if (input.mousePress(LEFT_MOUSE_BUTTON) && timer.get()-oldTime >= cooldown)
+	cannonAngle = atan2((input.GetMouseY()+Camera::pos.y)-box.pos.y,
+			(input.GetMouseX()+Camera::pos.x)-box.pos.x);
+	if (input.MousePress(LEFT_MOUSE_BUTTON) && timer.Get()-oldTime >= cooldown)
 	{
-		oldTime = timer.get();
-		shoot();
+		oldTime = timer.Get();
+		Shoot();
 	}
 
-	if (input.isKeyDown(D_KEY))
+	if (input.IsKeyDown(D_KEY))
 		rotation += ANG_V*dt;
-	if (input.isKeyDown(A_KEY))
+	if (input.IsKeyDown(A_KEY))
 		rotation -= ANG_V*dt;
 
-	if (input.isKeyDown(W_KEY))
-		speed += Vec2(ACC, 0).rotate(rotation)*dt;
-	if (input.isKeyDown(S_KEY))
-		speed -= Vec2(ACC, 0).rotate(rotation)*dt;
+	if (input.IsKeyDown(W_KEY))
+		speed += Vec2(ACC, 0).Rotate(rotation)*dt;
+	if (input.IsKeyDown(S_KEY))
+		speed -= Vec2(ACC, 0).Rotate(rotation)*dt;
 	
-	if (speed.getModule() > MAX_SPEED)
-		speed = speed.normalize() * MAX_SPEED;
+	if (speed.GetModule() > MAX_SPEED)
+		speed = speed.Normalize() * MAX_SPEED;
 
 	box.pos+=speed;
 }
 
-void Penguins::render(void)
+void Penguins::Render(void)
 {
-	bodySp.render(box.pos.x - Camera::pos.x - box.dim.x/2,
+	bodySp.Render(box.pos.x - Camera::pos.x - box.dim.x/2,
 			box.pos.y - Camera::pos.y - box.dim.y/2, rotation*(180/M_PI));
 
-	cannonSp.render(box.pos.x - Camera::pos.x - cannonSp.getWidth()/2,
-			box.pos.y - Camera::pos.y - cannonSp.getHeight()/2,
+	cannonSp.Render(box.pos.x - Camera::pos.x - cannonSp.GetWidth()/2,
+			box.pos.y - Camera::pos.y - cannonSp.GetHeight()/2,
 			cannonAngle*(180/M_PI));
 }
 
-bool Penguins::isDead(void)
+bool Penguins::IsDead(void)
 {
 	if (hp > 0)
 		return false;
 
-	Game::getInstance()->getState().addObject(
+	Game::GetInstance()->GetState().AddObject(
 			new Animation(box.pos, rotation, animationImg, frameCount));
 
 	return true;
 }
 
-void Penguins::shoot(void)
+void Penguins::Shoot(void)
 {
-	Vec2 offset = (box.dim - Vec2(cannonSp.getWidth(), cannonSp.getHeight()));
-	Game::getInstance()->getState().addObject(new Bullet(box.pos + offset + 
-				Vec2(60, 0).rotate(cannonAngle), cannonAngle, 200, 200,
+	Vec2 offset = (box.dim - Vec2(cannonSp.GetWidth(), cannonSp.GetHeight()));
+	Game::GetInstance()->GetState().AddObject(new Bullet(box.pos + offset + 
+				Vec2(60, 0).Rotate(cannonAngle), cannonAngle, 200, 200,
 				"img/penguinbullet.png", false, 4));
 }
 
-void Penguins::notifyCollision(GameObject &other)
+void Penguins::NotifyCollision(GameObject &other)
 {
 	UNUSED_VAR other;
 }
 
-bool Penguins::is(std::string className)
+bool Penguins::Is(std::string className)
 {
 	return (className == "Penguins");
 }
 
-void Penguins::takeDamage(int dmg)
+void Penguins::TakeDamage(int dmg)
 {
 	hp = hp - dmg;
 }
