@@ -8,7 +8,7 @@
 #define SPEED 100
 #define PRECISION 0.001
 
-int Alien::alienCount = 0;
+auto Alien::alienCount = 0;
 
 Alien::Alien(GameObject *focus, float x, float y, int nMinions) :
 	focus(focus), sp("img/alien.png"), speed(0.0, 0.0), destination(x, y)

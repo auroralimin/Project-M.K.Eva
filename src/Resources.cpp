@@ -1,15 +1,13 @@
 #include "Resources.h"
 #include "Game.h"
 
-std::unordered_map<std::string, SDL_Texture*> Resources::imageTable;
+std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> Resources::imageTable;
 
-SDL_Texture* Resources::GetImage(std::string file)
+std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file)
 {
 	SDL_Texture *img;
-	std::unordered_map<std::string, SDL_Texture*>::const_iterator element =
-		imageTable.find(file);
 
-	if (element == imageTable.end())
+	if (imageTable.find(file) == imageTable.end())
 	{
 		img = IMG_LoadTexture(Game::GetInstance()->GetRenderer(), file.c_str());
 		if (!img)
@@ -17,16 +15,23 @@ SDL_Texture* Resources::GetImage(std::string file)
 			std::cerr << "Failed to get image: " << SDL_GetError() << std::endl;
 			exit(EXIT_SUCCESS);
 		}
-		imageTable.emplace(file, img);
-		return img;
+		std::shared_ptr<SDL_Texture> texture(img,
+				[](SDL_Texture *ptr){
+					SDL_DestroyTexture(ptr);
+				});
+		imageTable.emplace(file, texture);
+		return texture;
 	}
 
-	return element->second;
+	return imageTable.find(file)->second;
 }
 
 void Resources::ClearImages(void)
 {
 	for (auto element : imageTable)
-		SDL_DestroyTexture(element.second);
+	{
+		if (element.second.unique())
+		imageTable.erase(element.first);	
+	}
 }
 

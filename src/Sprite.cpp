@@ -18,7 +18,7 @@ Sprite::Sprite(std::string file, int frameCount, float frameTime)
 void Sprite::Open(std::string file)
 {
 	texture = Resources::GetImage(file);
-	SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+	SDL_QueryTexture(texture.get(), nullptr, nullptr, &width, &height);
 	SetClip(0, 0, width/frameCount, height);
 	width = width/frameCount;
 }
@@ -64,7 +64,7 @@ void Sprite::Render(int x, int y, float angle)
 	dstRect.w = clipRect.w*scaleX;
 	dstRect.h = clipRect.h*scaleY;
 
-	SDL_RenderCopyEx(Game::GetInstance()->GetRenderer(), texture, &clipRect, &dstRect, angle, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(Game::GetInstance()->GetRenderer(), texture.get(), &clipRect, &dstRect, angle, nullptr, SDL_FLIP_NONE);
 }
 
 int Sprite::GetWidth(void)

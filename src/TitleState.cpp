@@ -15,7 +15,10 @@ void TitleState::Update(float dt)
 	if (input.KeyPress(ESCAPE_KEY) || input.IsQuitRequested())
 		popRequested = true;
 	if (input.KeyPress(SPACEBAR))
+	{
 		Game::GetInstance()->Push(new StageState());
+		popRequested = true;
+	}
 }
 
 void TitleState::Render(void)

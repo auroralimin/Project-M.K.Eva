@@ -68,17 +68,23 @@ void Game::Run(void)
 	storedState = nullptr;
 
 	frameStart = SDL_GetTicks();
-	while (!stateStack.empty() && !stateStack.top()->IsQuitRequested())
+	while (!stateStack.empty())
 	{
 		currentTime = SDL_GetTicks();
 		CalculateDeltaTime();
 
-		InputManager::GetInstance().Update();
-		stateStack.top()->Update(dt);
-		stateStack.top()->Render();
-		SDL_RenderPresent(renderer);
+		// Update and render top state from stack if quit not requested
+		if (!stateStack.top()->IsQuitRequested())
+		{
+			InputManager::GetInstance().Update();
+			stateStack.top()->Update(dt);
+			stateStack.top()->Render();
+			SDL_RenderPresent(renderer);
+		}
 
-		if (stateStack.top()->IsPopRequested())
+		// Checks if quit/pop was requested after update
+		if (stateStack.top()->IsPopRequested() ||
+				stateStack.top()->IsQuitRequested())
 			stateStack.pop();
 
 		if (storedState != nullptr)

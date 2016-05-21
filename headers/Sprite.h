@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <memory>
 
 class Sprite
 {
@@ -25,7 +26,7 @@ class Sprite
 	private:
 		int width, height, frameCount, currentFrame;
 		float frameTime, timeElapsed, scaleX, scaleY;
-		SDL_Texture *texture;
+		std::shared_ptr<SDL_Texture> texture;
 		SDL_Rect clipRect;
 		SDL_Rect dstRect;
 };
