@@ -2,26 +2,26 @@
 #include <vector>
 #include <memory>
 
-#include "Sprite.h"
 #include "GameObject.h"
-#include "TileSet.h"
-#include "TileMap.h"
 
 class State
 {
 	public:
 		State(void);
-		~State(void);
+		virtual ~State() {};
+		virtual void Update(float dt) = 0;
+		virtual void Render(void) = 0;
+		virtual void Pause(void) = 0;
+		virtual void Resume(void) = 0;
+		virtual void AddObject(GameObject *obj);
+		bool IsPopRequested(void);
 		bool IsQuitRequested(void);
-		void Update(float dt);
-		void Render(void);
-		void AddObject(GameObject *ptr);
 
-	private:
-		Sprite bg;
-		bool quitRequested;
+	protected:
+		bool popRequested, quitRequested;
 		std::vector<std::unique_ptr<GameObject>> objectArray;
-		TileSet tileSet;
-		TileMap tileMap;
+
+		virtual void UpdateArray(float dt);
+		virtual void RenderArray(void);
 };
 

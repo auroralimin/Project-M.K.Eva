@@ -81,7 +81,7 @@ bool Penguins::IsDead(void)
 	if (hp > 0)
 		return false;
 
-	Game::GetInstance()->GetState().AddObject(
+	Game::GetInstance()->GetCurrentState().AddObject(
 			new Animation(box.pos, rotation, animationImg, frameCount));
 
 	return true;
@@ -90,7 +90,7 @@ bool Penguins::IsDead(void)
 void Penguins::Shoot(void)
 {
 	Vec2 offset = (box.dim - Vec2(cannonSp.GetWidth(), cannonSp.GetHeight()));
-	Game::GetInstance()->GetState().AddObject(new Bullet(box.pos + offset + 
+	Game::GetInstance()->GetCurrentState().AddObject(new Bullet(box.pos + offset + 
 				Vec2(60, 0).Rotate(cannonAngle), cannonAngle, 200, 200,
 				"img/penguinbullet.png", false, 4));
 }

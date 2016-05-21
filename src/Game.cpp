@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "StageState.h"
 #include "Resources.h"
 #include "InputManager.h"
 
@@ -6,7 +7,8 @@
 #include <string>
 #include <ctime>
 
-#define FPS 40
+#define FPS 60
+#define FRAME_TIME 1000/FPS
 
 Game* Game::_instance = nullptr;
 
@@ -15,8 +17,11 @@ Game* Game::_instance = nullptr;
  */
 Game::~Game(void)
 {
-	srand(time(NULL));
-	delete state;
+	if (storedState != nullptr)
+		delete storedState;
+	while (!stateStack.empty())
+		stateStack.pop();
+	srand(time(nullptr));
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -41,31 +46,51 @@ SDL_Renderer* Game::GetRenderer(void)
 	return renderer;
 }
 
-State& Game::GetState(void)
+State& Game::GetCurrentState(void)
 {
-	return *state;
+	return *stateStack.top();
+}
+
+void Game::Push(State *state)
+{
+	storedState = state;
 }
 
 void Game::Run(void)
 {
-	state = new State();
+	if (storedState == nullptr)
+	{
+		Resources::ClearImages();
+		return;
+	}
+		
+	stateStack.emplace(storedState);
+	storedState = nullptr;
 
 	frameStart = SDL_GetTicks();
-	while (!state->IsQuitRequested())
+	while (!stateStack.empty() && !stateStack.top()->IsQuitRequested())
 	{
 		currentTime = SDL_GetTicks();
 		CalculateDeltaTime();
 
 		InputManager::GetInstance().Update();
-		state->Update(dt);
-		state->Render();
+		stateStack.top()->Update(dt);
+		stateStack.top()->Render();
 		SDL_RenderPresent(renderer);
 
-		if (dt < FPS)
-			SDL_Delay(FPS - dt);
+		if (stateStack.top()->IsPopRequested())
+			stateStack.pop();
+
+		if (storedState != nullptr)
+		{
+			stateStack.emplace(storedState);
+			storedState = nullptr;
+		}
+
+		if (dt < FRAME_TIME)
+			SDL_Delay(FRAME_TIME - dt);
 		frameStart = currentTime;
 	}
-
 	Resources::ClearImages();
 }
 
@@ -112,6 +137,7 @@ Game::Game(std::string title, int w, int h)
 		exit(EXIT_SUCCESS);
 	}
 	winWidth = w, winHeight = h;
+	storedState = nullptr;
 }
 
 void Game::CalculateDeltaTime(void)

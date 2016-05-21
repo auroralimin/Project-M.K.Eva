@@ -45,7 +45,7 @@ bool Minion::IsDead(void)
 void Minion::Shoot(Vec2 pos)
 {
 	float angle = atan2(pos.y - box.pos.y, pos.x - box.pos.x);
-	Game::GetInstance()->GetState().AddObject(new Bullet(box.pos,
+	Game::GetInstance()->GetCurrentState().AddObject(new Bullet(box.pos,
 				angle, 200, 200, "img/minionbullet2.png", true));
 }
 

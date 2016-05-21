@@ -64,7 +64,7 @@ void Sprite::Render(int x, int y, float angle)
 	dstRect.w = clipRect.w*scaleX;
 	dstRect.h = clipRect.h*scaleY;
 
-	SDL_RenderCopyEx(Game::GetInstance()->GetRenderer(), texture, &clipRect, &dstRect, angle, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(Game::GetInstance()->GetRenderer(), texture, &clipRect, &dstRect, angle, nullptr, SDL_FLIP_NONE);
 }
 
 int Sprite::GetWidth(void)

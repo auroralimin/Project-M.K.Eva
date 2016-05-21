@@ -75,10 +75,10 @@ bool Alien::IsDead(void)
 	if (hp > 0)
 		return false;
 
-	Game::GetInstance()->GetState().AddObject(
+	Game::GetInstance()->GetCurrentState().AddObject(
 			new Animation(box.pos, rotation, animationImg, frameCount));
 	for (unsigned int i = 0; i < minionArray.size(); ++i)
-		Game::GetInstance()->GetState().AddObject(
+		Game::GetInstance()->GetCurrentState().AddObject(
 				new Animation(minionArray[i]->box.pos, minionArray[i]->rotation,
 					minionArray[i]->animationImg, minionArray[i]->frameCount));
 	return true;
