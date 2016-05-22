@@ -1,7 +1,10 @@
+#define SDL_FORCE_SOUNDFONTS 1
+
 #include "Game.h"
 #include "StageState.h"
 #include "Resources.h"
 #include "InputManager.h"
+#include "SDL2/SDL_mixer.h"
 
 #include <iostream>
 #include <string>
@@ -26,6 +29,8 @@ Game::~Game(void)
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	IMG_Quit();
+	Mix_CloseAudio();
+	Mix_Quit();
 }
 
 Game* Game::GetInstance(std::string title, int w, int h)
@@ -121,8 +126,19 @@ Game::Game(std::string title, int w, int h)
 		exit(EXIT_SUCCESS);
 	}
 
-	int loaders = IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF);
-	if (loaders == 0)
+	if (Mix_Init(MIX_INIT_OGG) < 0)
+	{
+		std::cerr << "Unable to init Mix_Music: " << Mix_GetError() << std::endl;
+		exit(EXIT_SUCCESS);
+	}
+	
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1)
+	{
+		std::cerr << "Unable to open audio: " << Mix_GetError() << std::endl;
+		exit(EXIT_SUCCESS);
+	}
+
+	if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF) == 0)
 	{
 		std::cerr << "Unable to init SDL_Image: " << SDL_GetError() << std::endl;
 		exit(EXIT_SUCCESS);
@@ -142,6 +158,7 @@ Game::Game(std::string title, int w, int h)
 		std::cerr << "Failed to create a renderer: " << SDL_GetError() << std::endl;
 		exit(EXIT_SUCCESS);
 	}
+
 	winWidth = w, winHeight = h;
 	storedState = nullptr;
 }

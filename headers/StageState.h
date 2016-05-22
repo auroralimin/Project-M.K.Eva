@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "TileSet.h"
 #include "TileMap.h"
+#include "Music.h"
 
 class StageState : public State
 {
@@ -19,6 +20,7 @@ class StageState : public State
 
 	private:
 		Sprite bg;
+		Music music;
 		TileSet tileSet;
 		TileMap tileMap;
 };

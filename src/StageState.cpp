@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "StageState.h"
 #include "TitleState.h"
 #include "InputManager.h"
@@ -12,6 +13,7 @@
 #define UNUSED_VAR (void)
 
 StageState::StageState(void) : bg("img/ocean.jpg"),
+					 music("audio/stageState.ogg"),
 					 tileSet(64, 64, "img/tileset.png"),
 					 tileMap("map/tileMap.txt", &tileSet)
 {
@@ -20,6 +22,7 @@ StageState::StageState(void) : bg("img/ocean.jpg"),
 	for (int i = 0; i < 5; i++)
 		objectArray.emplace_back(new Alien(penguins, 372*i, 237*i, 7));
 	Camera::Follow(penguins);
+	music.Play(-1);
 }
 
 StageState::~StageState(void)
@@ -33,7 +36,10 @@ void StageState::Update(float dt)
 	UNUSED_VAR dt;
 
 	if (input.KeyPress(ESCAPE_KEY))
+	{
+		Pause();
 		Game::GetInstance()->Push(new TitleState());
+	}
 
 	quitRequested = (input.IsKeyDown(ESCAPE_KEY) || input.IsQuitRequested());
 	UpdateArray(dt);
@@ -54,12 +60,12 @@ void StageState::Render(void)
 
 void StageState::Pause(void)
 {
-	//TODO
+	music.Stop();
 }
 
 void StageState::Resume(void)
 {
-	//TODO
+	music.Play(-1);
 }
 
 /*
