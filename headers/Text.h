@@ -16,6 +16,7 @@ class Text
 			SHADED,
 			BLENDED
 		};
+		Text(void);
 		Text(std::string fontFile, int fontSize, TextStyle style,
 				std::string text, SDL_Color color, int x = 0, int y = 0);
 		~Text(void);

@@ -19,7 +19,7 @@ Penguins::Penguins(float x, float y) : bodySp("img/penguin.png"),
 	animationImg = "img/penguindeath.png";
 	frameCount = 5;
 	speed = Vec2(0.0, 0.0);
-	hp = 10;
+	hp = 20;
 	linearSpeed = cannonAngle = 0.0;
 	box.pos.x = x;
 	box.pos.y = y;

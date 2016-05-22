@@ -2,7 +2,14 @@
 #include "Game.h"
 #include "Resources.h"
 
-Sprite::Sprite(void) : texture(nullptr) {}
+Sprite::Sprite(void) : texture(nullptr)
+{
+	this->frameCount = 1;
+	currentFrame = 0;
+	this->frameTime = 1.0;
+	timeElapsed = 0.0;
+	scaleX = scaleY = 1.0;
+}
 
 Sprite::Sprite(std::string file, int frameCount, float frameTime)
 {

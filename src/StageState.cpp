@@ -2,6 +2,7 @@
 
 #include "StageState.h"
 #include "TitleState.h"
+#include "EndState.h"
 #include "InputManager.h"
 #include "Camera.h"
 #include "Alien.h"
@@ -9,13 +10,16 @@
 #include "Penguins.h"
 #include "Animation.h"
 #include "Game.h"
+#include "Timer.h"
 
 #define UNUSED_VAR (void)
 
 StageState::StageState(void) : bg("img/ocean.jpg"),
 					 music("audio/stageState.ogg"),
 					 tileSet(64, 64, "img/tileset.png"),
-					 tileMap("map/tileMap.txt", &tileSet)
+					 tileMap("map/tileMap.txt", &tileSet),
+					 data(),
+					 endGame(false)
 {
 	Penguins *penguins = new Penguins(704, 640);
 	objectArray.emplace_back(penguins);
@@ -32,8 +36,12 @@ StageState::~StageState(void)
 
 void StageState::Update(float dt)
 {
+	static Timer timer = Timer();
 	InputManager input = InputManager::GetInstance(); 
 	UNUSED_VAR dt;
+
+	if (endGame)
+		timer.Update(dt);
 
 	if (input.KeyPress(ESCAPE_KEY))
 	{
@@ -47,6 +55,14 @@ void StageState::Update(float dt)
 	Camera::Update(dt,
 			tileMap.GetWidth()*tileSet.GetTileWidth(),
 			tileMap.GetHeight()*tileSet.GetTileWidth());
+
+	if (timer.Get() >= 1000)
+	{
+		Game::GetInstance()->Push(new EndState(data));
+		popRequested = true;
+		endGame = false;
+		timer.Restart();
+	}
 }
 
 void StageState::Render(void)
@@ -73,6 +89,7 @@ void StageState::Resume(void)
  */
 void StageState::UpdateArray(float dt)
 {
+	bool hasAlien = false;
 	for (unsigned int i = 0; i < objectArray.size(); ++i)
 	{
 		objectArray[i]->Update((float)(dt/1000));
@@ -82,12 +99,24 @@ void StageState::UpdateArray(float dt)
 						objectArray[i]->rotation, objectArray[j]->rotation))
 				objectArray[i]->NotifyCollision(*objectArray[j]);
 
+		if (objectArray[i]->Is("Alien"))
+			hasAlien = true;
 		if (objectArray[i]->IsDead())
 		{
 			if (objectArray[i]->Is("Penguins"))
+			{
 				Camera::Unfollow();
+				endGame = true;
+				data.playerVictory = false;
+			}
 			objectArray.erase(objectArray.begin() + i);
 		}
+	}
+
+	if (!hasAlien)
+	{
+		endGame = true;
+		data.playerVictory = true;
 	}
 }
 

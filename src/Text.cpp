@@ -4,6 +4,8 @@
 
 #define BLACK {0, 0, 0, 0}
 
+Text::Text(void) { }
+
 Text::Text(std::string fontFile, int fontSize, TextStyle style,
 		std::string text, SDL_Color color, int x, int y) :
 	texture(nullptr), fontSize(fontSize), style(style), text(text), color(color)
@@ -65,6 +67,7 @@ void Text::SetFontSize(int fontSize)
  */
 void Text::RemakeTexture(void)
 {
+	int w = Game::GetInstance()->GetWinWidth();
 	SDL_Surface *surface = nullptr;
 	if (texture != nullptr)
 		SDL_DestroyTexture(texture);
@@ -78,7 +81,7 @@ void Text::RemakeTexture(void)
 			surface = TTF_RenderText_Shaded(font.get(), text.c_str(), color, BLACK);
 			break;
 		case TextStyle::BLENDED:
-			surface = TTF_RenderText_Blended(font.get(), text.c_str(), color);
+			surface = TTF_RenderText_Blended_Wrapped(font.get(), text.c_str(), color, w);
 			break;
 		default:
 			//do nothing
