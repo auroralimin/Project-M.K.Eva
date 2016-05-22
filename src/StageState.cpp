@@ -58,6 +58,7 @@ void StageState::Update(float dt)
 
 	if (timer.Get() >= 1000)
 	{
+		Game::GetInstance()->GetCurrentState().Pause();
 		Game::GetInstance()->Push(new EndState(data));
 		popRequested = true;
 		endGame = false;

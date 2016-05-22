@@ -92,7 +92,11 @@ void Game::Run(void)
 		// Checks if quit/pop was requested after update
 		if (stateStack.top()->IsPopRequested() ||
 				stateStack.top()->IsQuitRequested())
+		{
 			stateStack.pop();
+			if (!stateStack.empty())
+				stateStack.top()->Resume();
+		}
 
 		if (storedState != nullptr)
 		{

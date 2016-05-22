@@ -22,6 +22,7 @@ EndState::EndState(StateData data) : bg(), music(),
 		bg.Open("img/lose.jpg");
 		music.Open("audio/endStateLose.ogg");
 	}
+	music.Play(-1);
 }
 
 void EndState::Update(float dt)
@@ -29,7 +30,10 @@ void EndState::Update(float dt)
 	InputManager input = InputManager::GetInstance(); 
 
 	if (input.IsQuitRequested())
+	{
 		quitRequested = true;
+		popRequested = true;
+	}
 	if (input.KeyPress(ESCAPE_KEY))
 	{
 		Game::GetInstance()->Push(new TitleState());
@@ -64,11 +68,11 @@ void EndState::Render(void)
 
 void EndState::Pause(void)
 {
-	//do nothing
+	music.Stop();
 }
 
 void EndState::Resume(void)
 {
-	//do nothing
+	music.Play(-1);
 }
 
