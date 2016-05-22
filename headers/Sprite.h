@@ -16,7 +16,7 @@ class Sprite
 		void SetFrameCount(int frameCount);
 		void SetFrameTime(float frameTime);
 		void SetClip(int x, int y, int w, int h);
-		void Render(int x, int y, float angle = 0.0);
+		void Render(int x = 0, int y = 0, float angle = 0.0);
 		int GetWidth(void);
 		int GetHeight(void);
 		bool IsOpen(void);

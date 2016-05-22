@@ -32,5 +32,6 @@ class Game
 
 		Game(std::string title, int w, int h);
 		void CalculateDeltaTime(void);
+		void ClearResources(void);
 };
 

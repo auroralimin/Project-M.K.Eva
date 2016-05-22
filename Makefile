@@ -7,12 +7,12 @@ DEP_PATH = dep
 _OBJ = Main.o Game.o Camera.o State.o Sprite.o Vec2.o Rect.o TileSet.o
 _OBJ += TileMap.o Resources.o InputManager.o Alien.o Minion.o Bullet.o
 _OBJ += Penguins.o Timer.o Animation.o StageState.o TitleState.o Music.o
-_OBJ += Sound.o
+_OBJ += Sound.o Text.o
 OBJ = $(patsubst %,$(BIN_PATH)/%,$(_OBJ))
 
 DIRECTIVES = -std=c++11 -Wall -Wextra -c -I $(HEADER_PATH)
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_PATH)/$*.Td
-LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer	-lm
+LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
 
 FINAL_EXEC = 130006408_T6
 all: $(FINAL_EXEC)

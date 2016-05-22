@@ -3,13 +3,12 @@
 #include "Game.h"
 #include "InputManager.h"
 
-#define UNUSED_VAR (void)
-
-TitleState::TitleState(void) : bg("img/title.jpg") {}
+TitleState::TitleState(void) : bg("img/title.jpg"), text("font/Call me maybe.ttf",
+		70, Text::TextStyle::BLENDED, "Press Space to start", {255, 255, 255, 255},
+		200, 450), timer() {} 
 
 void TitleState::Update(float dt)
 {
-	UNUSED_VAR dt;
 	InputManager input = InputManager::GetInstance(); 
 
 	if (input.KeyPress(ESCAPE_KEY) || input.IsQuitRequested())
@@ -19,11 +18,23 @@ void TitleState::Update(float dt)
 		Game::GetInstance()->Push(new StageState());
 		popRequested = true;
 	}
+	
+	timer.Update(dt);
 }
 
 void TitleState::Render(void)
 {
-	bg.Render(0, 0);
+	static bool print = true;
+	static int oldTime = timer.Get();
+	bg.Render();
+
+	if (timer.Get() - oldTime > 750)
+	{
+		oldTime = timer.Get();
+		print = !print;
+	}
+	if (print)
+		text.Render();
 }
 
 void TitleState::Pause(void)

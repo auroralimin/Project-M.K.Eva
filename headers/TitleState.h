@@ -1,6 +1,8 @@
 #pragma once
 #include "State.h"
 #include "Sprite.h"
+#include "Text.h"
+#include "Timer.h"
 
 class TitleState : public State
 {
@@ -13,5 +15,7 @@ class TitleState : public State
 
 	private:
 		Sprite bg;
+		Text text;
+		Timer timer;
 };
 

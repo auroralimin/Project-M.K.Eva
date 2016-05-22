@@ -1,10 +1,11 @@
 #define SDL_FORCE_SOUNDFONTS 1
 
+#include "SDL2/SDL_mixer.h"
+#include "SDL2/SDL_ttf.h"
 #include "Game.h"
 #include "StageState.h"
 #include "Resources.h"
 #include "InputManager.h"
-#include "SDL2/SDL_mixer.h"
 
 #include <iostream>
 #include <string>
@@ -29,8 +30,9 @@ Game::~Game(void)
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	IMG_Quit();
-	Mix_CloseAudio();
+	TTF_Quit();
 	Mix_Quit();
+	Mix_CloseAudio();
 }
 
 Game* Game::GetInstance(std::string title, int w, int h)
@@ -65,7 +67,7 @@ void Game::Run(void)
 {
 	if (storedState == nullptr)
 	{
-		Resources::ClearImages();
+		ClearResources();
 		return;
 	}
 		
@@ -102,7 +104,7 @@ void Game::Run(void)
 			SDL_Delay(FRAME_TIME - dt);
 		frameStart = currentTime;
 	}
-	Resources::ClearImages();
+	ClearResources();
 }
 
 int Game::GetWinWidth(void)
@@ -138,6 +140,12 @@ Game::Game(std::string title, int w, int h)
 		exit(EXIT_SUCCESS);
 	}
 
+	if (TTF_Init() == -1)
+	{
+		std::cerr << "Unable to init TFF: " << TTF_GetError() << std::endl;
+		exit(EXIT_SUCCESS);
+	}
+
 	if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF) == 0)
 	{
 		std::cerr << "Unable to init SDL_Image: " << SDL_GetError() << std::endl;
@@ -168,3 +176,10 @@ void Game::CalculateDeltaTime(void)
 	dt = currentTime - frameStart;
 }
 
+void Game::ClearResources(void)
+{
+	Resources::ClearImages();
+	Resources::ClearImages();
+	Resources::ClearImages();
+	Resources::ClearImages();
+}
