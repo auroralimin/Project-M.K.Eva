@@ -3,7 +3,6 @@
 #include "SDL2/SDL_mixer.h"
 #include "SDL2/SDL_ttf.h"
 #include "Game.h"
-#include "StageState.h"
 #include "Resources.h"
 #include "InputManager.h"
 
