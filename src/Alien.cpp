@@ -11,7 +11,8 @@
 auto Alien::alienCount = 0;
 
 Alien::Alien(GameObject *focus, float x, float y, int nMinions) :
-	focus(focus), sp("img/alien.png"), speed(0.0, 0.0), destination(x, y)
+	focus(focus), sp("img/alien.png"), sound("audio/boom.wav"), speed(0.0, 0.0),
+	destination(x, y)
 {
 	alienCount++;
 	animationImg = "img/aliendeath.png";
@@ -77,6 +78,7 @@ bool Alien::IsDead(void)
 
 	Game::GetInstance()->GetCurrentState().AddObject(
 			new Animation(box.pos, rotation, animationImg, frameCount));
+	sound.Play(0);
 	for (unsigned int i = 0; i < minionArray.size(); ++i)
 		Game::GetInstance()->GetCurrentState().AddObject(
 				new Animation(minionArray[i]->box.pos, minionArray[i]->rotation,

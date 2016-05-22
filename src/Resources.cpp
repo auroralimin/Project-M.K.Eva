@@ -3,6 +3,7 @@
 
 std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> Resources::imageTable;
 std::unordered_map<std::string, std::shared_ptr<Mix_Music>> Resources::musicTable;
+std::unordered_map<std::string, std::shared_ptr<Mix_Chunk>> Resources::soundTable;
 
 std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file)
 {
@@ -13,7 +14,7 @@ std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file)
 		img = IMG_LoadTexture(Game::GetInstance()->GetRenderer(), file.c_str());
 		if (!img)
 		{
-			std::cerr << "Failed to get image: " << SDL_GetError() << std::endl;
+			std::cerr << "Failed to get image: " << Mix_GetError() << std::endl;
 			exit(EXIT_SUCCESS);
 		}
 		std::shared_ptr<SDL_Texture> texture(img,
@@ -45,7 +46,7 @@ std::shared_ptr<Mix_Music> Resources::GetMusic(std::string file)
 		music = Mix_LoadMUS(file.c_str());
 		if (!music)
 		{
-			std::cerr << "Failed to get music: " << SDL_GetError() << std::endl;
+			std::cerr << "Failed to get music: " << Mix_GetError() << std::endl;
 			exit(EXIT_SUCCESS);
 		}
 		std::shared_ptr<Mix_Music> mixMusic(music,
@@ -65,6 +66,38 @@ void Resources::ClearMusics(void)
 	{
 		if (element.second.unique())
 		musicTable.erase(element.first);	
+	}
+}
+
+std::shared_ptr<Mix_Chunk> Resources::GetSound(std::string file)
+{
+	Mix_Chunk *sound;
+
+	if (soundTable.find(file) == soundTable.end())
+	{
+		sound = Mix_LoadWAV(file.c_str());
+		if (!sound)
+		{
+			std::cerr << "Failed to get sound: " << Mix_GetError() << std::endl;
+			exit(EXIT_SUCCESS);
+		}
+		std::shared_ptr<Mix_Chunk> chunk(sound,
+				[](Mix_Chunk *ptr){
+					Mix_FreeChunk(ptr);
+				});
+		soundTable.emplace(file, chunk);
+		return chunk;
+	}
+
+	return soundTable.find(file)->second;
+}
+
+void Resources::ClearSounds(void)
+{
+	for (auto element : soundTable)
+	{
+		if (element.second.unique())
+		soundTable.erase(element.first);	
 	}
 }
 

@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Sprite.h"
 #include "Vec2.h"
+#include "Sound.h"
 
 class Penguins : public GameObject
 {
@@ -20,6 +21,7 @@ class Penguins : public GameObject
 
 	private:
 		Sprite bodySp, cannonSp;
+		Sound sound;
 		Vec2 speed;
 		float linearSpeed, cannonAngle;
 };

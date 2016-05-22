@@ -13,9 +13,12 @@ class Resources
 		static void ClearImages(void);
 		static std::shared_ptr<Mix_Music> GetMusic(std::string file);
 		static void ClearMusics(void);
+		static std::shared_ptr<Mix_Chunk> GetSound(std::string file);
+		static void ClearSounds(void);
 
 	private:
 		static std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> imageTable;
 		static std::unordered_map<std::string, std::shared_ptr<Mix_Music>> musicTable;
+		static std::unordered_map<std::string, std::shared_ptr<Mix_Chunk>> soundTable;
 };
 

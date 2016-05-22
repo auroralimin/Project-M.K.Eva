@@ -13,12 +13,13 @@
 #define MAX_SPEED 3.0
 #define ANG_V M_PI
 
-Penguins::Penguins(float x, float y) : bodySp("img/penguin.png"), cannonSp("img/cubngun.png")
+Penguins::Penguins(float x, float y) : bodySp("img/penguin.png"),
+	cannonSp("img/cubngun.png"), sound("audio/boom.wav")
 {
 	animationImg = "img/penguindeath.png";
 	frameCount = 5;
 	speed = Vec2(0.0, 0.0);
-	hp = 50;
+	hp = 10;
 	linearSpeed = cannonAngle = 0.0;
 	box.pos.x = x;
 	box.pos.y = y;
@@ -83,6 +84,7 @@ bool Penguins::IsDead(void)
 
 	Game::GetInstance()->GetCurrentState().AddObject(
 			new Animation(box.pos, rotation, animationImg, frameCount));
+	sound.Play(0);
 
 	return true;
 }

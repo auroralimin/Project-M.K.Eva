@@ -8,6 +8,7 @@
 #include "Vec2.h"
 #include "Minion.h"
 #include "Timer.h"
+#include "Sound.h"
 
 class Alien : public GameObject
 {
@@ -32,6 +33,7 @@ class Alien : public GameObject
 		
 		GameObject *focus;
 		Sprite sp;
+		Sound sound;
 		Vec2 speed, destination;
 		std::vector<std::unique_ptr<Minion>> minionArray;
 		AlienState state;
