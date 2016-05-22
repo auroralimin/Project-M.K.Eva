@@ -64,7 +64,27 @@ void Penguins::Update(float dt)
 	if (speed.GetModule() > MAX_SPEED)
 		speed = speed.Normalize() * MAX_SPEED;
 
-	box.pos+=speed;
+	box.pos += speed;
+	if (box.pos.x > 1408)
+	{
+		box.pos.x = 1408;
+		speed = Vec2(0, 0);
+	}
+	if (box.pos.y > 1280)
+	{
+		box.pos.y = 1280;
+		speed = Vec2(0, 0);
+	}
+	if (box.pos.x < 0)
+	{
+		box.pos.x = 0;
+		speed = Vec2(0, 0);
+	}
+	if (box.pos.y < 0) 
+	{
+		box.pos.y = 0;
+		speed = Vec2(0, 0);
+	}
 }
 
 void Penguins::Render(void)
