@@ -24,7 +24,7 @@ Game::~Game(void)
 		delete storedState;
 	while (!stateStack.empty())
 		stateStack.pop();
-	srand(time(nullptr));
+	std::srand(std::time(0));
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
