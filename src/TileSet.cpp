@@ -12,7 +12,7 @@ void TileSet::Render(int index, float x, float y)
 {
 	if ((index < rows*cols) && (index >= 0))
 	{
-		tileSet.SetClip(((index-1)%cols)*tileWidth, ((index-1)/cols)*tileHeight,
+		tileSet.SetClip((index%cols)*tileWidth, (index/cols)*tileHeight,
 				tileWidth, tileHeight);
 		tileSet.Render(x, y, 0.0);
 	}

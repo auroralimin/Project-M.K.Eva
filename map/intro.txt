@@ -1,0 +1,13 @@
+tileset/intro.png
+
+4
+tilemap/intro1.txt
+tilemap/intro2.txt
+tilemap/intro3.txt
+tilemap/intro4.txt
+
+3,2
+0,0,
+
+0,1,-1
+-1,2,3

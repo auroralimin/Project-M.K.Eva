@@ -6,7 +6,7 @@
 
 
 /***************************************************************************//**
- * Its an cirtual interface for all game states.
+ * Its an virtual interface for all game states.
  ******************************************************************************/
 class State
 {
