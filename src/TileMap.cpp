@@ -14,7 +14,7 @@ void TileMap::Load(std::string file)
 
 	if (!fp)
 	{
-		std::cerr << "Failed to create a renderer: " << SDL_GetError() << std::endl;
+		std::cerr << "Failed to open file: " <<  file << std::endl;
 		exit(EXIT_SUCCESS);	
 	}
 

@@ -17,7 +17,7 @@ std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file)
 		img = IMG_LoadTexture(Game::GetInstance()->GetRenderer(), file.c_str());
 		if (!img)
 		{
-			std::cerr << "Failed to get image: " << Mix_GetError() << std::endl;
+			std::cerr << "Failed to load texture: " << Mix_GetError() << std::endl;
 			exit(EXIT_SUCCESS);
 		}
 		std::shared_ptr<SDL_Texture> texture(img,
@@ -47,7 +47,7 @@ std::shared_ptr<Mix_Music> Resources::GetMusic(std::string file)
 		music = Mix_LoadMUS(file.c_str());
 		if (!music)
 		{
-			std::cerr << "Failed to get music: " << Mix_GetError() << std::endl;
+			std::cerr << "Failed to load music: " << Mix_GetError() << std::endl;
 			exit(EXIT_SUCCESS);
 		}
 		std::shared_ptr<Mix_Music> mixMusic(music,
@@ -77,7 +77,7 @@ std::shared_ptr<Mix_Chunk> Resources::GetSound(std::string file)
 		sound = Mix_LoadWAV(file.c_str());
 		if (!sound)
 		{
-			std::cerr << "Failed to get sound: " << Mix_GetError() << std::endl;
+			std::cerr << "Failed to load WAV: " << Mix_GetError() << std::endl;
 			exit(EXIT_SUCCESS);
 		}
 		std::shared_ptr<Mix_Chunk> chunk(sound,
@@ -108,7 +108,7 @@ std::shared_ptr<TTF_Font> Resources::GetFont(std::string file, int fontSize)
 		font = TTF_OpenFont(file.c_str(), fontSize);
 		if (!font)
 		{
-			std::cerr << "Failed to get Font: " << Mix_GetError() << std::endl;
+			std::cerr << "Failed to open Font: " << Mix_GetError() << std::endl;
 			exit(EXIT_SUCCESS);
 		}
 		std::shared_ptr<TTF_Font> tff(font,
