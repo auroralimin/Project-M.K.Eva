@@ -3,11 +3,20 @@
 
 #include "Rect.h"
 
+/***************************************************************************//**
+ * Implemets a SAT collision between two rectangles.
+ ******************************************************************************/
 class Collision {
 	public:
-		// Observação: IsColliding espera ângulos em radianos!
-		// Para usar graus, forneça a sua própria implementação de Rotate,
-		// ou transforme os ângulos no corpo de IsColliding.
+		/**
+		 * For two given rectangles, checks if they are colliding.
+		 * It uses the Separating Axes Theorem.
+		 * @param a a Rect reference of one of the retangles being checked
+		 * @param b a Rect reference of one of the retangles being checked
+		 * @param angleOfA a float argument containing rectangle a rotation
+		 * @param angleOfB a float argument containing rectangle b rotation
+		 * @return If the two given rectangles are colliding
+		 */
 		static inline bool IsColliding(Rect& a, Rect& b, float angleOfA, float angleOfB)
 		{
 			Vec2 A[] =

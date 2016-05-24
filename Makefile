@@ -13,7 +13,7 @@ DIRECTIVES = -std=c++11 -Wall -Wextra -c -I $(HEADER_PATH)
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_PATH)/$*.Td
 LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
 
-FINAL_EXEC = 130006408_T6
+FINAL_EXEC = Project-M.K.Eva
 all: $(FINAL_EXEC)
 $(FINAL_EXEC): $(OBJ)
 	$(CC) -o $@ $^ $(LIBS)
@@ -30,9 +30,12 @@ debug: all
 release: DIRECTIVES += -Ofast -mtune=native
 release: all
 
+doc: 
+	@doxygen Doxyfile
+
 .PHONY: clean
 clean:
-	-@rm -r $(BIN_PATH) $(DEP_PATH) 130006408_T* 2>/dev/null || true
+	-@rm -r $(BIN_PATH) $(DEP_PATH) def/ html/ latex/ $(FINAL_EXEC) 2>/dev/null || true
 
 $(DEP_PATH)/%.d: ;
 .PRECIOUS: $(DEP_PATH)/%.d
