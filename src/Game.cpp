@@ -182,7 +182,7 @@ void Game::CalculateDeltaTime(void)
 void Game::ClearResources(void)
 {
 	Resources::ClearImages();
-	Resources::ClearImages();
-	Resources::ClearImages();
-	Resources::ClearImages();
+	Resources::ClearMusics();
+	Resources::ClearSounds();
+	Resources::ClearFonts();
 }
