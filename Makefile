@@ -36,7 +36,7 @@ doc:
 
 .PHONY: clean
 clean:
-	-@rm -r $(BIN_PATH) $(DEP_PATH) def/ html/ latex/ $(FINAL_EXEC) 2>/dev/null || true
+	-@rm -r $(BIN_PATH) $(DEP_PATH) def/ html/ latex/ map/procedural_generated_map* $(FINAL_EXEC) 2>/dev/null || true
 
 $(DEP_PATH)/%.d: ;
 .PRECIOUS: $(DEP_PATH)/%.d

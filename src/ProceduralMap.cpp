@@ -9,6 +9,7 @@
 #define ROOM_SIZE 64
 #define S_PATH "img/green_map/"
 #define D_PATH "img/red_map/"
+#define FR_PATH "img/blue_map/"
 
 int** ProceduralMap::map = nullptr;
 int ProceduralMap::totalRooms = 0;
@@ -127,7 +128,10 @@ void ProceduralMap::Render(const bool renderGeneration, const std::string path)
 			if (map[i][j] > 0)
 			{	
 				std::string roomFile = std::to_string(map[i][j]) + ".jpg"; 
-				Sprite(path + roomFile).Render(i*ROOM_SIZE, j*ROOM_SIZE);
+				if (i == firstRoom.x && j == firstRoom.y)
+					Sprite(FR_PATH + roomFile).Render(i*ROOM_SIZE, j*ROOM_SIZE);
+				else
+					Sprite(path + roomFile).Render(i*ROOM_SIZE, j*ROOM_SIZE);
 			}
 
 	if (renderGeneration)
@@ -175,6 +179,8 @@ void ProceduralMap::LabelRooms(void)
 				map[i][j] = roomId;
 				roomId = 0;
 			}
+			else if (map[i][j] == 0)
+				map[i][j] = -1;
 		}
 }
 
