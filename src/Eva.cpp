@@ -34,41 +34,42 @@ void Eva::Render()
 
 void Eva::Update(float dt)
 {
-    evaAnimations.Update(dt);
+	bool isMoving = false;
+	Vec2 speed = Vec2(0, 0);
     InputManager &manager = InputManager::GetInstance();
-    if (manager.IsKeyDown(W_KEY)) {
-        box.pos += Vec2(0, -moveSpeed*dt);
-        if (manager.IsKeyDown(D_KEY)) {
-            evaAnimations.SetCurrentState(AnimationFSM::MOVING_RIGHT);
-            box.pos += Vec2(moveSpeed*dt, 0);
-        } else if (manager.IsKeyDown(A_KEY)) {
-            evaAnimations.SetCurrentState(AnimationFSM::MOVING_LEFT);
-            box.pos += Vec2(-moveSpeed*dt, 0);
-        } else {
-            evaAnimations.SetCurrentState(AnimationFSM::MOVING_UP);
-        }
-    } else if(manager.IsKeyDown(S_KEY)) {
-        box.pos += Vec2(0, moveSpeed*dt);
-        if (manager.IsKeyDown(D_KEY)) {
-            evaAnimations.SetCurrentState(AnimationFSM::MOVING_RIGHT);
-            box.pos += Vec2(moveSpeed*dt, 0);
-        } else if (manager.IsKeyDown(A_KEY)) {
-            evaAnimations.SetCurrentState(AnimationFSM::MOVING_LEFT);
-            box.pos += Vec2(-moveSpeed*dt, 0);
-        } else {
-            evaAnimations.SetCurrentState(AnimationFSM::MOVING_DOWN);
-        }
-    } else if (manager.IsKeyDown(D_KEY)) {
-        evaAnimations.SetCurrentState(AnimationFSM::MOVING_RIGHT);
-        box.pos += Vec2(moveSpeed*dt, 0);
-    } else if (manager.IsKeyDown(A_KEY)) {
-        evaAnimations.SetCurrentState(AnimationFSM::MOVING_LEFT);
-        box.pos += Vec2(-moveSpeed*dt, 0);
-    }
-    if (!manager.IsKeyDown(W_KEY) && !manager.IsKeyDown(S_KEY)
-            && !manager.IsKeyDown(D_KEY) && !manager.IsKeyDown(A_KEY)) {
-        evaAnimations.SetCurrentState(AnimationFSM::IDLE);
-    }
+
+    if (manager.IsKeyDown(D_KEY))
+	{
+		isMoving = true;
+		if (!(manager.IsKeyDown(S_KEY)) && !(manager.IsKeyDown(W_KEY)))
+			evaAnimations.SetCurrentState(AnimationFSM::MOVING_RIGHT);
+		speed.x += moveSpeed * dt;
+	}
+    if (manager.IsKeyDown(A_KEY))
+	{
+		isMoving = true;
+		if (!(manager.IsKeyDown(S_KEY)) && !(manager.IsKeyDown(W_KEY)))
+			evaAnimations.SetCurrentState(AnimationFSM::MOVING_LEFT);
+		speed.x -= moveSpeed * dt;
+	}
+    if (manager.IsKeyDown(S_KEY))
+	{
+		isMoving = true;
+		evaAnimations.SetCurrentState(AnimationFSM::MOVING_DOWN);
+		speed.y += moveSpeed * dt;
+	}
+    if (manager.IsKeyDown(W_KEY))
+	{
+		isMoving = true;
+		evaAnimations.SetCurrentState(AnimationFSM::MOVING_UP);
+		speed.y -= moveSpeed * dt;
+	}
+
+	if (!isMoving)
+		evaAnimations.SetCurrentState(AnimationFSM::IDLE);
+
+	box.pos += speed;
+    evaAnimations.Update(dt);
 }
 
 bool Eva::IsDead()
