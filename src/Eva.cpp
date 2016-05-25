@@ -2,6 +2,8 @@
 #include "Camera.h"
 #include "InputManager.h"
 
+Eva* Eva::player = nullptr;
+
 Eva::Eva(): evaAnimations()
 {
     this->box.pos = Vec2();
@@ -16,6 +18,7 @@ Eva::Eva(): evaAnimations()
     this->frameCount = 1;
     this->frameTime = 1.0f;
     this->moveSpeed = 150;
+    player = this;
 }
 
 Eva::Eva(int x, int y, std::string idleFile, std::string upFile,
@@ -35,11 +38,12 @@ Eva::Eva(int x, int y, std::string idleFile, std::string upFile,
     this->moveLeftFile = leftFile;
     this->moveRightFile = rightFile;
     this->moveSpeed = moveSpeed; //temp value
+    player = this;
 }
 
 Eva::~Eva()
 {
-
+    player = nullptr;
 }
 
 void Eva::Render()

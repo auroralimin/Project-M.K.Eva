@@ -117,6 +117,11 @@ public:
      */
     void SetFrameCount(int count);
 
+    /**
+     * static pointer to the player to be used in interactions
+     */
+    static Eva* player;
+
 private:
     std::string idleFile;
     std::string moveUpFile;

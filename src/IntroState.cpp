@@ -24,14 +24,19 @@ void IntroState::Update(float dt)
 	InputManager input = InputManager::GetInstance();
 
 	quitRequested = (input.IsKeyDown(ESCAPE_KEY) || input.IsQuitRequested());
-	if (input.KeyPress(LEFT_ARROW_KEY))
-		map.RoomLeft();
-	else if (input.KeyPress(RIGHT_ARROW_KEY))
-		map.RoomRight();
-	else if (input.KeyPress(UP_ARROW_KEY))
-		map.RoomUp();
-	else if (input.KeyPress(DOWN_ARROW_KEY))
-		map.RoomDown();
+    if (Eva::player->box.pos.x + 4*Eva::player->box.dim.x < 0){
+        map.RoomLeft();
+        Eva::player->box.pos.x = 640 - 4*Eva::player->box.dim.x;
+    } else if (Eva::player->box.pos.x > 640){
+        map.RoomRight();
+        Eva::player->box.pos.x = 0 - 2*Eva::player->box.dim.x;
+    } else if (Eva::player->box.pos.y + Eva::player->box.dim.y < 0){
+        map.RoomUp();
+        Eva::player->box.pos.y = 352 - Eva::player->box.dim.y;
+    } else if (Eva::player->box.pos.y >= 352){
+        map.RoomDown();
+        Eva::player->box.pos.y = 0 - Eva::player->box.dim.y;
+    }
     UpdateArray(dt);
 }
 
