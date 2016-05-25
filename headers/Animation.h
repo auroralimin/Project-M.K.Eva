@@ -64,6 +64,11 @@ class Animation : public GameObject
 		 */
 		void TakeDamage(int dmg = 1);
 
+        /**
+         * Contains the file path to an sprite sheet to create a object animation.
+         */
+        std::string animationImg;
+
 	private:
 		Sprite sp;
 		Timer endTimer;

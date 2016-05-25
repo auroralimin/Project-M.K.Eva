@@ -14,3 +14,10 @@ Project-M.K.Eva
 def/
 html/
 latex/
+
+#no IDE generated files
+*.config
+*.creator
+*.files
+*.includes
+*.user

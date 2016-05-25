@@ -19,11 +19,6 @@ class GameObject
 		float rotation;
 
 		/**
-		 * Contains the file path to an sprite sheet to create a object animation.
-		 */
-		std::string animationImg;
-
-		/**
 		 * Contains the counter of how many frames a object animation has.
 		 */
 		int frameCount;

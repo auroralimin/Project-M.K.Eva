@@ -44,6 +44,7 @@ void Sprite::SetFrame(int frame)
 {
 	currentFrame = frame;
 	SetClip(frame*width, 0.0, width, height);
+    timeElapsed = 0.0;
 }
 
 void Sprite::SetFrameCount(int frameCount)
