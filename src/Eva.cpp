@@ -23,7 +23,7 @@ Eva::Eva(Vec2 pos, std::string *files, int frameCount, float frameTime, int move
 {
 	this->files = files;
     this->box.pos = pos;
-    this->box.dim = Vec2(evaAnimations.GetSpriteWidth()/frameCount,
+    this->box.dim = Vec2(evaAnimations.GetSpriteWidth(),
                          evaAnimations.GetSpriteHeight());
     rotation = 0;
     hp = 100; //temp value
