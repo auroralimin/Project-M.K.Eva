@@ -6,7 +6,7 @@
 #include "Rect.h"
 #include "Collision.h"
 
-#define TILE_SIZE 32
+#define TILE_SIZE 64
 
 LevelMap::LevelMap(std::string file)
 {

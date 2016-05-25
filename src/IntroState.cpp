@@ -9,7 +9,7 @@
 IntroState::IntroState(void) : map("map/intro.txt")
 {
 	Camera::pos = Vec2(0.0, 0.0);
-    AddObject(new Eva(300, 150,
+    AddObject(new Eva(400, 300,
                       std::string("sprites/eva/movement/EVA-BASE-PARADA.png"),
                       std::string("sprites/eva/movement/EVA-BASE-UP.png"),
                       std::string("sprites/eva/movement/EVA-BASE-DOWN.png"),
