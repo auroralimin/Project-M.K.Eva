@@ -67,7 +67,7 @@ void Game::Run(void)
 		ClearResources();
 		return;
 	}
-		
+
 	stateStack.emplace(storedState);
 	storedState = nullptr;
 
@@ -139,7 +139,7 @@ Game::Game(std::string title, int w, int h)
 		std::cerr << "Unable to init Mix_Music: " << Mix_GetError() << std::endl;
 		exit(EXIT_SUCCESS);
 	}
-	
+
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1)
 	{
 		std::cerr << "Unable to open audio: " << Mix_GetError() << std::endl;

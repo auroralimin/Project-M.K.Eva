@@ -21,26 +21,19 @@ std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, Ma
 	ProceduralMap::config = config;
 
 	float p = (width*height)/totalRooms;
-	if (p < 1)
+	if (p < 0.8 || width < 3 || height < 3)
 	{
-		std::cerr << "Nrooms lower than map height times map width" << std::endl;
+		std::cerr << "Inconsistent map arguments" << std::endl;
 		return nullptr;
 	}
 
-	Vec2 sparsity = Vec2((int)(p/2*config), (int)(p*config));
 	if (!room1.IsOpen())
-	{
 		room1.Open("img/square.jpg");
-		room1.SetScaleX(0.5);
-		room1.SetScaleY(0.5);
-	}
 	if (!room2.IsOpen())
-	{
 		room2.Open("img/square2.jpg");
-	}
 	SetupMap();
 
-	Automaton(sparsity, 1, 4);
+	Automaton(p/2*config, 1, 4);
 	DeleteMap();
 
 	//TODO save generated map on a file
@@ -53,7 +46,7 @@ void ProceduralMap::SetupMap(void)
 	for (int i = 0; i < width; ++i)
 	{
 		map[i] = new int[height];
-		std::fill_n(map[i], height, -1); 
+		std::fill_n(map[i], height, -1);
 	}
 
 	int x = 1 + std::rand() % (width-2);
@@ -62,44 +55,41 @@ void ProceduralMap::SetupMap(void)
 	map[x-1][y] = map[x+1][y] = map[x][y-1] = map[x][y+1] = 0;
 }
 
-void ProceduralMap::Automaton(Vec2 sparsity, int nRooms, int nPossibilities)
+void ProceduralMap::Automaton(int minRoomPerGen, int nRooms, int nPossibilities)
 {
+	static int gen = 0;
 	int newRooms = 0;
-	float minProb, maxProb;
+	float probability;
 
 	//PrintMap();
 	//Render(true);
+	gen++;
 	for (int j = 0; j < height; ++j)
 		for (int i = 0; i < width; ++i)
 			if (map[i][j] == 0)
 			{
-				minProb = (sparsity.x-newRooms)/nPossibilities;	
-				maxProb = (sparsity.y-newRooms)/nPossibilities;	
-				if (CellReprodution(i, j, minProb, maxProb))
-				{
+				probability = ((float)(minRoomPerGen)-newRooms)/nPossibilities;
+				if (CellReprodution(i, j, probability))
 					newRooms++;
-				}
 				nPossibilities--;
 			}
 
 	nPossibilities += NewPossibilities();
 	nRooms += newRooms;
-	if (totalRooms - nRooms < sparsity.y)
-	{
-		sparsity.x = 1;
-		sparsity.y = totalRooms-nRooms;
-	}
+	if (totalRooms - nRooms < minRoomPerGen)
+		minRoomPerGen = totalRooms - nRooms;
 	if (totalRooms != nRooms)
-		Automaton(sparsity, nRooms, nPossibilities);
+		Automaton(minRoomPerGen, nRooms, nPossibilities);
 
+	if (gen != 0)
+		std::cout << "Number of generations: " << gen << std::endl << std::endl;
+	gen = 0;
 	Render(false);
-	return;
 }
 
-bool ProceduralMap::CellReprodution(const int x, const int y, const float minProb, const float maxProb)
+bool ProceduralMap::CellReprodution(const int x, const int y, const float probability)
 {
 	int neighbors = 0;
-	float probability = 0.0;
 
 	if ((x < 0) || ((x > 0) && (map[x-1][y] == 1)))
 		neighbors++;
@@ -110,10 +100,9 @@ bool ProceduralMap::CellReprodution(const int x, const int y, const float minPro
 	if ((y >= height) || ((y < height - 1) && (map[x][y+1] == 1)))
 		neighbors++;
 
-	probability = maxProb;
-	if (neighbors < 1 + config && (float)(rand() % 100) < probability * 100)
+	if (neighbors < (1 + config) && (float)(rand() % 99) < (probability * 100))
 	{
-		map[x][y] = 1;	
+		map[x][y] = 1;
 		return true;
 	}
 

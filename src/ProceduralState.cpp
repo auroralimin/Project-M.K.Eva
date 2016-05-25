@@ -13,8 +13,10 @@ ProceduralState::ProceduralState(void)
 {
 	Camera::pos = Vec2(0.0, 0.0);
 	seed = 1464140842;
+	std::cout << "seed: " << seed << std::endl;
 	std::srand(seed);
-	ProceduralMap::GenerateMap(30, 30, 200, ProceduralMap::MapConfig::SPARSE);
+	ProceduralMap::GenerateMap(5, 5, 10, ProceduralMap::MapConfig::SPARSE);
+	//ProceduralMap::GenerateMap(20, 15, 150, ProceduralMap::MapConfig::SPARSE);
 }
 
 void ProceduralState::Update(float dt)
@@ -23,21 +25,23 @@ void ProceduralState::Update(float dt)
 	InputManager input = InputManager::GetInstance();
 
 	quitRequested = (input.IsKeyDown(ESCAPE_KEY) || input.IsQuitRequested());
-	if (input.KeyPress(SPACEBAR))
+	if (input.KeyPress(UP_ARROW_KEY))
 	{
 		Game::GetInstance()->ClearRenderer();
 		seed = std::time(0);
 		std::cout << "seed: " << seed << std::endl;
 		std::srand(seed);
-		ProceduralMap::GenerateMap(30, 30, 200, ProceduralMap::MapConfig::SPARSE);
+		ProceduralMap::GenerateMap(5, 5, 10, ProceduralMap::MapConfig::SPARSE);
+		//ProceduralMap::GenerateMap(20, 15, 150, ProceduralMap::MapConfig::SPARSE);
 	}
-	if (input.KeyPress(A_KEY))
+	if (input.KeyPress(DOWN_ARROW_KEY))
 	{
 		Game::GetInstance()->ClearRenderer();
 		seed = std::time(0);
 		std::cout << "seed: " << seed << std::endl;
 		std::srand(seed);
-		ProceduralMap::GenerateMap(30, 30, 200, ProceduralMap::MapConfig::DENSE);
+		ProceduralMap::GenerateMap(5, 5, 10, ProceduralMap::MapConfig::DENSE);
+		//ProceduralMap::GenerateMap(20, 15, 150, ProceduralMap::MapConfig::DENSE);
 	}
 
 }

@@ -12,9 +12,9 @@ class ProceduralMap
 			SPARSE = 1,
 			DENSE = 3,
 		};
-		
+
 		static std::string GenerateMap(int width, int height, int totalRooms, MapConfig config);
-	
+
 	private:
 		static int** map;
 		static int totalRooms, width, height;
@@ -22,8 +22,8 @@ class ProceduralMap
 		static MapConfig config;
 
 		static void SetupMap(void);
-		static void Automaton(Vec2 sparsity, int nRooms, int nPossibilities);
-		static bool CellReprodution(const int x, const int y, const float minProb, const float maxProb);
+		static void Automaton(int minRoomPerGen, int nRooms, int nPossibilities);
+		static bool CellReprodution(const int x, const int y, const float probability);
 		static int NewPossibilities(void);
 		static void Render(bool renderGeneration);
 		static void DeleteMap(void);
