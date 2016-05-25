@@ -4,6 +4,7 @@
 
 #include "TileMap.h"
 #include "Vec2.h"
+#include "GameObject.h"
 
 class LevelMap
 {
@@ -21,6 +22,7 @@ class LevelMap
 		Vec2 GetCurrentRoom(void);
 		int GetWidth(void);
 		int GetHeight(void);
+		bool IsCollidingWithWall(GameObject* o);
 
 	private:
 		int mapWidth, mapHeight, index;

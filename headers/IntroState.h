@@ -2,6 +2,7 @@
 
 #include "State.h"
 #include "LevelMap.h"
+#include "GameObject.h"
 
 class IntroState : public State
 {
@@ -11,6 +12,7 @@ class IntroState : public State
 		void Render(void);
 		void Pause(void);
 		void Resume(void);
+		bool IsCollidingWithWall(GameObject* o);
 	private:
 		LevelMap map;
 };

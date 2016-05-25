@@ -51,3 +51,7 @@ void IntroState::Resume(void)
 	//do nothing
 }
 
+bool IntroState::IsCollidingWithWall(GameObject* o)
+{
+	return map.IsCollidingWithWall(o);
+}

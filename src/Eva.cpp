@@ -1,6 +1,9 @@
 #include "Eva.h"
 #include "Camera.h"
 #include "InputManager.h"
+#include "Game.h"
+
+#include <iostream>
 
 Eva::Eva(): evaAnimations()
 {
@@ -49,6 +52,7 @@ void Eva::Render()
 
 void Eva::Update(float dt)
 {
+	Vec2 previousPos = box.pos;
     evaAnimations.Update(dt);
     InputManager &manager = InputManager::GetInstance();
     if (manager.IsKeyDown(W_KEY)) {
@@ -84,6 +88,12 @@ void Eva::Update(float dt)
             && !manager.IsKeyDown(D_KEY) && !manager.IsKeyDown(A_KEY)) {
         evaAnimations.SetCurrentState(AnimationFSM::IDLE);
     }
+	
+	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
+	{
+		std::cout << "colliding" << std::endl;
+		box.pos = previousPos;
+	}
 }
 
 bool Eva::IsDead()

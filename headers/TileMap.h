@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "TileSet.h"
+#include "Rect.h"
 
 /***************************************************************************//**
  * Creates a room given a tileset and a tilemap.
@@ -68,9 +69,13 @@ class TileMap
 		 */
 		int GetDepth(void);
 
+		void LoadWallRects(void);
+		std::vector<Rect> GetWallRect(void);
+
 	private:
 		TileSet *tileSet;
 		std::vector<int> tileMatrix;
+		std::vector<Rect> wallRect;
 		int mapWidth, mapHeight, mapDepth;
 };
 
