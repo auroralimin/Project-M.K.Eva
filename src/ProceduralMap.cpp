@@ -5,12 +5,14 @@
 #include "Game.h"
 #include "ProceduralMap.h"
 
+#define ROOM_SIZE 64
+#define S_PATH "img/green_map/"
+#define D_PATH "img/red_map/"
+
 int** ProceduralMap::map = nullptr;
 int ProceduralMap::totalRooms = 0;
 int ProceduralMap::width = 0;
 int ProceduralMap::height = 0;
-Sprite ProceduralMap::room1 = Sprite();
-Sprite ProceduralMap::room2 = Sprite();
 ProceduralMap::MapConfig ProceduralMap::config;
 
 std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, MapConfig config)
@@ -27,13 +29,9 @@ std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, Ma
 		return nullptr;
 	}
 
-	if (!room1.IsOpen())
-		room1.Open("img/square.jpg");
-	if (!room2.IsOpen())
-		room2.Open("img/square2.jpg");
 	SetupMap();
 
-	Automaton(p/2*config, 1, 4);
+	Automaton((int)(p*1.5*config), 1, 4);
 	DeleteMap();
 
 	//TODO save generated map on a file
@@ -57,13 +55,11 @@ void ProceduralMap::SetupMap(void)
 
 void ProceduralMap::Automaton(int minRoomPerGen, int nRooms, int nPossibilities)
 {
+	std::string path = (config == MapConfig::SPARSE) ? S_PATH : D_PATH;
 	static int gen = 0;
 	int newRooms = 0;
 	float probability;
 
-	//PrintMap();
-	//Render(true);
-	gen++;
 	for (int j = 0; j < height; ++j)
 		for (int i = 0; i < width; ++i)
 			if (map[i][j] == 0)
@@ -78,13 +74,19 @@ void ProceduralMap::Automaton(int minRoomPerGen, int nRooms, int nPossibilities)
 	nRooms += newRooms;
 	if (totalRooms - nRooms < minRoomPerGen)
 		minRoomPerGen = totalRooms - nRooms;
+
+	gen++;
+	//PrintMap();
+	Render(true, path);
 	if (totalRooms != nRooms)
 		Automaton(minRoomPerGen, nRooms, nPossibilities);
 
 	if (gen != 0)
 		std::cout << "Number of generations: " << gen << std::endl << std::endl;
 	gen = 0;
-	Render(false);
+	LabelRooms();
+	//PrintMap();
+	Render(false, path);
 }
 
 bool ProceduralMap::CellReprodution(const int x, const int y, const float probability)
@@ -110,23 +112,16 @@ bool ProceduralMap::CellReprodution(const int x, const int y, const float probab
 	return false;
 }
 
-void ProceduralMap::Render(bool renderGeneration)
+void ProceduralMap::Render(const bool renderGeneration, const std::string path)
 {
-	Sprite room;
-
-	if (config == MapConfig::SPARSE)
-		room = room1;
-	if (config == MapConfig::DENSE)
-		room = room2;
-
-	int roomW = room.GetWidth(), roomH = room.GetHeight();
-
 	for (int i = 0; i < width; ++i)
 		for (int j = 0; j < height; ++j)
-			if (map[i][j] == 1)
-			{
-					room.Render(i*roomW, j*roomH);
+			if (map[i][j] > 0)
+			{	
+				std::string roomFile = std::to_string(map[i][j]) + ".jpg"; 
+				Sprite(path + roomFile).Render(i*ROOM_SIZE, j*ROOM_SIZE);
 			}
+
 	if (renderGeneration)
 	{
 		SDL_Delay(250);
@@ -153,6 +148,28 @@ int ProceduralMap::NewPossibilities(void)
 	return n;
 }
 
+void ProceduralMap::LabelRooms(void)
+{
+	int roomId = 0;
+	for (int i = 0; i < width; ++i)
+		for (int j = 0; j < height; ++j)
+		{
+			if (map[i][j] > 0)
+			{
+				if ((j < height - 1) && (map[i][j+1] > 0))
+					roomId += 10;
+				if ((j > 0) && (map[i][j-1] > 0))
+					roomId += 100;
+				if ((i > 0) && (map[i-1][j] > 0))
+					roomId += 1000;
+				if ((i < width - 1) && (map[i+1][j] > 0))
+					roomId += 10000;
+				map[i][j] = roomId;
+				roomId = 0;
+			}
+		}
+}
+
 void ProceduralMap::DeleteMap(void)
 {
 	for (int i = 0; i < width; ++i)
@@ -164,10 +181,10 @@ void ProceduralMap::DeleteMap(void)
 
 void ProceduralMap::PrintMap(void)
 {
-	for (int i = 0; i < width; ++i)
+	for (int j = 0; j < height; ++j)
 	{
-		for (int j = 0; j < height; ++j)
-			std::cout << std::setw(3) << map[i][j] << ",";
+		for (int i = 0; i < width; ++i)
+			std::cout << std::setw(6) << map[i][j] << ",";
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;

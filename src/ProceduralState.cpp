@@ -12,10 +12,10 @@
 ProceduralState::ProceduralState(void)
 {
 	Camera::pos = Vec2(0.0, 0.0);
-	seed = 1464140842;
+	seed = 1464152697;
 	std::cout << "seed: " << seed << std::endl;
 	std::srand(seed);
-	ProceduralMap::GenerateMap(5, 5, 10, ProceduralMap::MapConfig::SPARSE);
+	ProceduralMap::GenerateMap(7, 5, 15, ProceduralMap::MapConfig::SPARSE);
 	//ProceduralMap::GenerateMap(20, 15, 150, ProceduralMap::MapConfig::SPARSE);
 }
 
@@ -31,7 +31,7 @@ void ProceduralState::Update(float dt)
 		seed = std::time(0);
 		std::cout << "seed: " << seed << std::endl;
 		std::srand(seed);
-		ProceduralMap::GenerateMap(5, 5, 10, ProceduralMap::MapConfig::SPARSE);
+		ProceduralMap::GenerateMap(7, 5, 15, ProceduralMap::MapConfig::SPARSE);
 		//ProceduralMap::GenerateMap(20, 15, 150, ProceduralMap::MapConfig::SPARSE);
 	}
 	if (input.KeyPress(DOWN_ARROW_KEY))
@@ -40,7 +40,7 @@ void ProceduralState::Update(float dt)
 		seed = std::time(0);
 		std::cout << "seed: " << seed << std::endl;
 		std::srand(seed);
-		ProceduralMap::GenerateMap(5, 5, 10, ProceduralMap::MapConfig::DENSE);
+		ProceduralMap::GenerateMap(7, 5, 15, ProceduralMap::MapConfig::DENSE);
 		//ProceduralMap::GenerateMap(20, 15, 150, ProceduralMap::MapConfig::DENSE);
 	}
 
