@@ -1,8 +1,7 @@
 #include "Text.h"
 #include "Game.h"
 #include "Resources.h"
-
-#define BLACK {0, 0, 0, 0}
+#include "Config.h"
 
 Text::Text(void) { }
 
@@ -78,7 +77,7 @@ void Text::RemakeTexture(void)
 			surface = TTF_RenderText_Solid(font.get(), text.c_str(), color);
 			break;
 		case TextStyle::SHADED:
-			surface = TTF_RenderText_Shaded(font.get(), text.c_str(), color, BLACK);
+			surface = TTF_RenderText_Shaded(font.get(), text.c_str(), color, COLOR_BLACK);
 			break;
 		case TextStyle::BLENDED:
 			surface = TTF_RenderText_Blended_Wrapped(font.get(), text.c_str(), color, w);

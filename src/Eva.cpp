@@ -2,12 +2,11 @@
 #include "Camera.h"
 #include "InputManager.h"
 #include "Game.h"
+#include "Config.h"
 
 #include <iostream>
 
 Eva* Eva::player = nullptr;
-
-#define UNUSED_VAR (void)
 
 Eva::Eva(): evaAnimations()
 {
@@ -40,45 +39,48 @@ Eva::~Eva()
 
 void Eva::Render()
 {
-    SDL_SetRenderDrawColor(Game::GetInstance()->GetRenderer(), 255, 0, 0, 200);
-    SDL_SetRenderDrawBlendMode(Game::GetInstance()->GetRenderer(), SDL_BLENDMODE_BLEND);
-    SDL_Rect rect;
-    rect.x = box.pos.x;
-    rect.y = box.pos.y;
-    rect.w = box.dim.x;
-    rect.h = box.dim.y;
-    SDL_RenderFillRect(Game::GetInstance()->GetRenderer(), &rect);
-    evaAnimations.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y);
+	if (Config::HITBOX_MODE)
+	{
+		SDL_SetRenderDrawColor(Game::GetInstance()->GetRenderer(), 255, 0, 0, 200);
+		SDL_SetRenderDrawBlendMode(Game::GetInstance()->GetRenderer(), SDL_BLENDMODE_BLEND);
+		SDL_Rect rect;
+		rect.x = box.pos.x;
+		rect.y = box.pos.y;
+		rect.w = box.dim.x;
+		rect.h = box.dim.y;
+		SDL_RenderFillRect(Game::GetInstance()->GetRenderer(), &rect);
+	}
+	evaAnimations.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y);
 }
 
 void Eva::Update(float dt)
 {
-    Vec2 previousPos = box.pos;
-    bool isMoving = false;
+	Vec2 previousPos = box.pos;
+	bool isMoving = false;
 	Vec2 speed = Vec2(0, 0);
-    InputManager &manager = InputManager::GetInstance();
+	InputManager &manager = InputManager::GetInstance();
 
-    if (manager.IsKeyDown(D_KEY))
+	if (manager.IsKeyDown(D_KEY))
 	{
 		isMoving = true;
 		if (!(manager.IsKeyDown(S_KEY)) && !(manager.IsKeyDown(W_KEY)))
 			evaAnimations.SetCurrentState(AnimationFSM::MOVING_RIGHT);
 		speed.x += moveSpeed * dt;
 	}
-    if (manager.IsKeyDown(A_KEY))
+	if (manager.IsKeyDown(A_KEY))
 	{
 		isMoving = true;
 		if (!(manager.IsKeyDown(S_KEY)) && !(manager.IsKeyDown(W_KEY)))
 			evaAnimations.SetCurrentState(AnimationFSM::MOVING_LEFT);
 		speed.x -= moveSpeed * dt;
 	}
-    if (manager.IsKeyDown(S_KEY))
+	if (manager.IsKeyDown(S_KEY))
 	{
 		isMoving = true;
 		evaAnimations.SetCurrentState(AnimationFSM::MOVING_DOWN);
 		speed.y += moveSpeed * dt;
 	}
-    if (manager.IsKeyDown(W_KEY))
+	if (manager.IsKeyDown(W_KEY))
 	{
 		isMoving = true;
 		evaAnimations.SetCurrentState(AnimationFSM::MOVING_UP);
@@ -89,13 +91,10 @@ void Eva::Update(float dt)
 		evaAnimations.SetCurrentState(AnimationFSM::IDLE);
 
 	box.pos += speed;
-    evaAnimations.Update(dt);
+	evaAnimations.Update(dt);
 
-    if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
-	{
-		std::cout << "colliding" << std::endl;
+	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
 		box.pos = previousPos;
-	}
 }
 
 bool Eva::IsDead()

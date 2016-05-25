@@ -1,7 +1,7 @@
 #include "Animation.h"
 #include "Camera.h"
+#include "Config.h"
 
-#define UNUSED_VAR (void)
 
 Animation::Animation(Vec2 pos, float rotation, std::string sprite,
 		int frameCount, float frameTime, bool ends) : 

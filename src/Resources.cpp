@@ -1,7 +1,6 @@
 #include "Resources.h"
 #include "Game.h"
-
-#define UNUSED_VAR (void)
+#include "Config.h"
 
 std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> Resources::imageTable;
 std::unordered_map<std::string, std::shared_ptr<Mix_Music>> Resources::musicTable;

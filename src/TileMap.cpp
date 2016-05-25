@@ -1,10 +1,8 @@
 #include "TileMap.h"
 #include "Game.h"
 #include "Vec2.h"
+#include "Config.h"
 #include <SDL2/SDL.h>
-
-#define UNUSED_VAR (void)
-#define HITBOX_MODE true
 
 TileMap::TileMap(std::string file, TileSet *tileSet) : tileSet(tileSet)
 {
@@ -58,7 +56,7 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
 		{
 			tileSet->Render(At(i, j, layer), (i*tileWidth)-cameraX, (j*tileHeight)-cameraY);
 			//Renders red, transparent boxes on top of the wall.
-			if(HITBOX_MODE && (layer == 1) && (At(i, j, layer) > -1))
+			if(Config::HITBOX_MODE && (layer == 1) && (At(i, j, layer) > -1))
 			{
 				SDL_SetRenderDrawColor(Game::GetInstance()->GetRenderer(), 255, 0, 0, 200);
 				SDL_SetRenderDrawBlendMode(Game::GetInstance()->GetRenderer(), SDL_BLENDMODE_BLEND);

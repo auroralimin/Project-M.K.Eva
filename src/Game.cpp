@@ -1,5 +1,3 @@
-#define SDL_FORCE_SOUNDFONTS 1
-
 #include "SDL2/SDL_mixer.h"
 #include "SDL2/SDL_ttf.h"
 #include "Game.h"

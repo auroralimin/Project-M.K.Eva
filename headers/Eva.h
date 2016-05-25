@@ -1,5 +1,4 @@
-#ifndef EVA_H
-#define EVA_H
+#pragma once
 
 #include "Vec2.h"
 #include "GameObject.h"
@@ -101,4 +100,3 @@ private:
 
 };
 
-#endif // EVA_H

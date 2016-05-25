@@ -191,14 +191,14 @@ std::string ProceduralMap::GenerateMapFile(void)
 	out.open(file);
 	
 	out << "tileset/intro.png" << std::endl << std::endl;
-	out << "tilemap/procedural_generated" << nMaps << "/" << std::endl << std::endl;
+	out << "tilemap/procedural_generated/" << std::endl << std::endl;
 
 	out << width << "," << height << std::endl;
 	out << firstRoom.x << "," << firstRoom.y << std::endl << std::endl;
 
-	for (int i = 0; i < width; ++i)
+	for (int j = 0; j < height; ++j)
 	{
-		for (int j = 0; j < height; ++j)
+		for (int i = 0; i < width; ++i)
 			out << map[i][j] << ",";
 		out << std::endl;
 	}

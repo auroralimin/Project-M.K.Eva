@@ -6,8 +6,7 @@
 #include "Vec2.h"
 #include "Game.h"
 #include "InputManager.h"
-
-#define UNUSED_VAR (void)
+#include "Config.h"
 
 ProceduralState::ProceduralState(void)
 {

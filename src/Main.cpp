@@ -1,8 +1,7 @@
 #include "Game.h"
 #include "ProceduralState.h"
 #include "IntroState.h"
-
-#define UNUSED_VAR (void)
+#include "Config.h"
 
 int main(int argc, char **argv)
 {
