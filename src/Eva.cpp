@@ -28,7 +28,7 @@ Eva::Eva(int x, int y, std::string idleFile, std::string upFile,
                   frameCount, frameTime)
 {
     this->box.pos = Vec2(x, y);
-    this->box.dim = Vec2(evaAnimations.GetSpriteWidth()/frameCount,
+    this->box.dim = Vec2(evaAnimations.GetSpriteWidth(),
                          evaAnimations.GetSpriteHeight());
     this->rotation = 0;
     this->hp = 100; //temp value
@@ -47,6 +47,14 @@ Eva::~Eva()
 
 void Eva::Render()
 {
+    SDL_SetRenderDrawColor(Game::GetInstance()->GetRenderer(), 255, 0, 0, 200);
+    SDL_SetRenderDrawBlendMode(Game::GetInstance()->GetRenderer(), SDL_BLENDMODE_BLEND);
+    SDL_Rect rect;
+    rect.x = box.pos.x;
+    rect.y = box.pos.y;
+    rect.w = box.dim.x;
+    rect.h = box.dim.y;
+    SDL_RenderFillRect(Game::GetInstance()->GetRenderer(), &rect);
     evaAnimations.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y);
 }
 

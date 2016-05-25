@@ -120,7 +120,7 @@ bool LevelMap::IsCollidingWithWall(GameObject* o)
 {
 	std::vector<Rect> wallRect = rooms[index]->GetWallRect();
 	for(size_t i = 0; i < wallRect.size(); i++)
-		if(Collision::IsColliding(o->box, wallRect[i], o->rotation, 0))
+        if(Collision::IsColliding(o->box, wallRect[i], o->rotation, 0))
 			return true;
 
 	return false;

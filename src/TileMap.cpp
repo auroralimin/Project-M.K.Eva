@@ -92,13 +92,13 @@ void TileMap::LoadWallRects(void)
 	int tileWidth = tileSet->GetTileWidth();
 	int tileHeight = tileSet->GetTileHeight();
 
-	for(int i = 0; i < mapWidth; i++)
+    for(int i = 0; i < mapWidth; i++)
 	{
 		for(int j = 0; j < mapHeight; j++)
 		{
 			if(At(i, j, 1) > -1)
 			{
-				wallRect.emplace_back(Vec2(i*tileWidth, j*tileHeight), Vec2(tileWidth, tileHeight));
+                wallRect.emplace_back(Vec2(i*tileWidth, j*tileHeight), Vec2(tileWidth, tileHeight));
 			}
 		}
 	}
