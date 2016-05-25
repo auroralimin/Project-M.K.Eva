@@ -19,6 +19,7 @@ class ProceduralMap
 		static int** map;
 		static int totalRooms, width, height;
 		static MapConfig config;
+		static std::string path;
 
 		static void SetupMap(void);
 		static void Automaton(int minRoomPerGen, int nRooms, int nPossibilities);

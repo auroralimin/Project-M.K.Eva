@@ -14,6 +14,7 @@ int ProceduralMap::totalRooms = 0;
 int ProceduralMap::width = 0;
 int ProceduralMap::height = 0;
 ProceduralMap::MapConfig ProceduralMap::config;
+std::string ProceduralMap::path;
 
 std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, MapConfig config)
 {
@@ -21,6 +22,7 @@ std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, Ma
 	ProceduralMap::height = height;
 	ProceduralMap::totalRooms = totalRooms;
 	ProceduralMap::config = config;
+	path = (config == MapConfig::SPARSE) ? S_PATH : D_PATH;
 
 	float p = (width*height)/totalRooms;
 	if (p < 0.8 || width < 3 || height < 3)
@@ -32,6 +34,9 @@ std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, Ma
 	SetupMap();
 
 	Automaton((int)(p*1.5*config), 1, 4);
+	LabelRooms();
+	Render(false, path);
+
 	DeleteMap();
 
 	//TODO save generated map on a file
@@ -55,7 +60,6 @@ void ProceduralMap::SetupMap(void)
 
 void ProceduralMap::Automaton(int minRoomPerGen, int nRooms, int nPossibilities)
 {
-	std::string path = (config == MapConfig::SPARSE) ? S_PATH : D_PATH;
 	static int gen = 0;
 	int newRooms = 0;
 	float probability;
@@ -84,9 +88,6 @@ void ProceduralMap::Automaton(int minRoomPerGen, int nRooms, int nPossibilities)
 	if (gen != 0)
 		std::cout << "Number of generations: " << gen << std::endl << std::endl;
 	gen = 0;
-	LabelRooms();
-	//PrintMap();
-	Render(false, path);
 }
 
 bool ProceduralMap::CellReprodution(const int x, const int y, const float probability)
