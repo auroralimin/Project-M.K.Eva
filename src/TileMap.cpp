@@ -1,6 +1,10 @@
 #include "TileMap.h"
+#include "Game.h"
+#include "Vec2.h"
+#include <SDL2/SDL.h>
 
 #define UNUSED_VAR (void)
+#define HITBOX_MODE true
 
 TileMap::TileMap(std::string file, TileSet *tileSet) : tileSet(tileSet)
 {
@@ -23,6 +27,8 @@ void TileMap::Load(std::string file)
 		tileMatrix.emplace_back(tile);
 
 	fclose(fp);
+
+	LoadWallRects();
 }
 
 void TileMap::SetTileSet(TileSet *tileSet)
@@ -49,7 +55,21 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
 
 	for (int i = 0; i < mapWidth; ++i)
 		for (int j = 0; j < mapHeight; ++j)
+		{
 			tileSet->Render(At(i, j, layer), (i*tileWidth)-cameraX, (j*tileHeight)-cameraY);
+			//Renders red, transparent boxes on top of the wall.
+			if(HITBOX_MODE && (layer == 1) && (At(i, j, layer) > -1))
+			{
+				SDL_SetRenderDrawColor(Game::GetInstance()->GetRenderer(), 255, 0, 0, 200);
+				SDL_SetRenderDrawBlendMode(Game::GetInstance()->GetRenderer(), SDL_BLENDMODE_BLEND);
+				SDL_Rect rect;
+				rect.x = (i*tileWidth + tileWidth/3) - cameraX;
+				rect.y = (j*tileHeight)-cameraY;
+				rect.w = tileWidth/3;
+				rect.h = tileHeight/4;
+				SDL_RenderFillRect(Game::GetInstance()->GetRenderer(), &rect);
+			}
+		}
 }
 
 int TileMap::GetWidth(void)
@@ -67,3 +87,19 @@ int TileMap::GetDepth(void)
 	return mapDepth;
 }
 
+void TileMap::LoadWallRects(void)
+{
+	int tileWidth = tileSet->GetTileWidth();
+	int tileHeight = tileSet->GetTileHeight();
+
+    for(int i = 0; i < mapWidth; i++)
+		for(int j = 0; j < mapHeight; j++)
+			if(At(i, j, 1) > -1)
+                wallRect.emplace_back(Vec2(i*tileWidth + tileWidth/3, j*tileHeight),
+						Vec2(tileWidth/3, tileHeight/4));
+}
+
+std::vector<Rect> TileMap::GetWallRect(void)
+{
+	return wallRect;
+}

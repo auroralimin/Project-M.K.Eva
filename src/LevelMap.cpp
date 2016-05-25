@@ -3,8 +3,10 @@
 #include "LevelMap.h"
 #include "TileSet.h"
 #include "Camera.h"
+#include "Rect.h"
+#include "Collision.h"
 
-#define TILE_SIZE 32
+#define TILE_SIZE 64
 
 LevelMap::LevelMap(std::string file)
 {
@@ -114,3 +116,12 @@ int LevelMap::GetHeight(void)
 	return mapHeight;
 }
 
+bool LevelMap::IsCollidingWithWall(GameObject* o)
+{
+	std::vector<Rect> wallRect = rooms[index]->GetWallRect();
+	for(size_t i = 0; i < wallRect.size(); i++)
+        if(Collision::IsColliding(o->box, wallRect[i], o->rotation, 0))
+			return true;
+
+	return false;
+}

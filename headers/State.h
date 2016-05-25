@@ -61,6 +61,8 @@ class State
 		 */
 		bool IsQuitRequested(void);
 
+		virtual bool IsCollidingWithWall(GameObject* o) = 0;
+
 	protected:
 		bool popRequested, quitRequested;
 		std::vector<std::unique_ptr<GameObject>> objectArray;

@@ -1,6 +1,9 @@
 #include "Eva.h"
 #include "Camera.h"
 #include "InputManager.h"
+#include "Game.h"
+
+#include <iostream>
 
 Eva* Eva::player = nullptr;
 
@@ -37,12 +40,21 @@ Eva::~Eva()
 
 void Eva::Render()
 {
+    SDL_SetRenderDrawColor(Game::GetInstance()->GetRenderer(), 255, 0, 0, 200);
+    SDL_SetRenderDrawBlendMode(Game::GetInstance()->GetRenderer(), SDL_BLENDMODE_BLEND);
+    SDL_Rect rect;
+    rect.x = box.pos.x;
+    rect.y = box.pos.y;
+    rect.w = box.dim.x;
+    rect.h = box.dim.y;
+    SDL_RenderFillRect(Game::GetInstance()->GetRenderer(), &rect);
     evaAnimations.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y);
 }
 
 void Eva::Update(float dt)
 {
-	bool isMoving = false;
+    Vec2 previousPos = box.pos;
+    bool isMoving = false;
 	Vec2 speed = Vec2(0, 0);
     InputManager &manager = InputManager::GetInstance();
 
@@ -78,6 +90,12 @@ void Eva::Update(float dt)
 
 	box.pos += speed;
     evaAnimations.Update(dt);
+
+    if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
+	{
+		std::cout << "colliding" << std::endl;
+		box.pos = previousPos;
+	}
 }
 
 bool Eva::IsDead()
