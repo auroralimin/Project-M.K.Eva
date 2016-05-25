@@ -2,20 +2,23 @@
 #include <iomanip>
 
 #include "SDL2/SDL.h"
+#include "Game.h"
 #include "ProceduralMap.h"
-
-#define UNUSED_VAR (void)
 
 int** ProceduralMap::map = nullptr;
 int ProceduralMap::totalRooms = 0;
 int ProceduralMap::width = 0;
 int ProceduralMap::height = 0;
-Sprite ProceduralMap::room = Sprite();
+Sprite ProceduralMap::room1 = Sprite();
+Sprite ProceduralMap::room2 = Sprite();
+ProceduralMap::MapConfig ProceduralMap::config;
 
 std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, MapConfig config)
 {
-	UNUSED_VAR config;
-	//TODO implement sparsity with different map configs
+	ProceduralMap::width = width;
+	ProceduralMap::height = height;
+	ProceduralMap::totalRooms = totalRooms;
+	ProceduralMap::config = config;
 
 	float p = (width*height)/totalRooms;
 	if (p < 1)
@@ -24,13 +27,17 @@ std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, Ma
 		return nullptr;
 	}
 
-	Vec2 sparsity = Vec2((int)(p/2), (int)p);
-	ProceduralMap::totalRooms = totalRooms;
-	if (!room.IsOpen())
-		room.Open("img/square.JPG");
-
-	ProceduralMap::width = width;
-	ProceduralMap::height = height;
+	Vec2 sparsity = Vec2((int)(p/2*config), (int)(p*config));
+	if (!room1.IsOpen())
+	{
+		room1.Open("img/square.jpg");
+		room1.SetScaleX(0.5);
+		room1.SetScaleY(0.5);
+	}
+	if (!room2.IsOpen())
+	{
+		room2.Open("img/square2.jpg");
+	}
 	SetupMap();
 
 	Automaton(sparsity, 1, 4);
@@ -59,19 +66,20 @@ void ProceduralMap::Automaton(Vec2 sparsity, int nRooms, int nPossibilities)
 {
 	int newRooms = 0;
 	float minProb, maxProb;
-	
-	for (int i = 0; i < width; ++i)
-		for (int j = 0; j < height; ++j)
+
+	//PrintMap();
+	//Render(true);
+	for (int j = 0; j < height; ++j)
+		for (int i = 0; i < width; ++i)
 			if (map[i][j] == 0)
 			{
 				minProb = (sparsity.x-newRooms)/nPossibilities;	
 				maxProb = (sparsity.y-newRooms)/nPossibilities;	
 				if (CellReprodution(i, j, minProb, maxProb))
 				{
-					nPossibilities--;
 					newRooms++;
-					Render();
 				}
+				nPossibilities--;
 			}
 
 	nPossibilities += NewPossibilities();
@@ -84,6 +92,7 @@ void ProceduralMap::Automaton(Vec2 sparsity, int nRooms, int nPossibilities)
 	if (totalRooms != nRooms)
 		Automaton(sparsity, nRooms, nPossibilities);
 
+	Render(false);
 	return;
 }
 
@@ -101,24 +110,39 @@ bool ProceduralMap::CellReprodution(const int x, const int y, const float minPro
 	if ((y >= height) || ((y < height - 1) && (map[x][y+1] == 1)))
 		neighbors++;
 
-	probability = (minProb + (1/neighbors)*(maxProb-minProb))*100;
-	if (neighbors < 3 && (float)(rand() % 100) < probability)
+	probability = maxProb;
+	if (neighbors < 1 + config && (float)(rand() % 100) < probability * 100)
 	{
 		map[x][y] = 1;	
 		return true;
 	}
 
+	map[x][y] = -1;
 	return false;
 }
 
-void ProceduralMap::Render(void)
+void ProceduralMap::Render(bool renderGeneration)
 {
+	Sprite room;
+
+	if (config == MapConfig::SPARSE)
+		room = room1;
+	if (config == MapConfig::DENSE)
+		room = room2;
+
 	int roomW = room.GetWidth(), roomH = room.GetHeight();
 
 	for (int i = 0; i < width; ++i)
 		for (int j = 0; j < height; ++j)
 			if (map[i][j] == 1)
-				room.Render(i*roomW, j*roomH);
+			{
+					room.Render(i*roomW, j*roomH);
+			}
+	if (renderGeneration)
+	{
+		SDL_Delay(250);
+		SDL_RenderPresent(Game::GetInstance()->GetRenderer());
+	}
 }
 
 int ProceduralMap::NewPossibilities(void)
@@ -146,6 +170,7 @@ void ProceduralMap::DeleteMap(void)
 		delete map[i];
 
 	delete map;
+	map = nullptr;
 }
 
 void ProceduralMap::PrintMap(void)

@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include <string>
-#include <ctime>
 
 #define FPS 60
 #define FRAME_TIME 1000/FPS
@@ -24,7 +23,6 @@ Game::~Game(void)
 		delete storedState;
 	while (!stateStack.empty())
 		stateStack.pop();
-	std::srand(std::time(0));
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -118,6 +116,11 @@ int Game::GetWinWidth(void)
 int Game::GetWinHeight(void)
 {
 	return winHeight;
+}
+
+void Game::ClearRenderer(void)
+{
+	SDL_RenderClear(renderer);
 }
 
 /*

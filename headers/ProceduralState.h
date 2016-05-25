@@ -13,6 +13,6 @@ class ProceduralState : public State
 		void Resume(void);
 		bool IsCollidingWithWall(GameObject* obj);
 	private:
-	//	LevelMap map;
+		unsigned int seed;
 };
 

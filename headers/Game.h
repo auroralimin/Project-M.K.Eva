@@ -79,6 +79,11 @@ class Game
 		 */
 		int GetWinHeight(void);
 
+		/**
+		 * Clears the game renderer.
+		 */
+		void ClearRenderer(void);
+
 	private:
 		static Game *_instance;
 		SDL_Window *window;

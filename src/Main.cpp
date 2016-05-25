@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	}
 	else if (std::string(argv[1]) == "procedural")
 	{
-		Game *game = Game::GetInstance("Project M.K.Eva", 320, 320);
+		Game *game = Game::GetInstance("Project M.K.Eva", 1920, 1080);
 		game->Push(new ProceduralState());
 		game->Run();
 		delete game;
