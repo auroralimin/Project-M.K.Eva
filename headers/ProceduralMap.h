@@ -17,7 +17,8 @@ class ProceduralMap
 
 	private:
 		static int** map;
-		static int totalRooms, width, height;
+		static int totalRooms, width, height, nMaps;
+		static Vec2 firstRoom;
 		static MapConfig config;
 		static std::string path;
 
@@ -27,6 +28,7 @@ class ProceduralMap
 		static int NewPossibilities(void);
 		static void Render(const bool renderGeneration, const std::string path);
 		static void LabelRooms(void);
+		static std::string GenerateMapFile(void);
 		static void DeleteMap(void);
 		static void PrintMap(void);
 };

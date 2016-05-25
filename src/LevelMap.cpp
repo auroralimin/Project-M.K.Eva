@@ -13,12 +13,6 @@ LevelMap::LevelMap(std::string file)
 	Load(file);
 }
 
-LevelMap::~LevelMap(void)
-{
-	for (auto room : rooms)
-		delete room;
-}
-
 void LevelMap::Load(std::string file)
 {
 	FILE *fp = fopen(file.c_str(), "r");
@@ -33,20 +27,19 @@ void LevelMap::Load(std::string file)
 	fscanf(fp, "%s\n\n", tileSetFile);
 	TileSet *tileSet = new TileSet(TILE_SIZE, TILE_SIZE, std::string(tileSetFile));
 
-	int nRooms;
-	char roomFile[100];
-	fscanf(fp, "%d\n\n", &nRooms);
-	for (int i = 0; i < nRooms; ++i)
-	{
-		fscanf(fp, "%s\n", roomFile);
-		rooms.emplace_back(new TileMap(std::string(roomFile), tileSet));
-	}
+	char roomsPath[200];
+	fscanf(fp, "%s\n", roomsPath);
 
-	int room;
 	fscanf(fp, "%d,%d,", &mapWidth, &mapHeight);
 	fscanf(fp, "%f,%f,", &currentRoom.x, &currentRoom.y);
-	while(fscanf(fp, "%d,", &room) != EOF)
-		mapMatrix.emplace_back(room);
+
+	int r;
+	while(fscanf(fp, "%d,", &r) != EOF)
+	{
+		if (r != -1 && rooms.find(r) == rooms.end())
+			rooms.emplace(r, new TileMap(roomsPath + std::to_string(r) + ".txt", tileSet));
+		mapMatrix.emplace_back(r);
+	}
 	index = mapMatrix[currentRoom.x + (mapWidth*currentRoom.y)];
 
 	fclose(fp);

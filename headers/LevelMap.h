@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <unordered_map>
 #include <memory>
 
 #include "TileMap.h"
@@ -10,7 +11,6 @@ class LevelMap
 {
 	public:
 		LevelMap(std::string file);
-		~LevelMap(void);
 		void Load(std::string file);
 		void Render(void);
 		void SetCurrentRoom(Vec2 room);
@@ -27,7 +27,7 @@ class LevelMap
 	private:
 		int mapWidth, mapHeight, index;
 		Vec2 currentRoom;
-		std::vector<TileMap*> rooms;
+		std::unordered_map<int, TileMap*> rooms;
 		std::vector<int> mapMatrix;
 };
 

@@ -1,5 +1,6 @@
 #include <ctime>
 #include <iomanip>
+#include <fstream>
 
 #include "SDL2/SDL.h"
 #include "Game.h"
@@ -13,6 +14,8 @@ int** ProceduralMap::map = nullptr;
 int ProceduralMap::totalRooms = 0;
 int ProceduralMap::width = 0;
 int ProceduralMap::height = 0;
+int ProceduralMap::nMaps = 0;
+Vec2 ProceduralMap::firstRoom(0, 0);
 ProceduralMap::MapConfig ProceduralMap::config;
 std::string ProceduralMap::path;
 
@@ -23,6 +26,7 @@ std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, Ma
 	ProceduralMap::totalRooms = totalRooms;
 	ProceduralMap::config = config;
 	path = (config == MapConfig::SPARSE) ? S_PATH : D_PATH;
+	nMaps++;
 
 	float p = (width*height)/totalRooms;
 	if (p < 0.8 || width < 3 || height < 3)
@@ -36,11 +40,11 @@ std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, Ma
 	Automaton((int)(p*1.5*config), 1, 4);
 	LabelRooms();
 	Render(false, path);
+	std::string file = GenerateMapFile();
 
 	DeleteMap();
 
-	//TODO save generated map on a file
-	return "";
+	return file;
 }
 
 void ProceduralMap::SetupMap(void)
@@ -52,10 +56,13 @@ void ProceduralMap::SetupMap(void)
 		std::fill_n(map[i], height, -1);
 	}
 
-	int x = 1 + std::rand() % (width-2);
-	int y = 1 + std::rand() % (height-2);
+	int x, y;
+	x = 1 + std::rand() % (width-2);
+	y = 1 + std::rand() % (height-2);
 	map[x][y] = 1;
 	map[x-1][y] = map[x+1][y] = map[x][y-1] = map[x][y+1] = 0;
+	firstRoom.x = x;
+	firstRoom.y = y;
 }
 
 void ProceduralMap::Automaton(int minRoomPerGen, int nRooms, int nPossibilities)
@@ -169,6 +176,29 @@ void ProceduralMap::LabelRooms(void)
 				roomId = 0;
 			}
 		}
+}
+
+std::string ProceduralMap::GenerateMapFile(void)
+{
+	std::string file = "map/procedural_generated_map" + std::to_string(nMaps) + ".txt";
+	std::ofstream out;
+	out.open(file);
+	
+	out << "tileset/intro.png" << std::endl << std::endl;
+	out << "tilemap/procedural_generated" << nMaps << "/" << std::endl << std::endl;
+
+	out << width << "," << height << std::endl;
+	out << firstRoom.x << "," << firstRoom.y << std::endl << std::endl;
+
+	for (int i = 0; i < width; ++i)
+	{
+		for (int j = 0; j < height; ++j)
+			out << map[i][j] << ",";
+		out << std::endl;
+	}
+
+	out.close();
+	return file;
 }
 
 void ProceduralMap::DeleteMap(void)

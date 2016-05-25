@@ -10,14 +10,18 @@ Project-M.K.Eva
 #no zip files
 *.zip
 
-#do generated doxygen files
+#no generated doxygen files
 def/
 html/
 latex/
 
-#no IDE generated files
+#no qt creator generated files
 *.config
 *.creator
 *.files
 *.includes
 *.user
+
+#no procedural generated maps
+map/procedural_generated_map*
+
