@@ -37,22 +37,84 @@ public:
     void Render();
 
     /**
-     * @brief Update
-     * @param dt
+     * Sets the current animation based on input and updates sprites
+     * @param dt time elapsed between th current and the last frame
      */
     void Update(float dt);
 
+    /**
+     * Returns if eva's hp reach 0 or below
+     * @return returns true if eva's hp reached 0 or below, returns false
+     * otherwise
+     */
     bool IsDead();
+
+    /**
+     * Reacts to a collision
+     * @param other reference define reaction to the collision
+     */
     void NotifyCollision(GameObject &other);
+
+    /**
+     * Returns if this class is the class indicated by className
+     * @param className name of the class to be tested
+     * @return if className is equal to this class' name then returns true,
+     * returns false otherwise
+     */
     bool Is(std::string className);
+
+    /**
+     * Reduces eva's hp
+     * @param dmg value that will be reduced from eva's hp
+     */
     void TakeDamage(int dmg = 1);
 
+    /**
+     * Changes the file from which the idle sprite will be created and
+     * resets the sprite
+     * @param file new sprite file
+     */
     void SetIdleFile(std::string file);
+
+    /**
+     * Changes the file from which the moving up sprite will be created and
+     * resets the sprite
+     * @param file new sprite file
+     */
     void SetMoveUpFile(std::string file);
+
+    /**
+     * Changes the file from which the moving down sprite will be created and
+     * resets the sprite
+     * @param file new sprite file
+     */
     void SetMoveDownFile(std::string file);
+
+    /**
+     * Changes the file from which the moving left sprite will be created and
+     * resets the sprite
+     * @param file new sprite file
+     */
     void SetMoveLeftFile(std::string file);
+
+    /**
+     * Changes the file from which the moving right sprite will be created and
+     * resets the sprite
+     * @param file new sprite file
+     */
     void SetMoveRightFile(std::string file);
+
+    /**
+     * Sets the frameTime and resets all sprites to accomodate the new frameTime
+     * @param time value to be attributed to frameTime
+     */
     void SetFrameTime(float time);
+
+    /**
+     * Sets the frameCount and resets all sprites to accomodate the new
+     * frameCount
+     * @param count value to be attributed to frameCount
+     */
     void SetFrameCount(int count);
 
 private:

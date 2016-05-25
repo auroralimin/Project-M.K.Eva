@@ -20,7 +20,7 @@ IntroState::IntroState(void) : map("map/intro.txt")
 
 void IntroState::Update(float dt)
 {
-//    UNUSED_VAR dt;
+    UNUSED_VAR dt;
 	InputManager input = InputManager::GetInstance();
 
 	quitRequested = (input.IsKeyDown(ESCAPE_KEY) || input.IsQuitRequested());
