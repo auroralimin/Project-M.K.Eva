@@ -9,18 +9,17 @@
 IntroState::IntroState(void) : map("map/intro.txt")
 {
 	Camera::pos = Vec2(0.0, 0.0);
-    AddObject(new Eva(300, 150,
-                      std::string("sprites/eva/movement/EVA-BASE-PARADA.png"),
-                      std::string("sprites/eva/movement/EVA-BASE-UP.png"),
-                      std::string("sprites/eva/movement/EVA-BASE-DOWN.png"),
-                      std::string("sprites/eva/movement/EVA-BASE-LEFT.png"),
-                      std::string("sprites/eva/movement/EVA-BASE-RIGHT.png"),
-                      6, 0.08));
+	std::string files[5] = {std::string("sprites/eva/movement/EVA-BASE-PARADA.png"),
+		std::string("sprites/eva/movement/EVA-BASE-UP.png"),
+		std::string("sprites/eva/movement/EVA-BASE-DOWN.png"),
+		std::string("sprites/eva/movement/EVA-BASE-LEFT.png"),
+		std::string("sprites/eva/movement/EVA-BASE-RIGHT.png")};
+	AddObject(new Eva(Vec2(300, 150), files, 6, 0.08));
 }
 
 void IntroState::Update(float dt)
 {
-    UNUSED_VAR dt;
+	UNUSED_VAR dt;
 	InputManager input = InputManager::GetInstance();
 
 	quitRequested = (input.IsKeyDown(ESCAPE_KEY) || input.IsQuitRequested());
@@ -43,7 +42,7 @@ void IntroState::Update(float dt)
 void IntroState::Render(void)
 {
 	map.Render();
-    RenderArray();
+	RenderArray();
 }
 
 void IntroState::Pause(void)
