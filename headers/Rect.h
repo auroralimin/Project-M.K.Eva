@@ -50,7 +50,7 @@ class Rect
 		Vec2 GetCenter(void);
 
 		/*
-		 * Renders a red filled rectangle to represent the rect instance
+		 * Renders a red filled rectangle to represent the rect instance.
 		 */
 		void RenderFilledRect(void);
 };

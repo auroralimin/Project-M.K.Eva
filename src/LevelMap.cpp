@@ -109,12 +109,13 @@ int LevelMap::GetHeight(void)
 	return mapHeight;
 }
 
-bool LevelMap::IsCollidingWithWall(GameObject* o)
+bool LevelMap::IsCollidingWithWall(GameObject* obj)
 {
 	std::vector<Rect> wallRect = rooms[index]->GetWallRect();
 	for(size_t i = 0; i < wallRect.size(); i++)
-        if(Collision::IsColliding(o->hitbox, wallRect[i], o->rotation, 0))
+        if(Collision::IsColliding(obj->hitbox, wallRect[i], obj->rotation, 0))
 			return true;
 
 	return false;
 }
+

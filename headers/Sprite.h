@@ -55,7 +55,7 @@ class Sprite
 		void SetFrameTime(float frameTime);
 
 		/**
-		 * Sets the sprite clip
+		 * Sets the sprite clip.
 		 * @param x a int argument containing the x coordinate of the clip
 		 * @param y a int argument containing the y coordinate of the clip
 		 * @param w a int argument containing the w coordinate of the clip
