@@ -28,7 +28,7 @@ debug: DIRECTIVES += -ggdb
 debug: CC = clang++
 debug: all
 
-release: DIRECTIVES += -Ofast -mart=native
+release: DIRECTIVES += -Ofast -march=native
 release: all
 
 doc: 
