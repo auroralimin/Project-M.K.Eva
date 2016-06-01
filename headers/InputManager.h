@@ -40,6 +40,15 @@
 /** \def D_KEY keyboard d key. */
 #define D_KEY SDLK_d
 
+/** \def NUM_1_KEY keyboard number 1 key */
+#define NUM_1_KEY SDLK_1
+
+/** \def NUM_2_KEY keyboard number 2 key */
+#define NUM_2_KEY SDLK_2
+
+/** \def NUM_3_KEY keyboard number 3 key */
+#define NUM_3_KEY SDLK_3
+
 /***************************************************************************//**
  * This class manages the game input.
  ******************************************************************************/

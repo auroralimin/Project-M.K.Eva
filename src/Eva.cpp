@@ -17,6 +17,7 @@ Eva::Eva(): evaAnimations()
     frameCount = 1;
     frameTime = 1.0f;
     moveSpeed = 150;
+    currentClass = BASE;
 }
 
 Eva::Eva(Vec2 pos, std::string *files, int frameCount, float frameTime, int moveSpeed) :
@@ -27,9 +28,11 @@ Eva::Eva(Vec2 pos, std::string *files, int frameCount, float frameTime, int move
     this->box.pos = pos;
     this->box.dim = Vec2(evaAnimations.GetSpriteWidth(),
                          evaAnimations.GetSpriteHeight());
+    this->frameCount = frameCount;
     rotation = 0;
     hp = 100; //temp value
     player = this;
+    currentClass = BASE;
 }
 
 Eva::~Eva()
@@ -59,6 +62,28 @@ void Eva::Update(float dt)
 	bool isMoving = false;
 	Vec2 speed = Vec2(0, 0);
 	InputManager &manager = InputManager::GetInstance();
+
+    if (manager.KeyPress(NUM_1_KEY)) {
+        if (currentClass != BASE){
+            currentClass = BASE;
+            SetAnimationFileSet(BASE);
+        }
+    }
+
+    if (manager.KeyPress(NUM_2_KEY)) {
+        if (currentClass != DECKER){
+            currentClass = DECKER;
+            SetAnimationFileSet(DECKER);
+        }
+    }
+
+    if (manager.KeyPress(NUM_3_KEY)) {
+        if (currentClass != GUNSLINGER){
+            currentClass = GUNSLINGER;
+            SetAnimationFileSet(GUNSLINGER);
+        }
+    }
+
 
 	if (manager.IsKeyDown(D_KEY))
 	{
@@ -135,5 +160,34 @@ void Eva::SetFrameCount(int count)
 {
     frameCount = count;
 	for (int i = 0; i < 5; ++i)
- 	   evaAnimations.SetAnimation(i, files[i], frameCount, frameTime);
+        evaAnimations.SetAnimation(i, files[i], frameCount, frameTime);
+}
+
+void Eva::SetAnimationFileSet(Classes pClass)
+{
+    std::string adress("sprites/eva/movement/EVA-");
+    std::string set;
+    switch (pClass) {
+    case BASE:
+        set = std::string("BASE");
+        break;
+    case DECKER:
+        set = std::string("DECKER");
+        break;
+    case GUNSLINGER:
+        set = std::string("GUN");
+        break;
+    default:
+        set = std::string("BASE");
+        break;
+    }
+    std::string tfiles[5] = {adress + set + std::string("-PARADA.png"),
+                             adress + set + std::string("-UP.png"),
+                             adress + set + std::string("-DOWN.png"),
+                             adress + set + std::string("-LEFT.png"),
+                             adress + set + std::string("-RIGHT.png")};
+    files = tfiles;
+    for (int i = 0; i < 5; i++) {
+        evaAnimations.SetAnimation(i, files[i], frameCount, frameTime);
+    }
 }

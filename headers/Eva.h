@@ -7,6 +7,10 @@
 class Eva : public GameObject
 {
 public:
+
+    enum Classes {
+        BASE, DECKER, GUNSLINGER
+    };
     /**
      * Default initializes an empty AnimationFSM, and initializes member
      * variables with default values;
@@ -87,6 +91,8 @@ public:
      */
     void SetFrameCount(int count);
 
+    void SetAnimationFileSet(Classes pClass);
+
     /**
      * static pointer to the player to be used in interactions
      */
@@ -97,6 +103,7 @@ private:
     float frameTime;
     int moveSpeed;
     AnimationFSM evaAnimations;
+    Classes currentClass;
 
 };
 
