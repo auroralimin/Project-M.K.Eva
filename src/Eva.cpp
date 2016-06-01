@@ -65,32 +65,32 @@ void Eva::Update(float dt)
 		isMoving = true;
 		if (!(manager.IsKeyDown(S_KEY)) && !(manager.IsKeyDown(W_KEY)))
 			evaAnimations.SetCurrentState(AnimationFSM::MOVING_RIGHT);
-		speed.x += moveSpeed * dt;
+		speed.x += dt;
 	}
 	if (manager.IsKeyDown(A_KEY))
 	{
 		isMoving = true;
 		if (!(manager.IsKeyDown(S_KEY)) && !(manager.IsKeyDown(W_KEY)))
 			evaAnimations.SetCurrentState(AnimationFSM::MOVING_LEFT);
-		speed.x -= moveSpeed * dt;
+		speed.x -= dt;
 	}
 	if (manager.IsKeyDown(S_KEY))
 	{
 		isMoving = true;
 		evaAnimations.SetCurrentState(AnimationFSM::MOVING_DOWN);
-		speed.y += moveSpeed * dt;
+		speed.y += dt;
 	}
 	if (manager.IsKeyDown(W_KEY))
 	{
 		isMoving = true;
 		evaAnimations.SetCurrentState(AnimationFSM::MOVING_UP);
-		speed.y -= moveSpeed * dt;
+		speed.y -= dt;
 	}
 
 	if (!isMoving)
 		evaAnimations.SetCurrentState(AnimationFSM::IDLE);
 
-	box.pos += speed;
+	box.pos += speed.Normalize() * moveSpeed;
 	evaAnimations.Update(dt);
 
 	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))

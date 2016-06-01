@@ -21,7 +21,7 @@ public:
      * @param frameCount number of frames for the spritesheets
      * @param frameTime duration of each frame
      */
-    Eva(Vec2 pos, std::string *files, int frameCount = 1, float frameTime = 1.0f, int moveSpeed = 150);
+    Eva(Vec2 pos, std::string *files, int frameCount = 1, float frameTime = 1.0f, int moveSpeed = 3);
 
     /**
      * Sets the player pointer back to nullptr

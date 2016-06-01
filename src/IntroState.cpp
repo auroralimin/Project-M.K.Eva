@@ -14,8 +14,7 @@ IntroState::IntroState(void) : map("map/intro.txt")
 		std::string("sprites/eva/movement/EVA-BASE-DOWN.png"),
 		std::string("sprites/eva/movement/EVA-BASE-LEFT.png"),
 		std::string("sprites/eva/movement/EVA-BASE-RIGHT.png")};
-    AddObject(new Eva(Vec2(Game::GetInstance()->GetWinWidth()/2, Game::GetInstance()->GetWinHeight()/2), files, 6, 0.04, 300));
-
+    AddObject(new Eva(Vec2(Game::GetInstance()->GetWinWidth()/2, Game::GetInstance()->GetWinHeight()/2), files, 6, 0.04, 5));
 }
 
 void IntroState::Update(float dt)
