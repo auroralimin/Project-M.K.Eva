@@ -53,9 +53,8 @@ void Eva::Render()
 
 void Eva::Update(float dt)
 {
-	Vec2 previousPos = box.pos;
+	Vec2 previousPos = box.pos, speed = Vec2(0, 0);
 	bool isMoving = false;
-	Vec2 speed = Vec2(0, 0);
 	InputManager &manager = InputManager::GetInstance();
 
     if (manager.KeyPress(NUM_1_KEY) && currentClass != BASE)
@@ -91,19 +90,20 @@ void Eva::Update(float dt)
 		evaAnimations.SetCurrentState(AnimationFSM::MOVING_UP);
 		speed.y -= 1;
 	}
-
 	if (!isMoving)
 		evaAnimations.SetCurrentState(AnimationFSM::IDLE);
 
 	box.pos += speed.Normalize() * moveSpeed * dt;
-	hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 60);
 
+	hitbox.pos = Vec2(previousPos.x + 20, box.pos.y + 60);
 	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
-	{
-		box.pos = previousPos;
-		hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 60);
-	}
+		box.pos.y = previousPos.y;
 
+	hitbox.pos = Vec2(box.pos.x + 20, previousPos.y + 60);
+	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
+		box.pos.x = previousPos.x;
+
+	hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 60);
 	evaAnimations.Update(dt);
 }
 
