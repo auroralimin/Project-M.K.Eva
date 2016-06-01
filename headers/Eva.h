@@ -10,6 +10,7 @@ class Eva : public GameObject
 		enum Classes {
 			BASE, DECKER, GUNSLINGER
 		};
+
 		/**
 		 * Default initializes an empty AnimationFSM, and initializes member
 		 * variables with default values;
@@ -92,12 +93,15 @@ class Eva : public GameObject
 
 		void SetAnimationFileSet(Classes pClass);
 
+		void SetClass(Classes c);
+
 		/**
 		 * static pointer to the player to be used in interactions
 		 */
 		static Eva* player;
 
 	private:
+		const std::string classes[3] = {"BASE", "DECKER", "GUN"};
 		std::string *files;
 		float frameTime;
 		int moveSpeed;

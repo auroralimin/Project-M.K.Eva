@@ -58,27 +58,12 @@ void Eva::Update(float dt)
 	Vec2 speed = Vec2(0, 0);
 	InputManager &manager = InputManager::GetInstance();
 
-    if (manager.KeyPress(NUM_1_KEY)) {
-        if (currentClass != BASE){
-            currentClass = BASE;
-            SetAnimationFileSet(BASE);
-        }
-    }
-
-    if (manager.KeyPress(NUM_2_KEY)) {
-        if (currentClass != DECKER){
-            currentClass = DECKER;
-            SetAnimationFileSet(DECKER);
-        }
-    }
-
-    if (manager.KeyPress(NUM_3_KEY)) {
-        if (currentClass != GUNSLINGER){
-            currentClass = GUNSLINGER;
-            SetAnimationFileSet(GUNSLINGER);
-        }
-    }
-
+    if (manager.KeyPress(NUM_1_KEY) && currentClass != BASE)
+		SetClass(BASE);
+	else if (manager.KeyPress(NUM_2_KEY) && currentClass != DECKER)
+		SetClass(DECKER);
+	else if (manager.KeyPress(NUM_3_KEY) && currentClass != GUNSLINGER)
+		SetClass(GUNSLINGER);
 
 	if (manager.IsKeyDown(D_KEY))
 	{
@@ -111,47 +96,49 @@ void Eva::Update(float dt)
 		evaAnimations.SetCurrentState(AnimationFSM::IDLE);
 
 	box.pos += speed.Normalize() * moveSpeed * dt;
-	evaAnimations.Update(dt);
-
 	hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 60);
+
 	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
+	{
 		box.pos = previousPos;
+		hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 60);
+	}
 
-	hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 60);
+	evaAnimations.Update(dt);
 }
 
 bool Eva::IsDead()
 {
-    return (hp <= 0);
+	return (hp <= 0);
 }
 
 void Eva::NotifyCollision(GameObject &other)
 {
 	UNUSED_VAR other;
-    //TODO
+	//TODO
 }
 
 bool Eva::Is(std::string className)
 {
-    return (className == std::string("Eva"));
+	return (className == std::string("Eva"));
 }
 
 void Eva::TakeDamage(int dmg)
 {
-    hp -= dmg;
+	hp -= dmg;
 }
 
 void Eva::SetAnimationFile(int index, std::string file)
 {
-    files[index] = file;
-    evaAnimations.SetAnimation(index, file, frameCount, frameTime);
+	files[index] = file;
+	evaAnimations.SetAnimation(index, file, frameCount, frameTime);
 }
 
 void Eva::SetFrameTime(float time)
 {
-    frameTime = time;
+	frameTime = time;
 	for (int i = 0; i < 5; ++i)
- 	   evaAnimations.SetAnimation(i, files[i], frameCount, frameTime);
+		evaAnimations.SetAnimation(i, files[i], frameCount, frameTime);
 }
 
 void Eva::SetFrameCount(int count)
@@ -163,29 +150,19 @@ void Eva::SetFrameCount(int count)
 
 void Eva::SetAnimationFileSet(Classes pClass)
 {
-    std::string adress("sprites/eva/movement/EVA-");
-    std::string set;
-    switch (pClass) {
-    case BASE:
-        set = std::string("BASE");
-        break;
-    case DECKER:
-        set = std::string("DECKER");
-        break;
-    case GUNSLINGER:
-        set = std::string("GUN");
-        break;
-    default:
-        set = std::string("BASE");
-        break;
-    }
-    std::string tfiles[5] = {adress + set + std::string("-PARADA.png"),
-                             adress + set + std::string("-UP.png"),
-                             adress + set + std::string("-DOWN.png"),
-                             adress + set + std::string("-LEFT.png"),
-                             adress + set + std::string("-RIGHT.png")};
-    files = tfiles;
-    for (int i = 0; i < 5; i++) {
-        evaAnimations.SetAnimation(i, files[i], frameCount, frameTime);
-    }
+    std::string path("sprites/eva/movement/EVA-");
+    std::string tFiles[5] = {path + classes[pClass] + std::string("-PARADA.png"),
+                             path + classes[pClass] + std::string("-UP.png"),
+                             path + classes[pClass] + std::string("-DOWN.png"),
+                             path + classes[pClass] + std::string("-LEFT.png"),
+                             path + classes[pClass] + std::string("-RIGHT.png")};
+    for (int i = 0; i < 5; i++)
+        evaAnimations.SetAnimation(i, tFiles[i], frameCount, frameTime);
 }
+
+void Eva::SetClass(Classes c)
+{
+	currentClass = c;
+	SetAnimationFileSet(c);
+}
+
