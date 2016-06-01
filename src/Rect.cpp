@@ -1,4 +1,6 @@
 #include "Rect.h"
+#include "Game.h"
+
 #include <iostream>
 #include <cmath>
 
@@ -25,5 +27,20 @@ bool Rect::IsInside(Vec2 area)
 Vec2 Rect::GetCenter(void)
 {
 	return pos + dim/2;
+}
+
+void Rect::RenderFilledRect(void)
+{
+	SDL_Rect rect;
+
+	rect.x = pos.x;
+	rect.y = pos.y;
+	rect.w = dim.x;
+	rect.h = dim.y;
+
+	SDL_Renderer *renderer = Game::GetInstance()->GetRenderer();
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 150);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_RenderFillRect(renderer, &rect);
 }
 

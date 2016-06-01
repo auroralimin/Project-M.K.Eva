@@ -1,6 +1,6 @@
 #pragma once
-#include "Vec2.h"
 
+#include "Vec2.h"
 
 /***************************************************************************//**
  * It is an abstraction of a rectangle.
@@ -48,5 +48,10 @@ class Rect
 		 * @return A vec2 containing coordinates to the retangle center
 		 */
 		Vec2 GetCenter(void);
+
+		/*
+		 * Renders a red filled rectangle to represent the rect instance
+		 */
+		void RenderFilledRect(void);
 };
 

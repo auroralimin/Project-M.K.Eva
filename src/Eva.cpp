@@ -12,8 +12,10 @@ Eva::Eva(): evaAnimations()
 {
     box.pos = Vec2();
     box.dim = Vec2();
+    hitbox.pos = Vec2();
+    hitbox.dim = Vec2();
     rotation = 0;
-    hp = 100; //temp value
+    hp = 100;
     frameCount = 1;
     frameTime = 1.0f;
     moveSpeed = 150;
@@ -25,12 +27,14 @@ Eva::Eva(Vec2 pos, std::string *files, int frameCount, float frameTime, int move
 	evaAnimations(files, frameCount, frameTime)
 {
 	this->files = files;
-    this->box.pos = pos;
-    this->box.dim = Vec2(evaAnimations.GetSpriteWidth(),
-                         evaAnimations.GetSpriteHeight());
     this->frameCount = frameCount;
+    box.pos = pos;
+    box.dim = Vec2(evaAnimations.GetSpriteWidth(),
+                         evaAnimations.GetSpriteHeight());
+	hitbox.dim = Vec2(box.dim.x/2, box.dim.y/4);
+	hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 60);
     rotation = 0;
-    hp = 100; //temp value
+    hp = 100;
     player = this;
     currentClass = BASE;
 }
@@ -43,16 +47,7 @@ Eva::~Eva()
 void Eva::Render()
 {
 	if (Config::HITBOX_MODE)
-	{
-		SDL_SetRenderDrawColor(Game::GetInstance()->GetRenderer(), 255, 0, 0, 200);
-		SDL_SetRenderDrawBlendMode(Game::GetInstance()->GetRenderer(), SDL_BLENDMODE_BLEND);
-		SDL_Rect rect;
-		rect.x = box.pos.x;
-		rect.y = box.pos.y;
-		rect.w = box.dim.x;
-		rect.h = box.dim.y;
-		SDL_RenderFillRect(Game::GetInstance()->GetRenderer(), &rect);
-	}
+		hitbox.RenderFilledRect();
 	evaAnimations.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y);
 }
 
@@ -90,36 +85,39 @@ void Eva::Update(float dt)
 		isMoving = true;
 		if (!(manager.IsKeyDown(S_KEY)) && !(manager.IsKeyDown(W_KEY)))
 			evaAnimations.SetCurrentState(AnimationFSM::MOVING_RIGHT);
-		speed.x += dt;
+		speed.x += 1;
 	}
 	if (manager.IsKeyDown(A_KEY))
 	{
 		isMoving = true;
 		if (!(manager.IsKeyDown(S_KEY)) && !(manager.IsKeyDown(W_KEY)))
 			evaAnimations.SetCurrentState(AnimationFSM::MOVING_LEFT);
-		speed.x -= dt;
+		speed.x -= 1;
 	}
 	if (manager.IsKeyDown(S_KEY))
 	{
 		isMoving = true;
 		evaAnimations.SetCurrentState(AnimationFSM::MOVING_DOWN);
-		speed.y += dt;
+		speed.y += 1;
 	}
 	if (manager.IsKeyDown(W_KEY))
 	{
 		isMoving = true;
 		evaAnimations.SetCurrentState(AnimationFSM::MOVING_UP);
-		speed.y -= dt;
+		speed.y -= 1;
 	}
 
 	if (!isMoving)
 		evaAnimations.SetCurrentState(AnimationFSM::IDLE);
 
-	box.pos += speed.Normalize() * moveSpeed;
+	box.pos += speed.Normalize() * moveSpeed * dt;
 	evaAnimations.Update(dt);
 
+	hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 60);
 	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
 		box.pos = previousPos;
+
+	hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 60);
 }
 
 bool Eva::IsDead()

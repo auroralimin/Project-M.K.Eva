@@ -53,21 +53,11 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
 
 	for (int i = 0; i < mapWidth; ++i)
 		for (int j = 0; j < mapHeight; ++j)
-		{
 			tileSet->Render(At(i, j, layer), (i*tileWidth)-cameraX, (j*tileHeight)-cameraY);
-			//Renders red, transparent boxes on top of the wall.
-			if(Config::HITBOX_MODE && (layer == 1) && (At(i, j, layer) > -1))
-			{
-				SDL_SetRenderDrawColor(Game::GetInstance()->GetRenderer(), 255, 0, 0, 200);
-				SDL_SetRenderDrawBlendMode(Game::GetInstance()->GetRenderer(), SDL_BLENDMODE_BLEND);
-				SDL_Rect rect;
-				rect.x = (i*tileWidth + tileWidth/3) - cameraX;
-				rect.y = (j*tileHeight)-cameraY;
-				rect.w = tileWidth/3;
-				rect.h = tileHeight/4;
-				SDL_RenderFillRect(Game::GetInstance()->GetRenderer(), &rect);
-			}
-		}
+
+	if(Config::HITBOX_MODE && (layer == 1))
+		for (auto hitbox : wallRect)
+			hitbox.RenderFilledRect();
 }
 
 int TileMap::GetWidth(void)
@@ -90,11 +80,13 @@ void TileMap::LoadWallRects(void)
 	int tileWidth = tileSet->GetTileWidth();
 	int tileHeight = tileSet->GetTileHeight();
 
-    for(int i = 0; i < mapWidth; i++)
-		for(int j = 0; j < mapHeight; j++)
-			if(At(i, j, 1) > -1)
-                wallRect.emplace_back(Vec2(i*tileWidth + tileWidth/3, j*tileHeight),
-						Vec2(tileWidth/3, tileHeight/4));
+	for(int i = 0; i <= mapWidth; i++)
+		for(int j = 0; j <= mapHeight; j++)
+			if ((i < mapWidth && j < mapHeight && At(i, j, 1) > -1)
+					|| (i == mapWidth && At(i - 1, j, 1) > -1)
+					|| (j == mapHeight && At(i, j - 1) > -1))
+				wallRect.emplace_back(Vec2(i*tileWidth, j*tileHeight),
+						Vec2(tileWidth, tileHeight));
 }
 
 std::vector<Rect> TileMap::GetWallRect(void)
