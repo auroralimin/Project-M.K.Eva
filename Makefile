@@ -25,7 +25,7 @@ $(BIN_PATH)/%.o: $(SRC_PATH)/%.cpp
 	@mv -f $(DEP_PATH)/$*.Td $(DEP_PATH)/$*.d
 
 debug: DIRECTIVES += -ggdb
-	CC = clang++
+debug: CC = clang++
 debug: all
 
 release: DIRECTIVES += -Ofast -mtune=native
