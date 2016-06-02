@@ -46,8 +46,9 @@ Eva::~Eva()
 
 void Eva::Render()
 {
+	int color[4] = COLOR_HITBOX;
 	if (Config::HITBOX_MODE)
-		hitbox.RenderFilledRect();
+		hitbox.RenderFilledRect(color);
 	evaAnimations.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y);
 }
 

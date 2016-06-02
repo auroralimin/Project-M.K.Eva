@@ -29,7 +29,7 @@ Vec2 Rect::GetCenter(void)
 	return pos + dim/2;
 }
 
-void Rect::RenderFilledRect(void)
+void Rect::RenderFilledRect(int color[4])
 {
 	SDL_Rect rect;
 
@@ -39,7 +39,7 @@ void Rect::RenderFilledRect(void)
 	rect.h = dim.y;
 
 	SDL_Renderer *renderer = Game::GetInstance()->GetRenderer();
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 150);
+	SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], color[3]);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_RenderFillRect(renderer, &rect);
 }

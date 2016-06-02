@@ -4,13 +4,27 @@
 #include "TileSet.h"
 #include "Camera.h"
 #include "Rect.h"
+#include "Config.h"
 #include "Collision.h"
 
 #define TILE_SIZE 64
+#define MINI_ROOM_SIZE_X 30
+#define MINI_ROOM_SIZE_Y 22
+#define MINI_ROOM_BORDER 3
+#define MINIMAP_X 1080
+#define MINIMAP_Y 0
 
 LevelMap::LevelMap(std::string file)
 {
 	Load(file);
+
+	miniRoom.dim.x = MINI_ROOM_SIZE_X * mapWidth + MINI_ROOM_BORDER*2;
+	miniRoom.dim.y = MINI_ROOM_SIZE_Y * mapHeight + MINI_ROOM_BORDER*2;
+	miniRoom.pos.x = MINIMAP_X - MINI_ROOM_BORDER;
+	miniRoom.pos.y = MINIMAP_Y - MINI_ROOM_BORDER;
+
+	miniRoom2.dim.x = MINI_ROOM_SIZE_X - MINI_ROOM_BORDER*2;
+	miniRoom2.dim.y = MINI_ROOM_SIZE_Y - MINI_ROOM_BORDER*2;
 }
 
 void LevelMap::Load(std::string file)
@@ -48,6 +62,27 @@ void LevelMap::Load(std::string file)
 void LevelMap::Render(void)
 {
 	rooms[index]->Render(Camera::pos.x, Camera::pos.y);
+
+	int color1[4] = COLOR_T_GREY_1;
+	miniRoom.RenderFilledRect(color1);
+
+	int color2[4] = COLOR_T_GREY_2;
+	int color3[4] = COLOR_T_GREY_3;
+	for (int i = 0; i < mapWidth; i++)
+	{
+		for (int j = 0; j < mapHeight; j++)
+		{
+			if (!IsOutOfLimits(Vec2(i, j)) && (mapMatrix[i + mapWidth*j] > -1))
+			{
+				miniRoom2.pos.x = i*MINI_ROOM_SIZE_X+MINIMAP_X+MINI_ROOM_BORDER;
+				miniRoom2.pos.y = j*MINI_ROOM_SIZE_Y+MINIMAP_Y+MINI_ROOM_BORDER;
+				if (!(currentRoom.x == i && currentRoom.y == j))
+					miniRoom2.RenderFilledRect(color2);
+				else
+					miniRoom2.RenderFilledRect(color3);
+			}
+		}
+	}
 }
 
 void LevelMap::SetCurrentRoom(Vec2 room)

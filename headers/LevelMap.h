@@ -5,6 +5,7 @@
 
 #include "TileMap.h"
 #include "Vec2.h"
+#include "Rect.h"
 #include "GameObject.h"
 
 /***************************************************************************//**
@@ -93,5 +94,6 @@ class LevelMap
 		Vec2 currentRoom;
 		std::unordered_map<int, TileMap*> rooms;
 		std::vector<int> mapMatrix;
+		Rect miniRoom, miniRoom2;
 };
 

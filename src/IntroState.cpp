@@ -6,7 +6,7 @@
 #include "Config.h"
 #include "Game.h"
 
-IntroState::IntroState(void) : map("map/intro.txt")
+IntroState::IntroState(void) : map("map/procedural_generated_map1.txt")
 {
 	Camera::pos = Vec2(0.0, 0.0);
 	std::string files[5] = {std::string("sprites/eva/movement/EVA-BASE-PARADA.png"),

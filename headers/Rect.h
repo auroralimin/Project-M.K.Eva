@@ -52,6 +52,6 @@ class Rect
 		/*
 		 * Renders a red filled rectangle to represent the rect instance.
 		 */
-		void RenderFilledRect(void);
+		void RenderFilledRect(int color[4]);
 };
 

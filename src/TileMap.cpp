@@ -56,9 +56,10 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
 			tileSet->Render(At(i, j, layer), (i*tileWidth)-cameraX,
 					(j*tileHeight)-cameraY);
 
+	int color[4] = COLOR_HITBOX;
 	if(Config::HITBOX_MODE && (layer == 1))
 		for (auto hitbox : wallRect)
-			hitbox.RenderFilledRect();
+			hitbox.RenderFilledRect(color);
 }
 
 int TileMap::GetWidth(void)
