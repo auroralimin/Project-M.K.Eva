@@ -49,6 +49,14 @@
 /** \def NUM_3_KEY keyboard number 3 key */
 #define NUM_3_KEY SDLK_3
 
+/** \def Q_KEY keyboard Q key */
+#define Q_KEY SDLK_q
+
+/** \def E_KEY keyboard E key */
+#define E_KEY SDLK_e
+
+
+
 /***************************************************************************//**
  * This class manages the game input.
  ******************************************************************************/

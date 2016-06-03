@@ -58,12 +58,15 @@ void Eva::Update(float dt)
 	bool isMoving = false;
 	InputManager &manager = InputManager::GetInstance();
 
-    if (manager.KeyPress(NUM_1_KEY) && currentClass != BASE)
-		SetClass(BASE);
-	else if (manager.KeyPress(NUM_2_KEY) && currentClass != DECKER)
-		SetClass(DECKER);
-	else if (manager.KeyPress(NUM_3_KEY) && currentClass != GUNSLINGER)
-		SetClass(GUNSLINGER);
+    if (manager.KeyPress(Q_KEY)) {
+        currentClass -= 1;
+        if (currentClass < 0) currentClass = 2;
+        SetClass((Classes)currentClass);
+    } else if (manager.KeyPress(E_KEY)) {
+        currentClass += 1;
+        if (currentClass > 2) currentClass = 0;
+        SetClass((Classes)currentClass);
+    }
 
 	if (manager.IsKeyDown(D_KEY))
 	{
