@@ -132,8 +132,8 @@ void ProceduralMap::Render(const bool renderGeneration, const std::string path)
 	for (int i = 0; i < width; ++i)
 		for (int j = 0; j < height; ++j)
 			if (map[i][j] > 0)
-			{
-				std::string roomFile = std::to_string(map[i][j]) + ".jpg";
+			{	
+				std::string roomFile = std::to_string(map[i][j]) + ".png"; 
 				if (i == firstRoom.x && j == firstRoom.y)
 					Sprite(FR_PATH + roomFile).Render(i*ROOM_SIZE, j*ROOM_SIZE);
 				else

@@ -1,8 +1,29 @@
-CC = g++
+OS = linux
+
+CFLAGS = -std=c++11 -Wall -Wextra -c -I $(HEADER_PATH)
 HEADER_PATH = headers
 SRC_PATH = src
-BIN_PATH = bin
 DEP_PATH = dep
+
+ifeq ($(OS), linux)
+	CC = g++
+	BIN_PATH = bin
+	LDFLAGS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
+	FINAL_EXEC = Project-M.K.Eva
+else
+	PREFIX = /usr/local/cross-tools/
+	TOOLSET = x86_64-w64-mingw32
+	CROSSPATH = $(PREFIX)/$(TOOLSET)
+	PKG_CONFIG_PATH = ${CROSSPATH}/lib/pkgconfig
+	PATH += ${CROSSPATH}/bin
+
+	CC = $(TOOLSET)-g++ -static-libgcc -static-libstdc++
+	BIN_PATH = wbin
+	CFLAGS += -I $(CROSSPATH)/include -D WINDOWS
+	LDFLAGS = `$(CROSSPATH)/bin/sdl2-config --libs` -lSDL2_image.dll
+	LDFLAGS += -lSDL2_ttf.dll -lSDL2_mixer.dll -L${CROSSPATH}/lib/ -lpthread
+	FINAL_EXEC = Project-M.K.Eva.exe
+endif
 
 _OBJ  = Main.o Game.o Camera.o State.o Sprite.o Vec2.o Rect.o TileSet.o TileMap.o
 _OBJ += Resources.o InputManager.o Timer.o Animation.o Music.o Sound.o Text.o
@@ -12,25 +33,22 @@ _OBJ += Eva.o HubState.o FirstLevelState.o ProceduralFirstRooms.o EvaClass.o
 _OBJ += EvaBase.o EvaDecker.o EvaGunslinger.o EvaSamurai.o Bullet.o AttackClass.o
 OBJ = $(patsubst %,$(BIN_PATH)/%,$(_OBJ))
 
-DIRECTIVES = -std=c++11 -Wall -Wextra -c -I $(HEADER_PATH)
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_PATH)/$*.Td
-LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
 
-FINAL_EXEC = Project-M.K.Eva
 all: $(FINAL_EXEC)
 $(FINAL_EXEC): $(OBJ)
-	$(CC) -o $@ $^ $(LIBS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(BIN_PATH)/%.o: $(SRC_PATH)/%.cpp
 	@mkdir -p $(BIN_PATH) $(DEP_PATH)
-	$(CC) $(DEPFLAGS) -c -o $@ $< $(DIRECTIVES)
+	$(CC) $(DEPFLAGS) -c -o $@ $< $(CFLAGS)
 	@mv -f $(DEP_PATH)/$*.Td $(DEP_PATH)/$*.d
 
-debug: DIRECTIVES += -ggdb
+debug: CFLAGS += -ggdb
 debug: CC = clang++
 debug: all
 
-release: DIRECTIVES += -Ofast -march=native
+release: CFLAGS += -Ofast -mtune=native
 release: all
 
 doc: 
@@ -38,7 +56,7 @@ doc:
 
 .PHONY: clean
 clean:
-	-@rm -r $(BIN_PATH) $(DEP_PATH) def/ html/ latex/ map/procedural_generated_map* tilemap/procedural_generated_* $(FINAL_EXEC) 2>/dev/null || true
+	-@rm -r $(BIN_PATH) w$(BIN_PATH) $(DEP_PATH) def/ html/ latex/ map/procedural_generated_map* tilemap/procedural_generated_* $(FINAL_EXEC) 2>/dev/null || true
 
 $(DEP_PATH)/%.d: ;
 .PRECIOUS: $(DEP_PATH)/%.d

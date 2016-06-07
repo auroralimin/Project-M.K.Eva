@@ -29,7 +29,11 @@ void ProceduralFirstRooms::GenerateRooms(int variants[2], int pathId)
     std::srand(std::time(0));
     
     path = "tilemap/procedural_generated_" + std::to_string(pathId) + "/";
-    mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    #ifdef WINDOWS
+        mkdir(path.c_str());
+    #else
+        mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    #endif
 
     for (int d = 0; d < 2; ++d)
         for (int u = 0; u < 2; ++u)

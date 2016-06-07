@@ -1,6 +1,10 @@
 #pragma once
 #include "SDL2/SDL.h"
 
+#ifdef WINDOWS
+#define M_PI 3.14159265359
+#endif
+
 #define TILE_SIZE 64
 #define PROCEDURAL_GENERATED_SET 1
 #define UNUSED_VAR   (void)
