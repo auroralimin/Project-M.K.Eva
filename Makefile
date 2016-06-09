@@ -7,7 +7,7 @@ DEP_PATH = dep
 _OBJ  = Main.o Game.o Camera.o State.o Sprite.o Vec2.o Rect.o TileSet.o TileMap.o
 _OBJ += Resources.o InputManager.o Timer.o Animation.o Music.o Sound.o Text.o
 _OBJ += LevelMap.o IntroState.o ProceduralMap.o ProceduralState.o AnimationFSM.o
-_OBJ += Eva.o
+_OBJ += Eva.o Turret.o Bullet.o
 OBJ = $(patsubst %,$(BIN_PATH)/%,$(_OBJ))
 
 DIRECTIVES = -std=c++11 -Wall -Wextra -c -I $(HEADER_PATH)
