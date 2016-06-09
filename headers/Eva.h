@@ -15,8 +15,8 @@ class Eva : public GameObject
 		/**
 		 * Enum to represent eva's classes.
 		 */
-		enum Classes {
-			BASE, DECKER, GUNSLINGER
+        enum Classes {
+            BASE = 0, DECKER, GUNSLINGER
 		};
 
 		/**
@@ -118,7 +118,7 @@ class Eva : public GameObject
 		float frameTime;
 		int moveSpeed;
 		AnimationFSM evaAnimations;
-		Classes currentClass;
+        int currentClass;
 
 		void SetClass(Classes c);
 };
