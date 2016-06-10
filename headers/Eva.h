@@ -20,20 +20,10 @@ class Eva : public GameObject
 		};
 
 		/**
-		 * Default initializes an empty AnimationFSM, and initializes member
-		 * variables with default values.
-		 */
-		Eva();
-
-		/**
 		 * Initializes Eva with parameters.
-		 * @param x position of eva in the x axis
-		 * @param y position of eva in the y axis
-		 * @param files[] a array of strings paths to the animation sprite sheets
-		 * @param frameCount number of frames for the spritesheets
-		 * @param frameTime duration of each frame
+         * @param pos a Vec2 contains eva's initial position
 		 */
-		Eva(Vec2 pos, std::string *files, int frameCount = 1, float frameTime = 1.0f, int moveSpeed = 3);
+        Eva(Vec2 pos);
 
 		/**
 		 * Sets the player pointer back to nullptr.
@@ -91,14 +81,14 @@ class Eva : public GameObject
 		 * frameTime.
 		 * @param time value to be attributed to frameTime
 		 */
-		void SetFrameTime(float time);
+        void SetFrameTime(int index, float time);
 
 		/**
 		 * Sets the frameCount and resets all sprites to accomodate the new
 		 * frameCount.
 		 * @param count value to be attributed to frameCount
 		 */
-		void SetFrameCount(int count);
+        void SetFrameCount(int index, int count);
 
 		/**
 		 * Changes the fileset from which all animations sprites will be created.
@@ -112,11 +102,16 @@ class Eva : public GameObject
 		 */
 		static Eva* player;
 
+        enum Animations {
+            IDLE, MOVING_UP, MOVING_DOWN, MOVING_LEFT, MOVING_RIGHT
+        };
+
 	private:
-		const std::string classes[3] = {"BASE", "DECKER", "GUN"};
+        const std::string classes[3] = {"DECKER", "GUN", "SAMURAI"};
 		std::string *files;
-		float frameTime;
-		int moveSpeed;
+        float *frameTimes;
+        int *frameCounts;
+        int moveSpeed;
 		AnimationFSM evaAnimations;
         int currentClass;
 

@@ -40,6 +40,8 @@ class IntroState : public State
 		 * Checks if some object is colliding with the current room wall.
 		 */
 		bool IsCollidingWithWall(GameObject* o);
+
+        void UpdateArray(float dt);
 	private:
 		LevelMap map;
 };
