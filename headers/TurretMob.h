@@ -4,11 +4,11 @@
 #include "Sprite.h"
 #include "Timer.h"
 
-class MekaBug : public GameObject
+class TurretMob : public GameObject
 {
 	public:
-		MekaBug(Vec2 pos);
-		~MekaBug();
+		TurretMob(Vec2 pos);
+		~TurretMob();
 		void Render();
 		bool IsDead();
 		void Update(float dt);
@@ -17,11 +17,13 @@ class MekaBug : public GameObject
 		void TakeDamage(int dmg = 1);
 
 	private:
-		enum MekaBugState {RESTING, MOVING};
-		MekaBugState state;
+		enum TurretMobState {RESTING, MOVING};
+		TurretMobState state;
 		Timer restTimer;
+		Timer attackTimer;
 		int currentSprite;
-		Sprite sprites[2];
+		Sprite sprites[5];
 		Vec2 speed;
+		Vec2 destination;
 		Vec2 previousPos;
 };

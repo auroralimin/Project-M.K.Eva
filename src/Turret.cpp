@@ -2,11 +2,7 @@
 #include "Eva.h"
 #include "Bullet.h"
 #include "Game.h"
-
-float Rand(float fMin, float fMax) {
-			float f = (float)rand() / RAND_MAX;
-			return fMin + f*(fMax - fMin);
-}
+#include "Config.h"
 
 Turret::Turret(Vec2 pos) : sp("sprites/monsters/turret/alien.png")
 {
@@ -38,7 +34,7 @@ void Turret::Update(float dt)
 	{
 		if(timer.Get() >= 2.5f)
 		{
-			float pattern = Rand(0.0, 100.0);
+			float pattern = Config::Rand(0.0, 100.0);
 			if(pattern <= 30.0)
 			{
 				ShootPattern2();
