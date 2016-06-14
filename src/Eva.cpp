@@ -3,31 +3,20 @@
 #include "InputManager.h"
 #include "Game.h"
 #include "Config.h"
+#include "Animation.h"
 
 #include <iostream>
 
 Eva* Eva::player = nullptr;
 
-Eva::Eva(): evaAnimations()
+Eva::Eva(Vec2 pos) :
+    evaAnimations(5)
 {
-    box.pos = Vec2();
-    box.dim = Vec2();
-    hitbox.pos = Vec2();
-    hitbox.dim = Vec2();
-    rotation = 0;
-    hp = 100;
-    frameCount = 1;
-    frameTime = 1.0f;
-    moveSpeed = 150;
-    currentClass = BASE;
-}
+    frameCounts = new int[5]{6, 6, 6, 6, 6};
+    frameTimes = new float[5]{0.08, 0.08, 0.08, 0.08, 0.08};
+    SetClass(BASE);
 
-Eva::Eva(Vec2 pos, std::string *files, int frameCount, float frameTime, int moveSpeed) :
-	files(files), frameTime(frameTime), moveSpeed(moveSpeed),
-	evaAnimations(files, frameCount, frameTime)
-{
-	this->files = files;
-    this->frameCount = frameCount;
+    moveSpeed = 200;
     box.pos = pos;
     box.dim = Vec2(evaAnimations.GetSpriteWidth(),
                          evaAnimations.GetSpriteHeight());
@@ -36,7 +25,6 @@ Eva::Eva(Vec2 pos, std::string *files, int frameCount, float frameTime, int move
     rotation = 0;
     hp = 100;
     player = this;
-    currentClass = BASE;
 }
 
 Eva::~Eva()
@@ -60,42 +48,48 @@ void Eva::Update(float dt)
 
     if (manager.KeyPress(Q_KEY)) {
         currentClass -= 1;
-        if (currentClass < 0) currentClass = 2;
+        if (currentClass < 0)
+            currentClass = 2;
         SetClass((Classes)currentClass);
     } else if (manager.KeyPress(E_KEY)) {
         currentClass += 1;
-        if (currentClass > 2) currentClass = 0;
+        if (currentClass > 2)
+            currentClass = 0;
         SetClass((Classes)currentClass);
+    }
+
+    if (manager.KeyPress(SPACEBAR)) { // temporary suicide button
+        TakeDamage(8000);
     }
 
 	if (manager.IsKeyDown(D_KEY))
 	{
 		isMoving = true;
 		if (!(manager.IsKeyDown(S_KEY)) && !(manager.IsKeyDown(W_KEY)))
-			evaAnimations.SetCurrentState(AnimationFSM::MOVING_RIGHT);
+            evaAnimations.SetCurrentState(Animations::MOVING_RIGHT);
 		speed.x += 1;
 	}
 	if (manager.IsKeyDown(A_KEY))
 	{
 		isMoving = true;
 		if (!(manager.IsKeyDown(S_KEY)) && !(manager.IsKeyDown(W_KEY)))
-			evaAnimations.SetCurrentState(AnimationFSM::MOVING_LEFT);
+            evaAnimations.SetCurrentState(Animations::MOVING_LEFT);
 		speed.x -= 1;
 	}
 	if (manager.IsKeyDown(S_KEY))
 	{
 		isMoving = true;
-		evaAnimations.SetCurrentState(AnimationFSM::MOVING_DOWN);
+        evaAnimations.SetCurrentState(Animations::MOVING_DOWN);
 		speed.y += 1;
 	}
 	if (manager.IsKeyDown(W_KEY))
 	{
 		isMoving = true;
-		evaAnimations.SetCurrentState(AnimationFSM::MOVING_UP);
+        evaAnimations.SetCurrentState(Animations::MOVING_UP);
 		speed.y -= 1;
 	}
 	if (!isMoving)
-		evaAnimations.SetCurrentState(AnimationFSM::IDLE);
+        evaAnimations.SetCurrentState(Animations::IDLE);
 
 	box.pos += speed.Normalize() * moveSpeed * dt;
 
@@ -130,38 +124,41 @@ bool Eva::Is(std::string className)
 void Eva::TakeDamage(int dmg)
 {
 	hp -= dmg;
+    if (IsDead()) {
+        Game::GetInstance()->GetCurrentState().AddObject(new Animation(box.GetCenter(), 0, std::string("sprites/eva/death/EVA-") + classes[currentClass] + std::string("-DEATH.png"), 16, 0.08));
+    }
 }
 
 void Eva::SetAnimationFile(int index, std::string file)
 {
 	files[index] = file;
-	evaAnimations.SetAnimation(index, file, frameCount, frameTime);
+    evaAnimations.SetAnimation(index, file, frameCounts[index], frameTimes[index]);
 }
 
-void Eva::SetFrameTime(float time)
+void Eva::SetFrameTime(int index, float time)
 {
-	frameTime = time;
-	for (int i = 0; i < 5; ++i)
-		evaAnimations.SetAnimation(i, files[i], frameCount, frameTime);
+    frameTimes[index] = time;
+    evaAnimations.SetAnimation(index, files[index], frameCounts[index], frameTimes[index]);
 }
 
-void Eva::SetFrameCount(int count)
+void Eva::SetFrameCount(int index, int count)
 {
-    frameCount = count;
-	for (int i = 0; i < 5; ++i)
-        evaAnimations.SetAnimation(i, files[i], frameCount, frameTime);
+    frameCounts[index] = count;
+    evaAnimations.SetAnimation(index, files[index], frameCounts[index], frameTimes[index]);
 }
 
 void Eva::SetAnimationFileSet(Classes pClass)
 {
     std::string path("sprites/eva/movement/EVA-");
-    std::string tFiles[5] = {path + classes[pClass] + std::string("-PARADA.png"),
+    std::string tFiles[5] = {path + classes[pClass] + std::string("-IDLE.png"),
                              path + classes[pClass] + std::string("-UP.png"),
                              path + classes[pClass] + std::string("-DOWN.png"),
                              path + classes[pClass] + std::string("-LEFT.png"),
                              path + classes[pClass] + std::string("-RIGHT.png")};
-    for (int i = 0; i < 5; i++)
-        evaAnimations.SetAnimation(i, tFiles[i], frameCount, frameTime);
+    files = tFiles;
+    for (int i = 0; i < 5; i++) {
+        evaAnimations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
+    }
 }
 
 void Eva::SetClass(Classes c)

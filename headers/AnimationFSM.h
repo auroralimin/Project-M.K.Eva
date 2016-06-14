@@ -13,7 +13,7 @@ class AnimationFSM
 		/**
 		 * Initializes a FSM instance setting the values to default.
 		 */
-		AnimationFSM();
+        AnimationFSM(int nAnimations);
 
 		/**
 		 * Initializes a FSM instance given the arguments.
@@ -21,7 +21,7 @@ class AnimationFSM
 		 * @param frameCont a int argument containing the animations frameCount
 		 * @param frameTime a int argument containing the animations frameTime
 		 */
-		AnimationFSM(std::string files[], int frameCount, float frameTime);
+        AnimationFSM(int nAnimations, std::string files[], int frameCount[], float frameTime[]);
 
 		/**
 		 * Renders the sprite according to the current state.
@@ -37,27 +37,16 @@ class AnimationFSM
 		void Update(float dt);
 
 		/**
-		 * This enum defines the possible states of an animation.
-		 */
-		enum AnimationState {
-			IDLE,
-			MOVING_UP,
-			MOVING_DOWN,
-			MOVING_LEFT,
-			MOVING_RIGHT
-		};
-
-		/**
 		 * Sets the current state of the animation.
 		 * @param state the state to become the current state
 		 */
-		void SetCurrentState(AnimationState state);
+        void SetCurrentState(int state);
 
 		/**
 		 * Returns the current state of the animation.
 		 * @return returns the value of the current state
 		 */
-		AnimationState GetCurrentState();
+        int GetCurrentState();
 
 		/**
 		 * Sets a animation sprite from the animation vector.
@@ -80,8 +69,11 @@ class AnimationFSM
 		 */
 		int GetSpriteHeight();
 
+        void SetNAnimations(int nAnimations);
+
 	private:
-		AnimationState currentState;
+        int nAnimations;
+        int currentState;
 		std::vector<std::unique_ptr<Sprite>> animationsArray;
 };
 

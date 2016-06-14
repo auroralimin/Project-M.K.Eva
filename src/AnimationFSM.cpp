@@ -1,19 +1,20 @@
 #include "AnimationFSM.h"
 
-#define N_ANIMATIONS 5
 
-AnimationFSM::AnimationFSM()
+AnimationFSM::AnimationFSM(int nAnimations)
 {
-	for (int i = 0; i < N_ANIMATIONS; ++i)
-		animationsArray.emplace_back(new Sprite());
-    currentState = IDLE;
+    this->nAnimations = nAnimations;
+    for (int i = 0; i < nAnimations; ++i)
+        animationsArray.emplace_back(new Sprite());
+    currentState = 0;
 }
 
-AnimationFSM::AnimationFSM(std::string files[], int frameCount, float frameTime)
+AnimationFSM::AnimationFSM(int nAnimations, std::string files[], int frameCount[], float frameTime[])
 {
-	for (int i = 0; i < N_ANIMATIONS; ++i)
-		animationsArray.emplace_back(new Sprite(files[i], frameCount, frameTime));
-    currentState = IDLE;
+    this->nAnimations = nAnimations;
+    for (int i = 0; i < nAnimations; ++i)
+        animationsArray.emplace_back(new Sprite(files[i], frameCount[i], frameTime[i]));
+    currentState = 0;
 }
 
 void AnimationFSM::Render(int x, int y)
@@ -26,27 +27,32 @@ void AnimationFSM::Update(float dt)
 	animationsArray[currentState].get()->Update(dt);
 }
 
-void AnimationFSM::SetCurrentState(AnimationFSM::AnimationState state)
+void AnimationFSM::SetCurrentState(int state)
 {
     //Resets all the animations when the state changes
     if (currentState != state) {
         currentState = state;
-		for (int i = 0; i < N_ANIMATIONS; ++i)
+        for (int i = 0; i < nAnimations; ++i)
 			animationsArray[i].get()->SetFrame(0);
     }
 }
 
-AnimationFSM::AnimationState AnimationFSM::GetCurrentState()
+int AnimationFSM::GetCurrentState()
 {
     return currentState;
+}
+
+void AnimationFSM::SetNAnimations(int nAnimations)
+{
+    this->nAnimations = nAnimations;
 }
 
 void AnimationFSM::SetAnimation(int index, std::string file, int frameCount,
                                     float frameTime)
 {
-    animationsArray[index].get()->Open(file);
     animationsArray[index].get()->SetFrameCount(frameCount);
     animationsArray[index].get()->SetFrameTime(frameTime);
+    animationsArray[index].get()->Open(file);
 }
 
 int AnimationFSM::GetSpriteWidth()
