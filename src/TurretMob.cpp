@@ -3,6 +3,8 @@
 #include "Bullet.h"
 #include "Game.h"
 #include "Config.h"
+#include "InputManager.h"
+#include "Animation.h"
 #include <math.h>
 
 #define IDLE 0
@@ -53,6 +55,12 @@ bool TurretMob::IsDead()
 
 void TurretMob::Update(float dt)
 {
+	InputManager &manager = InputManager::GetInstance();
+
+	if (manager.KeyPress(J_KEY)) { // temporary suicide button
+        TakeDamage(8000);
+    }
+
 	if(Eva::player != nullptr)
 	{
 		//looks at the player
@@ -160,4 +168,9 @@ bool TurretMob::Is(std::string className)
 void TurretMob::TakeDamage(int dmg)
 {
 	hp -= dmg;
+	if(IsDead())
+	{
+		Game::GetInstance()->GetCurrentState().AddObject(new Animation(box.GetCenter(), 
+			0, "sprites/monsters/turretmob/TurretMobDeath.png", 7, 0.2, true));
+	}
 }

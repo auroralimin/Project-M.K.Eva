@@ -3,6 +3,8 @@
 #include "Bullet.h"
 #include "Game.h"
 #include "Config.h"
+#include "Animation.h"
+#include "InputManager.h"
 
 Turret::Turret(Vec2 pos) : sp("sprites/monsters/turret/alien.png")
 {
@@ -30,17 +32,17 @@ bool Turret::IsDead()
 
 void Turret::Update(float dt)
 {	
+	InputManager &manager = InputManager::GetInstance();
+
+	if (manager.KeyPress(H_KEY)) { // temporary suicide button
+        TakeDamage(8000);
+    }
+
 	if(Eva::player != nullptr)
 	{
 		if(timer.Get() >= 2.5f)
 		{
-			float pattern = Config::Rand(0.0, 100.0);
-			if(pattern <= 30.0)
-			{
-				ShootPattern2();
-			} else {
-				ShootPattern1();
-			}
+			ShootPattern1();
 			timer.Restart();
 		}
 	}
@@ -61,6 +63,12 @@ bool Turret::Is(std::string className)
 void Turret::TakeDamage(int dmg)
 {
 	hp -= dmg;
+	if(IsDead())
+	{
+		Game::GetInstance()->GetCurrentState().AddObject(new Animation(box.GetCenter(), 
+			0, "sprites/monsters/turret/penguindeath.png", 5, 0.3, true));
+		ShootPattern2();
+	}
 }
 
 void Turret::ShootPattern1()

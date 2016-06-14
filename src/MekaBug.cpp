@@ -2,6 +2,8 @@
 #include "Eva.h"
 #include "Config.h"
 #include "Game.h"
+#include "InputManager.h"
+#include "Animation.h"
 
 MekaBug::MekaBug(Vec2 pos)
 {
@@ -41,6 +43,12 @@ bool MekaBug::IsDead()
 
 void MekaBug::Update(float dt)
 {
+	InputManager &manager = InputManager::GetInstance();
+
+	if (manager.KeyPress(L_KEY)) { // temporary suicide button
+        TakeDamage(8000);
+    }
+
 	if(Eva::player != nullptr)
 	{
 		if(state == MekaBugState::RESTING)
@@ -107,4 +115,9 @@ bool MekaBug::Is(std::string className)
 void MekaBug::TakeDamage(int dmg)
 {
 	hp -= dmg;
+	if(IsDead())
+	{
+		Game::GetInstance()->GetCurrentState().AddObject(new Animation(box.GetCenter(), 
+			0, "sprites/monsters/mekabug/MEKABUG_DEATH.png", 3, 0.5, true));
+	}
 }

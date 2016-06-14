@@ -6,6 +6,7 @@
 #include "Turret.h"
 #include "MekaBug.h"
 #include "TurretMob.h"
+#include "Ball.h"
 #include "Config.h"
 #include "Game.h"
 
@@ -18,6 +19,9 @@ IntroState::IntroState(void) : map("map/procedural_generated_map1.txt")
 	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2, Game::GetInstance()->GetWinHeight()/2)));
 	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/3, Game::GetInstance()->GetWinHeight()/2)));
 	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2, Game::GetInstance()->GetWinHeight()/3)));
+	AddObject(new Ball(Vec2(Game::GetInstance()->GetWinWidth()/3, Game::GetInstance()->GetWinHeight()/3)));
+	AddObject(new Ball(Vec2(Game::GetInstance()->GetWinWidth()/4, Game::GetInstance()->GetWinHeight()/3)));
+	AddObject(new Ball(Vec2(Game::GetInstance()->GetWinWidth()/4, Game::GetInstance()->GetWinHeight()/4)));
     AddObject(new Eva(Vec2(Game::GetInstance()->GetWinWidth()/2,
                            Game::GetInstance()->GetWinHeight()/2)));
 }

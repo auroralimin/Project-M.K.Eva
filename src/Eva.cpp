@@ -21,7 +21,7 @@ Eva::Eva(Vec2 pos) :
     box.dim = Vec2(evaAnimations.GetSpriteWidth(),
                          evaAnimations.GetSpriteHeight());
 	hitbox.dim = Vec2(box.dim.x/2, box.dim.y/4);
-	hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 60);
+	hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 90);
     rotation = 0;
     hp = 100;
     player = this;
@@ -93,15 +93,15 @@ void Eva::Update(float dt)
 
 	box.pos += speed.Normalize() * moveSpeed * dt;
 
-	hitbox.pos = Vec2(previousPos.x + 20, box.pos.y + 60);
+	hitbox.pos = Vec2(previousPos.x + 35, box.pos.y + 90);
 	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
 		box.pos.y = previousPos.y;
 
-	hitbox.pos = Vec2(box.pos.x + 20, previousPos.y + 60);
+	hitbox.pos = Vec2(box.pos.x + 35, previousPos.y + 90);
 	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
 		box.pos.x = previousPos.x;
 
-	hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 60);
+	hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 90);
 	evaAnimations.Update(dt);
 }
 
@@ -125,7 +125,9 @@ void Eva::TakeDamage(int dmg)
 {
 	hp -= dmg;
     if (IsDead()) {
-        Game::GetInstance()->GetCurrentState().AddObject(new Animation(box.GetCenter(), 0, std::string("sprites/eva/death/EVA-") + classes[currentClass] + std::string("-DEATH.png"), 16, 0.08));
+        Game::GetInstance()->GetCurrentState().AddObject(
+			new Animation(box.GetCenter(), 0, std::string("sprites/eva/death/EVA-") 
+			+ classes[currentClass] + std::string("-DEATH.png"), 16, 0.08));
     }
 }
 

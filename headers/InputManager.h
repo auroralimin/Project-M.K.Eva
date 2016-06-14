@@ -40,6 +40,18 @@
 /** \def D_KEY keyboard d key. */
 #define D_KEY SDLK_d
 
+/** \def H_KEY keyboard h key. */
+#define H_KEY SDLK_h
+
+/** \def J_KEY keyboard j key. */
+#define J_KEY SDLK_j
+
+/** \def K_KEY keyboard k key */
+#define K_KEY SDLK_k
+
+/** \def L_KEY keyboard l key */
+#define L_KEY SDLK_l
+
 /** \def NUM_1_KEY keyboard number 1 key */
 #define NUM_1_KEY SDLK_1
 

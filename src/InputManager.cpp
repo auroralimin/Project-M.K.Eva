@@ -128,6 +128,9 @@ InputManager::InputManager(void) : quitRequested(false),
     keyUpdate[Q_KEY] = keyUpdate[E_KEY] = 0;
     keyState[Q_KEY] = keyState[E_KEY] = false;
 
+	keyUpdate[H_KEY] = keyUpdate[J_KEY] = keyUpdate[K_KEY] = keyUpdate[L_KEY] = 0;
+	keyState[H_KEY] = keyState[J_KEY] = keyState[K_KEY] = keyState[L_KEY] = false;
+
     keyUpdate[NUM_1_KEY] = keyUpdate[NUM_2_KEY] = keyUpdate[NUM_3_KEY] = 0;
     keyState[NUM_1_KEY] = keyState[NUM_2_KEY] = keyState [NUM_3_KEY] = false;
 }
