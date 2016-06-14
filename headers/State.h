@@ -23,12 +23,12 @@ class State
 		virtual ~State() {};
 
 		/**
-		 * When implemented, it should update the objetc.
+         * When implemented, it should update the object.
 		 */
 		virtual void Update(float dt) = 0;
 
 		/**
-		 * When implemented, it should update the objetc.
+         * When implemented, it should update the object.
 		 * @param dt a float argument contaning the delta time
 		 */
 		virtual void Render(void) = 0;

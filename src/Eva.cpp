@@ -20,8 +20,8 @@ Eva::Eva(Vec2 pos) :
     box.pos = pos;
     box.dim = Vec2(evaAnimations.GetSpriteWidth(),
                          evaAnimations.GetSpriteHeight());
-	hitbox.dim = Vec2(box.dim.x/2, box.dim.y/4);
-	hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 90);
+    hitbox.dim = Vec2(box.dim.x/2, box.dim.y/4);
+    hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + 3*box.dim.y/4);
     rotation = 0;
     hp = 100;
 }
@@ -30,7 +30,7 @@ void Eva::Render()
 {
 	int color[4] = COLOR_HITBOX;
 	if (Config::HITBOX_MODE)
-		hitbox.RenderFilledRect(color);
+        hitbox.RenderFilledRect(color);
 	evaAnimations.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y);
 }
 
@@ -88,15 +88,15 @@ void Eva::Update(float dt)
 
 	box.pos += speed.Normalize() * moveSpeed * dt;
 
-	hitbox.pos = Vec2(previousPos.x + 20, box.pos.y + 85);
+    hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + 3*box.dim.y/4);
 	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
 		box.pos.y = previousPos.y;
 
-	hitbox.pos = Vec2(box.pos.x + 20, previousPos.y + 85);
+    hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + 3*box.dim.y/4);
 	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
 		box.pos.x = previousPos.x;
 
-	hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 85);
+    hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + 3*box.dim.y/4);
 	evaAnimations.Update(dt);
 }
 
