@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include "Eva.h"
 #include "Turret.h"
+#include "MekaBug.h"
 #include "Config.h"
 #include "Game.h"
 
@@ -17,6 +18,7 @@ IntroState::IntroState(void) : map("map/procedural_generated_map1.txt")
 		std::string("sprites/eva/movement/EVA-BASE-RIGHT.png")};
     AddObject(new Eva(Vec2(Game::GetInstance()->GetWinWidth()/2, Game::GetInstance()->GetWinHeight()/2), files, 6, 0.08, 200));
 	AddObject(new Turret(Vec2(Game::GetInstance()->GetWinWidth()/2 + 50, Game::GetInstance()->GetWinHeight()/2)));
+	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 + 100, Game::GetInstance()->GetWinHeight()/2 + 100)));
 }
 
 void IntroState::Update(float dt)
