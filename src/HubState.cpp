@@ -68,7 +68,8 @@ void HubState::UpdateEva(int i)
     } else if (objectArray[i]->box.pos.x > roomWidth) {
         Game *game = Game::GetInstance();
         Pause();
-        game->Push(new FirstLevelState(Vec2(500, 210)));
+        game->Push(new FirstLevelState(Vec2(-objectArray[i]->box.dim.x,
+                        objectArray[i]->box.pos.y)));
     } else if (objectArray[i]->box.pos.y + objectArray[i]->box.dim.y < 0) {
         map.RoomUp();
         objectArray[i]->box.pos.y = roomHeight;

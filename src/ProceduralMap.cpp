@@ -115,7 +115,9 @@ bool ProceduralMap::CellReprodution(const int x, const int y, const float probab
 	if ((y >= height) || ((y < height - 1) && (map[x][y+1] == 1)))
 		neighbors++;
 
-	if (neighbors < (1 + config) && (float)(rand() % 99) < (probability * 100))
+	if (!(x == firstRoom.x-1 && y == firstRoom.y) &&
+            neighbors < (1 + config) &&
+            (float)(rand() % 99) < (probability * 100))
 	{
 		map[x][y] = 1;
 		return true;
@@ -180,6 +182,8 @@ void ProceduralMap::LabelRooms(void)
 					roomId += 1000;
 				if ((i < width - 1) && (map[i+1][j] > 0))
 					roomId += 10000;
+                if ((i == firstRoom.x) && (j == firstRoom.y))
+                    roomId += 1000;
 				map[i][j] = roomId;
 				roomId = 0;
 			}
