@@ -9,6 +9,7 @@ class Bullet : public GameObject
 		Sprite sp;
 		Vec2 speed;
 		float distanceLeft;
+		Vec2 previousPos;
 
 	public:
 		Bullet(Vec2 pos, float angle, float speed, float maxDistance, 
@@ -17,9 +18,9 @@ class Bullet : public GameObject
 		void Render();
 		bool IsDead();
 		void Update(float dt);
-		void NotifyCollision(GameObject &other);
+		void NotifyCollision(GameObject &other, bool movement);
 		bool Is(std::string className);
-		void TakeDamage(int dmg = 1);
+		void TakeDamage(float dmg = 1);
 
 		bool targetsPlayer;
 };

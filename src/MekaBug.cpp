@@ -4,6 +4,8 @@
 #include "Game.h"
 #include "InputManager.h"
 #include "Animation.h"
+#include "Bullet.h"
+#include "Collision.h"
 
 MekaBug::MekaBug(Vec2 pos)
 {
@@ -65,8 +67,8 @@ void MekaBug::Update(float dt)
 		if(state == MekaBugState::MOVING)
 		{
 			Vec2 evaPos = Eva::player->box.GetCenter();
-
-			if(box.GetCenter().DistanceFromPoint(evaPos) < 40)
+			if(Collision::IsColliding(Eva::player->hitbox, hitbox, 
+				Eva::player->rotation, rotation))
 			{
 				state = MekaBugState::RESTING;
 				speed = Vec2(0, 0);
@@ -103,8 +105,16 @@ void MekaBug::Update(float dt)
 	sprites[currentSprite].Update(dt);
 }
 
-void MekaBug::NotifyCollision(GameObject &other)
+void MekaBug::NotifyCollision(GameObject &other, bool movement)
 {
+	if (other.Is("Bullet")) {
+		Bullet& bullet = (Bullet&) other;
+		if (!bullet.targetsPlayer) {
+			TakeDamage(10);
+		}
+	} else if (movement) {
+		box.pos = previousPos;
+	}
 }
 
 bool MekaBug::Is(std::string className)
@@ -112,7 +122,7 @@ bool MekaBug::Is(std::string className)
 	return ("MekaBug" == className);
 }
 
-void MekaBug::TakeDamage(int dmg)
+void MekaBug::TakeDamage(float dmg)
 {
 	hp -= dmg;
 	if(IsDead())

@@ -52,7 +52,7 @@ class Eva : public GameObject
 		 * Reacts to a collision.
 		 * @param other reference define reaction to the collision
 		 */
-		void NotifyCollision(GameObject &other);
+		void NotifyCollision(GameObject &other, bool movement);
 
 		/**
 		 * Returns if this class is the class indicated by className.
@@ -66,7 +66,7 @@ class Eva : public GameObject
 		 * Reduces eva's hp.
 		 * @param dmg value that will be reduced from eva's hp
 		 */
-		void TakeDamage(int dmg = 1);
+		void TakeDamage(float dmg = 1);
 
 		/**
 		 * Changes the file from which a given animation sprite will be created
@@ -114,6 +114,7 @@ class Eva : public GameObject
         int moveSpeed;
 		AnimationFSM evaAnimations;
         int currentClass;
+		Vec2 previousPos;
 
 		void SetClass(Classes c);
 };

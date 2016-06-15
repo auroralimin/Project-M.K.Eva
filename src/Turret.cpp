@@ -50,9 +50,14 @@ void Turret::Update(float dt)
 	timer.Update(dt);
 }
 
-void Turret::NotifyCollision(GameObject &other)
+void Turret::NotifyCollision(GameObject &other, bool movement)
 {
-
+	if (other.Is("Bullet")) {
+		Bullet& bullet = (Bullet&) other;
+		if (!bullet.targetsPlayer) {
+			TakeDamage(10);
+		}
+	}
 }
 
 bool Turret::Is(std::string className)
@@ -60,7 +65,7 @@ bool Turret::Is(std::string className)
 	return ("Turret" == className);
 }
 
-void Turret::TakeDamage(int dmg)
+void Turret::TakeDamage(float dmg)
 {
 	hp -= dmg;
 	if(IsDead())

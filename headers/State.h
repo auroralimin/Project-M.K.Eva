@@ -63,6 +63,8 @@ class State
 
 		virtual bool IsCollidingWithWall(GameObject* o) = 0;
 
+		virtual void CheckMovementCollisions() = 0;
+
 	protected:
 		bool popRequested, quitRequested;
 		std::vector<std::unique_ptr<GameObject>> objectArray;

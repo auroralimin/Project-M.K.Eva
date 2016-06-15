@@ -54,7 +54,7 @@ class GameObject
 		/**
 		 * If possible, when implemented it should process collisions.
 		 */
-		virtual void NotifyCollision(GameObject &other) = 0;
+		virtual void NotifyCollision(GameObject &other, bool movement) = 0;
 
 		/**
 		 * When implemented, it should check if a given string has the same
@@ -68,9 +68,9 @@ class GameObject
 		 * If possible, when implemented it should make the object take damage.
 		 * @param dmg a int argument containing the damage value
 		 */
-		virtual void TakeDamage(int dmg = 1) = 0;
+		virtual void TakeDamage(float dmg = 1) = 0;
 
 	protected:
-		int hp;
+		float hp;
 };
 

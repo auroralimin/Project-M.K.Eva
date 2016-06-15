@@ -28,4 +28,3 @@ void State::RenderArray(void)
 	for (unsigned int i = 0; i < objectArray.size(); ++i)
 		objectArray[i]->Render();
 }
-

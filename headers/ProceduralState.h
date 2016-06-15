@@ -40,6 +40,11 @@ class ProceduralState : public State
 		 * Do nothing. It is necessary to inherit from State.
 		 */
 		bool IsCollidingWithWall(GameObject* obj);
+		
+		/**
+		 * Do nothing. It is necessary to inherit from State.
+		 */
+		void CheckMovementCollisions();
 	private:
 		unsigned int seed;
 };

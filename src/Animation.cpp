@@ -32,9 +32,10 @@ bool Animation::IsDead(void)
 	return (oneTimeOnly && endTimer.Get() >= timeLimit);
 }
 
-void Animation::NotifyCollision(GameObject &other)
+void Animation::NotifyCollision(GameObject &other, bool movement)
 {
 	UNUSED_VAR other;
+	UNUSED_VAR movement;
 	//D0 NOTHING
 }
 
@@ -43,7 +44,7 @@ bool Animation::Is(std::string className)
 	return (className == "Animation");
 }
 
-void Animation::TakeDamage(int dmg)
+void Animation::TakeDamage(float dmg)
 {
 	UNUSED_VAR dmg;
 	//D0 NOTHING

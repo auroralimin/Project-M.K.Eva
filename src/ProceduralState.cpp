@@ -67,3 +67,6 @@ bool ProceduralState::IsCollidingWithWall(GameObject* obj)
 	return false;
 }
 
+void ProceduralState::CheckMovementCollisions()
+{
+}

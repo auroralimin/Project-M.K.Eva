@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Config.h"
 #include "Animation.h"
+#include "Bullet.h"
 
 #include <iostream>
 
@@ -42,7 +43,8 @@ void Eva::Render()
 
 void Eva::Update(float dt)
 {
-	Vec2 previousPos = box.pos, speed = Vec2(0, 0);
+	Vec2 speed = Vec2(0, 0);
+	previousPos = box.pos;
 	bool isMoving = false;
 	InputManager &manager = InputManager::GetInstance();
 
@@ -110,10 +112,21 @@ bool Eva::IsDead()
 	return (hp <= 0);
 }
 
-void Eva::NotifyCollision(GameObject &other)
+void Eva::NotifyCollision(GameObject &other, bool movement)
 {
-	UNUSED_VAR other;
-	//TODO
+	if (other.Is("Bullet")) {
+		Bullet& bullet = (Bullet&) other;
+		if (bullet.targetsPlayer) {
+			TakeDamage(10);
+		}
+	} if (other.Is("Ball")) {
+		TakeDamage(0.3);
+	} else if (movement && (!other.Is("Ball"))) {
+		box.pos = previousPos;
+		if (other.Is("MekaBug")) {
+			TakeDamage(0.3);
+		}
+	}
 }
 
 bool Eva::Is(std::string className)
@@ -121,7 +134,7 @@ bool Eva::Is(std::string className)
 	return (className == std::string("Eva"));
 }
 
-void Eva::TakeDamage(int dmg)
+void Eva::TakeDamage(float dmg)
 {
 	hp -= dmg;
     if (IsDead()) {

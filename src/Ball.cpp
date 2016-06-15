@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "InputManager.h"
 #include "Animation.h"
+#include "Bullet.h"
 #include <math.h>
 
 #define IDLE 0
@@ -150,8 +151,16 @@ void Ball::Update(float dt)
 	sprites[currentSprite].Update(dt);
 }
 
-void Ball::NotifyCollision(GameObject &other)
+void Ball::NotifyCollision(GameObject &other, bool movement)
 {
+	if (other.Is("Bullet")) {
+		Bullet& bullet = (Bullet&) other;
+		if (!bullet.targetsPlayer) {
+			TakeDamage(10);
+		}
+	} else if (movement && (!other.Is("Eva"))) {
+		box.pos = previousPos;
+	}
 }
 
 bool Ball::Is(std::string className)
@@ -159,7 +168,7 @@ bool Ball::Is(std::string className)
 	return ("Ball" == className);
 }
 
-void Ball::TakeDamage(int dmg)
+void Ball::TakeDamage(float dmg)
 {
 	hp -= dmg;
 	if(IsDead())
@@ -167,4 +176,9 @@ void Ball::TakeDamage(int dmg)
 		Game::GetInstance()->GetCurrentState().AddObject(new Animation(box.GetCenter(), 
 			0, "sprites/monsters/ball/BOLOTA_DEATH.png", 7, 0.2, true));
 	}
+}
+
+bool Ball::IsInsideWall()
+{
+	return Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this);
 }

@@ -16,9 +16,9 @@ class Turret : public GameObject
 		void Render();
 		bool IsDead();
 		void Update(float dt);
-		void NotifyCollision(GameObject &other);
+		void NotifyCollision(GameObject &other, bool movement);
 		bool Is(std::string className);
-		void TakeDamage(int dmg = 1);
+		void TakeDamage(float dmg = 1);
 		void ShootPattern1();
 		void ShootPattern2();
 

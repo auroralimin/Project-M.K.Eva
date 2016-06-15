@@ -42,6 +42,8 @@ class IntroState : public State
 		bool IsCollidingWithWall(GameObject* o);
 
         void UpdateArray(float dt);
+
+		void CheckMovementCollisions();
 	private:
 		LevelMap map;
 };

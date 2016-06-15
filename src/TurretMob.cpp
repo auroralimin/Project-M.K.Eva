@@ -156,8 +156,16 @@ void TurretMob::Update(float dt)
 	sprites[currentSprite].Update(dt);
 }
 
-void TurretMob::NotifyCollision(GameObject &other)
+void TurretMob::NotifyCollision(GameObject &other, bool movement)
 {
+	if (other.Is("Bullet")) {
+		Bullet& bullet = (Bullet&) other;
+		if (!bullet.targetsPlayer) {
+			TakeDamage(10);
+		}
+	} else if (movement) {
+		box.pos = previousPos;
+	}
 }
 
 bool TurretMob::Is(std::string className)
@@ -165,7 +173,7 @@ bool TurretMob::Is(std::string className)
 	return ("TurretMob" == className);
 }
 
-void TurretMob::TakeDamage(int dmg)
+void TurretMob::TakeDamage(float dmg)
 {
 	hp -= dmg;
 	if(IsDead())

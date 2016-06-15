@@ -9,6 +9,7 @@
 #include "Ball.h"
 #include "Config.h"
 #include "Game.h"
+#include "Collision.h"
 
 IntroState::IntroState(void) : map("map/procedural_generated_map1.txt")
 {
@@ -16,7 +17,7 @@ IntroState::IntroState(void) : map("map/procedural_generated_map1.txt")
 	AddObject(new Turret(Vec2(Game::GetInstance()->GetWinWidth()/2 + 50, Game::GetInstance()->GetWinHeight()/2)));
 	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 + 100, Game::GetInstance()->GetWinHeight()/2 + 100)));
 	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 - 100, Game::GetInstance()->GetWinHeight()/2 - 100)));
-	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2, Game::GetInstance()->GetWinHeight()/2)));
+	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2 - 200, Game::GetInstance()->GetWinHeight()/2 - 200)));
 	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/3, Game::GetInstance()->GetWinHeight()/2)));
 	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2, Game::GetInstance()->GetWinHeight()/3)));
 	AddObject(new Ball(Vec2(Game::GetInstance()->GetWinWidth()/3, Game::GetInstance()->GetWinHeight()/3)));
@@ -51,6 +52,7 @@ void IntroState::Update(float dt)
         }
     }
     UpdateArray(dt);
+	CheckMovementCollisions();
 }
 
 void IntroState::Render(void)
@@ -83,4 +85,20 @@ void IntroState::UpdateArray(float dt)
             objectArray[i]->Update((float)(dt/1000));
         }
     }
+}
+
+void IntroState::CheckMovementCollisions()
+{
+	for (size_t i = 0; i < objectArray.size(); i++) {
+		for (size_t j = i+1;j < objectArray.size(); j++) {
+			if (!(objectArray[i]->Is("Bullet") || (objectArray[j]->Is("Bullet")))) {
+				if (Collision::IsColliding(objectArray[i]->hitbox, objectArray[j]->hitbox, 
+					objectArray[i]->rotation, objectArray[j]->rotation)) {
+
+					objectArray[i]->NotifyCollision(*objectArray[j].get(), true);
+					objectArray[j]->NotifyCollision(*objectArray[i].get(), true);
+				}
+			}
+		}
+	}
 }

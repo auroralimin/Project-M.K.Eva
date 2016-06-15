@@ -49,7 +49,7 @@ class Animation : public GameObject
 		 * This method does nothing.
 		 * It is implemented only as a requirement of inheriting from GameObjetc.
 		 */
-		void NotifyCollision(GameObject &other);
+		void NotifyCollision(GameObject &other, bool movement);
 
 		/**
 		 * Checks if the class name given as argument is the same as "Animation".
@@ -62,7 +62,7 @@ class Animation : public GameObject
 		 * This method does nothing.
 		 * It is implemented only as a requirement of inheriting from GameObjetc.
 		 */
-		void TakeDamage(int dmg = 1);
+		void TakeDamage(float dmg = 1);
 
         /**
          * Contains the file path to an sprite sheet to create a object animation.
