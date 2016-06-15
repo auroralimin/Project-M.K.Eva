@@ -120,7 +120,7 @@ void Eva::NotifyCollision(GameObject &other, bool movement)
 			TakeDamage(10);
 		}
 	} if (other.Is("Ball")) {
-		TakeDamage(0.3);
+		TakeDamage(0);
 	} else if (movement && (!other.Is("Ball"))) {
 		box.pos = previousPos;
 		if (other.Is("MekaBug")) {

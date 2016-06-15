@@ -112,7 +112,7 @@ void MekaBug::NotifyCollision(GameObject &other, bool movement)
 		if (!bullet.targetsPlayer) {
 			TakeDamage(10);
 		}
-	} else if (movement) {
+	} else if (movement && (!other.Is("Ball"))) {
 		box.pos = previousPos;
 	}
 }

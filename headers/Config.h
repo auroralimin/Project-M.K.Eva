@@ -25,7 +25,7 @@ class Config
 		/*
 		 * Attribute to set if the game is on hitbox mode.
 		 */
-		static const bool HITBOX_MODE = true;
+		static const bool HITBOX_MODE = false;
 
 		static float Rand(float fMin, float fMax) {
 			float f = (float)rand() / RAND_MAX;

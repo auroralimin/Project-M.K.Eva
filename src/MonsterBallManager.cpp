@@ -10,9 +10,9 @@
 MonsterBallManager::MonsterBallManager(int numBall)
 {
 	for (int i = 0; i < numBall; i++) {
-		float x = Config::Rand(0, Game::GetInstance()->GetWinWidth());
-		float y = Config::Rand(0, Game::GetInstance()->GetWinHeight());
-		Ball* b = new Ball(Vec2(x, y));
+		float x = Config::Rand(128, 1152);
+	    float y = Config::Rand(256, 576);
+		Ball* b = new Ball(Vec2(x - 43, y - 110));
 		
 		/*while (Game::GetInstance()->GetCurrentState().IsCollidingWithWall(b)) {
 			std::cout << "m1" << std::endl;
@@ -43,47 +43,52 @@ bool MonsterBallManager::IsDead()
 
 void MonsterBallManager::Update(float dt)
 {
-	//gambiarra
-	if (b) {
-		for (size_t i = 0; i < ballArray.size(); i++) {
-			Game::GetInstance()->GetCurrentState().AddObject(&ballArray[i]);
-		}
-		b = false;
-	}
-	timer.Update(dt);
+    if (Eva::player != nullptr) {
+	    //gambiarra
+	    if (b) {
+		    for (size_t i = 0; i < ballArray.size(); i++) {
+			    Game::GetInstance()->GetCurrentState().AddObject(&ballArray[i]);
+		    }
+		    b = false;
+	    }
+	    timer.Update(dt);
 
-	if (state == BallManagerState::RESTING) {
-		SwitchSprite(IDLE);
+	    if (state == BallManagerState::RESTING) {
+		    SwitchSprite(IDLE);
 
-		if (timer.Get() >= Config::Rand(1.8, 3.6)) {
-			state = BallManagerState::WARNING;
-			timer.Restart();
-		} 
-	} else if (state == BallManagerState::WARNING) {
-		SwitchSprite(WAR);
+		    if (timer.Get() >= Config::Rand(1.8, 3.6)) {
+			    state = BallManagerState::WARNING;
+			    timer.Restart();
+		    } 
+	    } else if (state == BallManagerState::WARNING) {
+		    SwitchSprite(WAR);
 
-		if(timer.Get() >= 2.0) {
-			state = BallManagerState::ATTACKING;
-			timer.Restart();
-		}
-	} else if (state == BallManagerState::ATTACKING) {
-		SwitchSprite(ATTACK);
+		    if(timer.Get() >= 2.0) {
+			    state = BallManagerState::ATTACKING;
+			    timer.Restart();
+		    }
+	    } else if (state == BallManagerState::ATTACKING) {
+		    SwitchSprite(ATTACK);
 
-		for (size_t i = 0; i < ballArray.size(); i++) {
-			float angle = 2*M_PI*(i+1)/ballArray.size();
-			Vec2 pos = Vec2(50, 0);
-			ballArray[i].box.pos = Vec2(pos.x*cos(angle) - pos.y*sin(angle), 
-				pos.y*cos(angle) + pos.x*sin(angle));
+		    for (size_t i = 0; i < ballArray.size(); i++) {
+			    float angle = 2*M_PI*(i+1)/ballArray.size();
+			    Vec2 pos = Vec2(50, 0);
+			    ballArray[i].box.pos = Vec2(pos.x*cos(angle) - pos.y*sin(angle), 
+				    pos.y*cos(angle) + pos.x*sin(angle));
+                
+                Vec2 evaPos = Eva::player->box.pos;
+                evaPos.y -= Eva::player->box.dim.y/2;
+			    ballArray[i].box.pos += evaPos;
+                 
+		    }
 
-			ballArray[i].box.pos += Eva::player->box.pos; 
-		}
-
-		if (timer.Get() >= 1.8) {
-			state = BallManagerState::RESTING;
-			RandTeleport();
-			timer.Restart();
-		}
-	}
+		    if (timer.Get() >= 3.6) {
+			    state = BallManagerState::RESTING;
+			    RandTeleport();
+			    timer.Restart();
+		    }
+	    }
+    }
 }
 
 void MonsterBallManager::NotifyCollision(GameObject &other, bool movement)
@@ -113,12 +118,9 @@ void MonsterBallManager::SwitchSprite(int sprite)
 void MonsterBallManager::RandTeleport()
 {
 	for (size_t i = 0; i < ballArray.size(); i++) {
-		do {		
-			float x = Config::Rand(0, Game::GetInstance()->GetWinWidth());
-			float y = Config::Rand(0, Game::GetInstance()->GetWinHeight());
-			ballArray[i].box.pos = Vec2(x, y);
-			//ballArray[i].hitbox.pos = Vec2(box.pos.x + 43, box.pos.y + 110);
-		} while (ballArray[i].IsInsideWall());
-		
+		float x = Config::Rand(128, 1152);
+		float y = Config::Rand(256, 576);
+		ballArray[i].box.pos = Vec2(x - 43, y - 110);
+		ballArray[i].hitbox.pos = Vec2(box.pos.x + 43, box.pos.y + 110);
 	}
 }

@@ -60,8 +60,6 @@ void Ball::NotifyCollision(GameObject &other, bool movement)
 		if (!bullet.targetsPlayer) {
 			TakeDamage(10);
 		}
-	} else if (movement && (!other.Is("Eva"))) {
-		box.pos = previousPos;
 	}
 }
 
