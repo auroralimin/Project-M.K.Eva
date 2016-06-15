@@ -10,8 +10,9 @@
 #include "Config.h"
 #include "Game.h"
 #include "Collision.h"
+#include "Timer.h"
 
-IntroState::IntroState(Vec2 evaPos) : map("map/intro.txt")
+IntroState::IntroState(Vec2 evaPos) : map("map/intro.txt"), isEvaDead(false)
 {
 	Camera::pos = Vec2(0.0, 0.0);
     Eva *eva = new Eva(evaPos);
@@ -62,8 +63,17 @@ bool IntroState::IsCollidingWithWall(GameObject* o)
 
 void IntroState::UpdateArray(float dt)
 {
+    static std::string evaDeath = "";
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i]->IsDead()) {
+            if (objectArray[i]->Is("Eva"))
+            {
+                evaDeath = ((Eva*)(objectArray[i].get()))->GetEvaDeath();
+                isEvaDead = true;
+            }
+            if (isEvaDead && objectArray[i]->Is(evaDeath))
+                popRequested = quitRequested = true;
+
             objectArray.erase(objectArray.begin() + i);
         } else {
 			if (objectArray[i]->Is("Eva"))

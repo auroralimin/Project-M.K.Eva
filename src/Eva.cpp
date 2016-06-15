@@ -14,6 +14,7 @@ Eva::Eva(Vec2 pos) :
     frameCounts = new int[5]{6, 6, 6, 6, 6};
     frameTimes = new float[5]{0.08, 0.08, 0.08, 0.08, 0.08};
     SetClass(BASE);
+    evaDeath = "";
 
     moveSpeed = 200;
     box.pos = pos;
@@ -130,9 +131,11 @@ void Eva::TakeDamage(float dmg)
 {
 	hp -= dmg;
     if (IsDead()) {
-        Game::GetInstance()->GetCurrentState().AddObject(
-			new Animation(box.GetCenter(), 0, std::string("sprites/eva/death/EVA-") 
-			+ classes[currentClass] + std::string("-DEATH.png"), 16, 0.08));
+        evaDeath = std::string("sprites/eva/death/EVA-") +
+            classes[currentClass] + std::string("-DEATH.png");
+        Game::GetInstance()->GetCurrentState().AddObject(new Animation(
+                    box.GetCenter(), 0, evaDeath, 16, 0.08));
+        evaDeath = "Animation:" + evaDeath;
     }
 }
 
@@ -166,6 +169,11 @@ void Eva::SetAnimationFileSet(Classes pClass)
     for (int i = 0; i < 5; i++) {
         evaAnimations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
     }
+}
+
+std::string Eva::GetEvaDeath(void)
+{
+    return evaDeath;
 }
 
 void Eva::SetClass(Classes c)

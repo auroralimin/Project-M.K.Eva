@@ -30,12 +30,12 @@ void HubState::Render(void)
 
 void HubState::Pause(void)
 {
-
+    //do nothing
 }
 
 void HubState::Resume(void)
 {
-
+    //do nothing
 }
 
 bool HubState::IsCollidingWithWall(GameObject* o)
@@ -63,13 +63,15 @@ void HubState::UpdateEva(int i)
 
     if (objectArray[i]->box.pos.x + objectArray[i]->box.dim.x < 0) {
         Game *game = Game::GetInstance();
-        Pause();
         game->Push(new IntroState(Vec2(roomWidth, objectArray[i]->box.pos.y)));
+        objectArray[i]->box.pos.x = Game::GetInstance()->GetWinWidth()/2;
+        objectArray[i]->box.pos.y = Game::GetInstance()->GetWinHeight()/2;
     } else if (objectArray[i]->box.pos.x > roomWidth) {
         Game *game = Game::GetInstance();
-        Pause();
         game->Push(new FirstLevelState(Vec2(-objectArray[i]->box.dim.x,
                         objectArray[i]->box.pos.y)));
+        objectArray[i]->box.pos.x = Game::GetInstance()->GetWinWidth()/2;
+        objectArray[i]->box.pos.y = Game::GetInstance()->GetWinHeight()/2;
     } else if (objectArray[i]->box.pos.y + objectArray[i]->box.dim.y < 0) {
         map.RoomUp();
         objectArray[i]->box.pos.y = roomHeight;

@@ -5,7 +5,8 @@
 
 Animation::Animation(Vec2 pos, float rotation, std::string sprite,
 		int frameCount, float frameTime, bool ends) : 
-		sp(sprite, frameCount, frameTime), endTimer(), oneTimeOnly(ends)
+		sp(sprite, frameCount, frameTime), endTimer(), oneTimeOnly(ends),
+        is("Animation:" + sprite)
 {
 	animationImg = "";
 	box.pos = pos;
@@ -41,7 +42,7 @@ void Animation::NotifyCollision(GameObject &other, bool movement)
 
 bool Animation::Is(std::string className)
 {
-	return (className == "Animation");
+	return (className == is);
 }
 
 void Animation::TakeDamage(float dmg)

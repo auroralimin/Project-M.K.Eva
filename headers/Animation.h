@@ -74,5 +74,6 @@ class Animation : public GameObject
 		Timer endTimer;
 		float timeLimit;
 		bool oneTimeOnly;
+        std::string is;
 };
 

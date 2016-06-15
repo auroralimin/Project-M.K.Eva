@@ -92,6 +92,8 @@ class Eva : public GameObject
 		 */
 		void SetAnimationFileSet(Classes pClass);
 
+        std::string GetEvaDeath(void);
+
         enum Animations {
             IDLE, MOVING_UP, MOVING_DOWN, MOVING_LEFT, MOVING_RIGHT
         };
@@ -105,6 +107,7 @@ class Eva : public GameObject
 		AnimationFSM evaAnimations;
         int currentClass;
 		Vec2 previousPos;
+        std::string evaDeath;
 
 		void SetClass(Classes c);
 };

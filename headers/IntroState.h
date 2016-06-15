@@ -52,6 +52,7 @@ class IntroState : public State
 
 	private:
 		LevelMap map;
+        bool isEvaDead;
 
 		void UpdateEva(int i);
 };

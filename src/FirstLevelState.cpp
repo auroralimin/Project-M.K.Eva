@@ -9,7 +9,7 @@
 #include "Config.h"
 #include "Game.h"
 
-FirstLevelState::FirstLevelState(Vec2 evaPos) : map()
+FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), isEvaDead(false)
 {
     seed = std::time(0);
     if (Config::DEBUG)
@@ -53,8 +53,17 @@ bool FirstLevelState::IsCollidingWithWall(GameObject* o)
 
 void FirstLevelState::UpdateArray(float dt)
 {
+    static std::string evaDeath = "";
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i]->IsDead()) {
+            if (objectArray[i]->Is("Eva"))
+            {
+                evaDeath = ((Eva*)(objectArray[i].get()))->GetEvaDeath();
+                isEvaDead = true;
+            }
+            if (isEvaDead && objectArray[i]->Is(evaDeath))
+                popRequested = quitRequested = true;
+
             objectArray.erase(objectArray.begin() + i);
         } else {
             if (objectArray[i]->Is("Eva"))
