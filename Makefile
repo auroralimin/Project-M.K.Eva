@@ -8,6 +8,7 @@ _OBJ  = Main.o Game.o Camera.o State.o Sprite.o Vec2.o Rect.o TileSet.o TileMap.
 _OBJ += Resources.o InputManager.o Timer.o Animation.o Music.o Sound.o Text.o
 _OBJ += LevelMap.o IntroState.o ProceduralMap.o ProceduralState.o AnimationFSM.o
 _OBJ += Eva.o Turret.o Bullet.o MekaBug.o TurretMob.o Ball.o MonsterBallManager.o
+_OBJ += HubState.o FirstLevelState.o
 OBJ = $(patsubst %,$(BIN_PATH)/%,$(_OBJ))
 
 DIRECTIVES = -std=c++11 -Wall -Wextra -c -I $(HEADER_PATH)

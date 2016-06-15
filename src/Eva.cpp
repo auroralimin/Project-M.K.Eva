@@ -8,8 +8,6 @@
 
 #include <iostream>
 
-Eva* Eva::player = nullptr;
-
 Eva::Eva(Vec2 pos) :
     evaAnimations(5)
 {
@@ -25,12 +23,6 @@ Eva::Eva(Vec2 pos) :
 	hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 90);
     rotation = 0;
     hp = 100;
-    player = this;
-}
-
-Eva::~Eva()
-{
-    player = nullptr;
 }
 
 void Eva::Render()
@@ -95,15 +87,15 @@ void Eva::Update(float dt)
 
 	box.pos += speed.Normalize() * moveSpeed * dt;
 
-	hitbox.pos = Vec2(previousPos.x + 35, box.pos.y + 90);
+	hitbox.pos = Vec2(previousPos.x + 20, box.pos.y + 85);
 	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
 		box.pos.y = previousPos.y;
 
-	hitbox.pos = Vec2(box.pos.x + 35, previousPos.y + 90);
+	hitbox.pos = Vec2(box.pos.x + 20, previousPos.y + 85);
 	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
 		box.pos.x = previousPos.x;
 
-	hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 90);
+	hitbox.pos = Vec2(box.pos.x + 20, box.pos.y + 85);
 	evaAnimations.Update(dt);
 }
 

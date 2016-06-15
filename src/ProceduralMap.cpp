@@ -4,6 +4,7 @@
 
 #include "SDL2/SDL.h"
 #include "Game.h"
+#include "Config.h"
 #include "ProceduralMap.h"
 
 #define ROOM_SIZE 64
@@ -16,15 +17,17 @@ int ProceduralMap::totalRooms = 0;
 int ProceduralMap::width = 0;
 int ProceduralMap::height = 0;
 int ProceduralMap::nMaps = 0;
+bool ProceduralMap::render = false;
 Vec2 ProceduralMap::firstRoom(0, 0);
 ProceduralMap::MapConfig ProceduralMap::config;
 std::string ProceduralMap::path;
 
-std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, MapConfig config)
+std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, MapConfig config, bool render)
 {
 	ProceduralMap::width = width;
 	ProceduralMap::height = height;
 	ProceduralMap::totalRooms = totalRooms;
+    ProceduralMap::render = render;
 	ProceduralMap::config = config;
 	path = (config == MapConfig::SPARSE) ? S_PATH : D_PATH;
 	nMaps++;
@@ -40,7 +43,8 @@ std::string ProceduralMap::GenerateMap(int width, int height, int totalRooms, Ma
 
 	Automaton((int)(p*1.5*config), 1, 4);
 	LabelRooms();
-	Render(false, path);
+    if (render)
+    	Render(false, path);
 	std::string file = GenerateMapFile();
 
 	DeleteMap();
@@ -88,12 +92,12 @@ void ProceduralMap::Automaton(int minRoomPerGen, int nRooms, int nPossibilities)
 		minRoomPerGen = totalRooms - nRooms;
 
 	gen++;
-	//PrintMap();
-	Render(true, path);
+    if (render)
+        Render(true, path);
 	if (totalRooms != nRooms)
 		Automaton(minRoomPerGen, nRooms, nPossibilities);
 
-	if (gen != 0)
+	if (Config::DEBUG && gen != 0)
 		std::cout << "Number of generations: " << gen << std::endl << std::endl;
 	gen = 0;
 }
@@ -126,8 +130,8 @@ void ProceduralMap::Render(const bool renderGeneration, const std::string path)
 	for (int i = 0; i < width; ++i)
 		for (int j = 0; j < height; ++j)
 			if (map[i][j] > 0)
-			{	
-				std::string roomFile = std::to_string(map[i][j]) + ".jpg"; 
+			{
+				std::string roomFile = std::to_string(map[i][j]) + ".jpg";
 				if (i == firstRoom.x && j == firstRoom.y)
 					Sprite(FR_PATH + roomFile).Render(i*ROOM_SIZE, j*ROOM_SIZE);
 				else
@@ -189,8 +193,8 @@ std::string ProceduralMap::GenerateMapFile(void)
 	std::string file = "map/procedural_generated_map" + std::to_string(nMaps) + ".txt";
 	std::ofstream out;
 	out.open(file);
-	
-	out << "tileset/intro.png" << std::endl << std::endl;
+
+	out << "tileset/lab.png" << std::endl << std::endl;
 	out << "tilemap/procedural_generated/" << std::endl << std::endl;
 
 	out << width << "," << height << std::endl;

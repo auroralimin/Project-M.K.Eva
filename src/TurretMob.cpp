@@ -13,7 +13,7 @@
 #define BACK 3
 #define BACK_MIRROR 4
 
-TurretMob::TurretMob(Vec2 pos)
+TurretMob::TurretMob(Vec2 pos, GameObject *focus) : focus(focus)
 {
 	box.pos = pos;
 	
@@ -50,136 +50,132 @@ void TurretMob::Render()
 
 bool TurretMob::IsDead()
 {
-	return (hp <= 0);
+    return (hp <= 0);
 }
 
 void TurretMob::Update(float dt)
 {
-	InputManager &manager = InputManager::GetInstance();
+    InputManager &manager = InputManager::GetInstance();
 
-	if (manager.KeyPress(J_KEY)) { // temporary suicide button
+    if (manager.KeyPress(J_KEY)) { // temporary suicide button
         TakeDamage(8000);
     }
 
-	if(Eva::player != nullptr)
-	{
-		//looks at the player
-		Vec2 lookVector = Eva::player->box.GetCenter();
-		lookVector -= box.GetCenter();	
-		if(lookVector.y < 0)
-		{
-			if(lookVector.x >= 0)
-			{
-				currentSprite = BACK;
-			} else {
-				currentSprite = BACK_MIRROR;
-			}
-		} else {
-			if(lookVector.x >= 0)
-			{
-				currentSprite = FRONT_MIRROR;
-			} else {
-				currentSprite = FRONT;
-			}
-		}
+    Vec2 lookVector = focus->box.GetCenter();
+    lookVector -= box.GetCenter();	
+    if(lookVector.y < 0)
+    {
+        if(lookVector.x >= 0)
+        {
+            currentSprite = BACK;
+        } else {
+            currentSprite = BACK_MIRROR;
+        }
+    } else {
+        if(lookVector.x >= 0)
+        {
+            currentSprite = FRONT_MIRROR;
+        } else {
+            currentSprite = FRONT;
+        }
+    }
 
-		if(state == TurretMobState::RESTING)
-		{
-			currentSprite = IDLE;
-			restTimer.Update(dt);
-			if(restTimer.Get() >= Config::Rand(1.0, 3.5))
-			{
-				state = TurretMobState::MOVING;
-				destination = Vec2(Config::Rand(100.0, 250.0), 0);
-				float angle = Config::Rand(0, 2*M_PI);
-				destination = destination.Rotate(angle);
-				destination += box.pos;
-			}
-		}
+    if(state == TurretMobState::RESTING)
+    {
+        currentSprite = IDLE;
+        restTimer.Update(dt);
+        if(restTimer.Get() >= Config::Rand(1.0, 3.5))
+        {
+            state = TurretMobState::MOVING;
+            destination = Vec2(Config::Rand(100.0, 250.0), 0);
+            float angle = Config::Rand(0, 2*M_PI);
+            destination = destination.Rotate(angle);
+            destination += box.pos;
+        }
+    }
 
-		if(state == TurretMobState::MOVING)
-		{
-			if(box.pos.DistanceFromPoint(destination) <= 5)
-			{
-				box.pos = destination;
-				restTimer.Restart();
-				state = TurretMobState::RESTING;
-				destination = Vec2(0, 0);
-			} else {
-				speed = destination;
-				speed -= box.pos;
-				speed = speed.Norm();
-				speed *= 25*dt;
-				previousPos = box.pos;
-				box.pos += speed;
-			}
-			hitbox.pos = Vec2(previousPos.x + 35, box.pos.y + 80);
-			if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
-			{
-				box.pos.y = previousPos.y;
-				state = TurretMobState::RESTING;
-				restTimer.Restart();
-			}
+    if(state == TurretMobState::MOVING)
+    {
+        if(box.pos.DistanceFromPoint(destination) <= 5)
+        {
+            box.pos = destination;
+            restTimer.Restart();
+            state = TurretMobState::RESTING;
+            destination = Vec2(0, 0);
+        } else {
+            speed = destination;
+            speed -= box.pos;
+            speed = speed.Norm();
+            speed *= 25*dt;
+            previousPos = box.pos;
+            box.pos += speed;
+        }
+        hitbox.pos = Vec2(previousPos.x + 35, box.pos.y + 80);
+        if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
+        {
+            box.pos.y = previousPos.y;
+            state = TurretMobState::RESTING;
+            restTimer.Restart();
+        }
 
-			hitbox.pos = Vec2(box.pos.x + 35, previousPos.y + 80);
-			if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
-			{
-				box.pos.x = previousPos.x;
-				state = TurretMobState::RESTING;
-				restTimer.Restart();
-			}
-		}
-	
-		hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 80);
+        hitbox.pos = Vec2(box.pos.x + 35, previousPos.y + 80);
+        if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
+        {
+            box.pos.x = previousPos.x;
+            state = TurretMobState::RESTING;
+            restTimer.Restart();
+        }
+    }
 
-		if(attackTimer.Get() >= Config::Rand(2.0, 6.0))
-		{
-			Vec2 evaPos = Eva::player->box.GetCenter();
-			Vec2 boxVector = box.GetCenter();
-			boxVector.y -= 25;
-			boxVector.x -= 10;
-			float angle = 0;
+    hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 80);
 
-			evaPos -= box.GetCenter();
-			angle = atan2(evaPos.y, evaPos.x);
-			Bullet* b = new Bullet(boxVector, angle, 200, 1000, 
-				"sprites/monsters/turret/penguinbullet.png", 4, 0.3, true);
+    if(attackTimer.Get() >= Config::Rand(2.0, 6.0))
+    {
+        Vec2 evaPos = focus->box.GetCenter();
+        Vec2 boxVector = box.GetCenter();
+        boxVector.y -= 25;
+        boxVector.x -= 10;
+        float angle = 0;
 
-			Game::GetInstance()->GetCurrentState().AddObject(b);
+        evaPos -= box.GetCenter();
+        angle = atan2(evaPos.y, evaPos.x);
+        Bullet* b = new Bullet(boxVector, angle, 200, 1000, 
+                "sprites/monsters/turret/penguinbullet.png", 4, 0.3, true);
 
-			attackTimer.Restart();
-		}
+        Game::GetInstance()->GetCurrentState().AddObject(b);
 
-	attackTimer.Update(dt);
-	}
+        attackTimer.Restart();
+    }
 
-	sprites[currentSprite].Update(dt);
+    attackTimer.Update(dt);
+
+    sprites[currentSprite].Update(dt);
 }
 
 void TurretMob::NotifyCollision(GameObject &other, bool movement)
 {
-	if (other.Is("Bullet")) {
-		Bullet& bullet = (Bullet&) other;
-		if (!bullet.targetsPlayer) {
-			TakeDamage(10);
-		}
-	} else if (movement && (!other.Is("Ball"))) {
-		box.pos = previousPos;
+    if (other.Is("Bullet")) {
+        Bullet& bullet = (Bullet&) other;
+        if (!bullet.targetsPlayer) {
+            TakeDamage(10);
+        }
+    } else if (movement && (!other.Is("Ball"))) {
+        box.pos = previousPos;
         state = TurretMobState::RESTING;
-	}
+    }
 }
 
 bool TurretMob::Is(std::string className)
 {
-	return ("TurretMob" == className);
+    return ("TurretMob" == className);
 }
 
 void TurretMob::TakeDamage(float dmg)
 {
-	hp -= dmg;
-	if(IsDead())
-	{
-		Game::GetInstance()->GetCurrentState().AddObject(new Animation(box.GetCenter(), 
-			0, "sprites/monsters/turretmob/TurretMobDeath.png", 7, 0.2, true));
-	}
+    hp -= dmg;
+    if(IsDead())
+    {
+        Game::GetInstance()->GetCurrentState().AddObject(new Animation(box.GetCenter(), 
+                    0, "sprites/monsters/turretmob/TurretMobDeath.png", 7, 0.2, true));
+    }
 }

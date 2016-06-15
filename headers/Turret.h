@@ -11,7 +11,7 @@
 class Turret : public GameObject 
 {
 	public:
-		Turret(Vec2 pos);
+		Turret(Vec2 pos, GameObject *focus);
 		~Turret();
 		void Render();
 		bool IsDead();
@@ -23,6 +23,7 @@ class Turret : public GameObject
 		void ShootPattern2();
 
 	private:
+        GameObject *focus;
 		Sprite sp;
 		Timer timer;
 };

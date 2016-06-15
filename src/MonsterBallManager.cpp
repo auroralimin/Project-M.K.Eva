@@ -7,7 +7,8 @@
 #define ATTACK 1
 #define WAR 2
 
-MonsterBallManager::MonsterBallManager(int numBall)
+MonsterBallManager::MonsterBallManager(int numBall, GameObject *focus) :
+    focus(focus)
 {
 	for (int i = 0; i < numBall; i++) {
 		float x = Config::Rand(128, 1152);
@@ -44,84 +45,81 @@ bool MonsterBallManager::IsDead()
 
 void MonsterBallManager::Update(float dt)
 {
-    if (Eva::player != nullptr) {
-	    //gambiarra
-	    if (b) {
-		    for (size_t i = 0; i < ballArray.size(); i++) {
-			    Game::GetInstance()->GetCurrentState().AddObject(&ballArray[i]);
-		    }
-		    b = false;
-	    }
-	    timer.Update(dt);
+    if (b) {
+        for (size_t i = 0; i < ballArray.size(); i++) {
+            Game::GetInstance()->GetCurrentState().AddObject(&ballArray[i]);
+        }
+        b = false;
+    }
+    timer.Update(dt);
 
-	    if (state == BallManagerState::RESTING) {
-		    SwitchSprite(IDLE);
+    if (state == BallManagerState::RESTING) {
+        SwitchSprite(IDLE);
 
-		    if (timer.Get() >= Config::Rand(1.8, 3.6)) {
-			    state = BallManagerState::WARNING;
-			    timer.Restart();
-		    } 
-	    } else if (state == BallManagerState::WARNING) {
-		    SwitchSprite(WAR);
+        if (timer.Get() >= Config::Rand(1.8, 3.6)) {
+            state = BallManagerState::WARNING;
+            timer.Restart();
+        } 
+    } else if (state == BallManagerState::WARNING) {
+        SwitchSprite(WAR);
 
-		    if(timer.Get() >= 2.0) {
-			    state = BallManagerState::ATTACKING;
-			    timer.Restart();
-		    }
-	    } else if (state == BallManagerState::ATTACKING) {
-		    SwitchSprite(ATTACK);
+        if(timer.Get() >= 2.0) {
+            state = BallManagerState::ATTACKING;
+            timer.Restart();
+        }
+    } else if (state == BallManagerState::ATTACKING) {
+        SwitchSprite(ATTACK);
 
-		    for (size_t i = 0; i < ballArray.size(); i++) {
-			    float angle = 2*M_PI*(i+1)/ballArray.size();
-			    Vec2 pos = Vec2(50, 0);
-			    ballArray[i].box.pos = Vec2(pos.x*cos(angle) - pos.y*sin(angle), 
-				    pos.y*cos(angle) + pos.x*sin(angle));
-                
-                Vec2 evaPos = Eva::player->box.pos;
-                evaPos.y -= Eva::player->box.dim.y/2;
-			    ballArray[i].box.pos += evaPos;
-                 
-		    }
+        for (size_t i = 0; i < ballArray.size(); i++) {
+            float angle = 2*M_PI*(i+1)/ballArray.size();
+            Vec2 pos = Vec2(50, 0);
+            ballArray[i].box.pos = Vec2(pos.x*cos(angle) - pos.y*sin(angle), 
+                    pos.y*cos(angle) + pos.x*sin(angle));
 
-		    if (timer.Get() >= 3.6) {
-			    state = BallManagerState::RESTING;
-			    RandTeleport();
-			    timer.Restart();
-		    }
-	    }
+            Vec2 evaPos = focus->box.pos;
+            evaPos.y -= focus->box.dim.y/2;
+            ballArray[i].box.pos += evaPos;
+
+        }
+
+        if (timer.Get() >= 3.6) {
+            state = BallManagerState::RESTING;
+            RandTeleport();
+            timer.Restart();
+        }
     }
 }
 
 void MonsterBallManager::NotifyCollision(GameObject &other, bool movement)
 {
-	UNUSED_VAR other;
-	UNUSED_VAR movement;
+    UNUSED_VAR other;
+    UNUSED_VAR movement;
 }
 
 bool MonsterBallManager::Is(std::string className)
 {
-	UNUSED_VAR className;
-	return false;
+    UNUSED_VAR className;
+    return false;
 }
 
 void MonsterBallManager::TakeDamage(float dmg)
 {
-	UNUSED_VAR dmg;
+    UNUSED_VAR dmg;
 }
 
 void MonsterBallManager::SwitchSprite(int sprite)
 {
-	for (size_t i = 0; i < ballArray.size(); i++) {
-		ballArray[i].SetCurrentSprite(sprite);
-	}
+    for (size_t i = 0; i < ballArray.size(); i++) {
+        ballArray[i].SetCurrentSprite(sprite);
+    }
 }
 
 void MonsterBallManager::RandTeleport()
 {
-	for (size_t i = 0; i < ballArray.size(); i++) {
-		float x = Config::Rand(128, 1152);
-		float y = Config::Rand(256, 576);
-		ballArray[i].box.pos = Vec2(x - 43, y - 110);
-		ballArray[i].hitbox.pos = Vec2(box.pos.x + 43, box.pos.y + 110);
-	}
+    for (size_t i = 0; i < ballArray.size(); i++) {
+        float x = Config::Rand(128, 1152);
+        float y = Config::Rand(256, 576);
+        ballArray[i].box.pos = Vec2(x - 43, y - 110);
+        ballArray[i].hitbox.pos = Vec2(box.pos.x + 43, box.pos.y + 110);
+    }
 }

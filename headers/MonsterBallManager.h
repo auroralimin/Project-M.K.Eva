@@ -6,7 +6,7 @@
 
 class MonsterBallManager : public GameObject {
 	public:
-		MonsterBallManager(int n);
+		MonsterBallManager(int n, GameObject *focus);
 		~MonsterBallManager();
 		void Render();
 		bool IsDead();
@@ -17,9 +17,12 @@ class MonsterBallManager : public GameObject {
 
 	private:
 		enum BallManagerState {RESTING, WARNING, ATTACKING};
+
+        GameObject *focus;
 		BallManagerState state;
 		std::vector<Ball> ballArray;
 		Timer timer;
+
 		void SwitchSprite(int sprite);
 		void RandTeleport();
 		bool b;

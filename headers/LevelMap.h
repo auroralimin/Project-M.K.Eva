@@ -14,6 +14,12 @@
 class LevelMap
 {
 	public:
+        /**
+         * Default initialisation
+		 */
+
+		LevelMap(void);
+
 		/**
 		 * Initialises Level map by loading it attributes value from a giver map
 		 * file.
@@ -26,6 +32,11 @@ class LevelMap
 		 * @param file a string with the map file path
 		 */
 		void Load(std::string file);
+
+        /**
+         * Initialise miniroom values.
+         */
+        void InitMiniroom(void);
 
 		/**
 		 * Renders the current map room.

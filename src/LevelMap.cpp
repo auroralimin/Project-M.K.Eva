@@ -7,24 +7,18 @@
 #include "Config.h"
 #include "Collision.h"
 
-#define TILE_SIZE 64
 #define MINI_ROOM_SIZE_X 30
 #define MINI_ROOM_SIZE_Y 22
 #define MINI_ROOM_BORDER 3
-#define MINIMAP_X 1080
+#define MINIMAP_X 1000
 #define MINIMAP_Y 0
+
+LevelMap::LevelMap(void) {}
 
 LevelMap::LevelMap(std::string file)
 {
 	Load(file);
-
-	miniRoom.dim.x = MINI_ROOM_SIZE_X * mapWidth + MINI_ROOM_BORDER*2;
-	miniRoom.dim.y = MINI_ROOM_SIZE_Y * mapHeight + MINI_ROOM_BORDER*2;
-	miniRoom.pos.x = MINIMAP_X - MINI_ROOM_BORDER;
-	miniRoom.pos.y = MINIMAP_Y - MINI_ROOM_BORDER;
-
-	miniRoom2.dim.x = MINI_ROOM_SIZE_X - MINI_ROOM_BORDER*2;
-	miniRoom2.dim.y = MINI_ROOM_SIZE_Y - MINI_ROOM_BORDER*2;
+    InitMiniroom();
 }
 
 void LevelMap::Load(std::string file)
@@ -57,6 +51,17 @@ void LevelMap::Load(std::string file)
 	index = mapMatrix[currentRoom.x + (mapWidth*currentRoom.y)];
 
 	fclose(fp);
+}
+
+void LevelMap::InitMiniroom(void)
+{
+    miniRoom.dim.x = MINI_ROOM_SIZE_X * mapWidth + MINI_ROOM_BORDER*2;
+	miniRoom.dim.y = MINI_ROOM_SIZE_Y * mapHeight + MINI_ROOM_BORDER*2;
+	miniRoom.pos.x = MINIMAP_X - MINI_ROOM_BORDER;
+	miniRoom.pos.y = MINIMAP_Y - MINI_ROOM_BORDER;
+
+	miniRoom2.dim.x = MINI_ROOM_SIZE_X - MINI_ROOM_BORDER*2;
+	miniRoom2.dim.y = MINI_ROOM_SIZE_Y - MINI_ROOM_BORDER*2;
 }
 
 void LevelMap::Render(void)

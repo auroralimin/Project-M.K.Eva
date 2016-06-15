@@ -26,11 +26,6 @@ class Eva : public GameObject
         Eva(Vec2 pos);
 
 		/**
-		 * Sets the player pointer back to nullptr.
-		 */
-		~Eva();
-
-		/**
 		 * Renders the current animation.
 		 */
 		void Render();
@@ -96,11 +91,6 @@ class Eva : public GameObject
 		 * @param pClass a enum Classes value to represent the class
 		 */
 		void SetAnimationFileSet(Classes pClass);
-
-		/**
-		 * static pointer to the player to be used in interactions.
-		 */
-		static Eva* player;
 
         enum Animations {
             IDLE, MOVING_UP, MOVING_DOWN, MOVING_LEFT, MOVING_RIGHT

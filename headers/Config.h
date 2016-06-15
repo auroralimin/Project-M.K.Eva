@@ -1,6 +1,7 @@
 #pragma once
 #include "SDL2/SDL.h"
 
+#define TILE_SIZE 64
 #define UNUSED_VAR   (void)
 #define COLOR_BLACK		{  0,   0,   0, 255}
 #define COLOR_RED    	{255,   0,   0, 255}

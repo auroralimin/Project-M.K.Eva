@@ -7,7 +7,7 @@
 class MekaBug : public GameObject
 {
 	public:
-		MekaBug(Vec2 pos);
+		MekaBug(Vec2 pos, GameObject *focus);
 		~MekaBug();
 		void Render();
 		bool IsDead();
@@ -18,6 +18,8 @@ class MekaBug : public GameObject
 
 	private:
 		enum MekaBugState {RESTING, MOVING};
+
+        GameObject *focus;
 		MekaBugState state;
 		Timer restTimer;
         Timer stuckTimer;

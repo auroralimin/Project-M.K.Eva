@@ -7,7 +7,7 @@
 #include "Bullet.h"
 #include "Collision.h"
 
-MekaBug::MekaBug(Vec2 pos)
+MekaBug::MekaBug(Vec2 pos, GameObject *focus) : focus(focus)
 {
 	box.pos = pos;
 
@@ -41,107 +41,104 @@ void MekaBug::Render()
 
 bool MekaBug::IsDead()
 {
-	return (hp <= 0);
+    return (hp <= 0);
 }
 
 void MekaBug::Update(float dt)
 {
-	InputManager &manager = InputManager::GetInstance();
+    InputManager &manager = InputManager::GetInstance();
 
-	if (manager.KeyPress(L_KEY)) { // temporary suicide button
+    if (manager.KeyPress(L_KEY)) { // temporary suicide button
         TakeDamage(8000);
     }
 
-	if(Eva::player != nullptr)
-	{
-		if(state == MekaBugState::RESTING)
-		{
-			restTimer.Update(dt);
+    if(state == MekaBugState::RESTING)
+    {
+        restTimer.Update(dt);
 
-			if(restTimer.Get() >= Config::Rand(1.0, 2.5))
-			{
-				state = MekaBugState::MOVING;
-				currentSprite = 0;
-			}
-		}
+        if(restTimer.Get() >= Config::Rand(1.0, 2.5))
+        {
+            state = MekaBugState::MOVING;
+            currentSprite = 0;
+        }
+    }
 
-		if(state == MekaBugState::MOVING)
-		{
-			Vec2 evaPos = Eva::player->box.GetCenter();
-			if(Collision::IsColliding(Eva::player->hitbox, hitbox, 
-				Eva::player->rotation, rotation))
-			{
-				state = MekaBugState::RESTING;
-				speed = Vec2(0, 0);
-				currentSprite = 1;
-				restTimer.Restart();
-			} else {
-				speed = evaPos;
-				speed -= box.pos;
-				speed = speed.Norm();
-				speed *= 40*dt;
-				previousPos = box.pos;
-                if (stuck) {
-                    stuckTimer.Update(dt);
-                    float angle = Config::Rand(M_PI, 2*M_PI);
-                    box.pos += speed.Rotate(angle);
-                    if (stuckTimer.Get() >= 0.5) {
-                        stuck = false;
-                        stuckTimer.Restart();
-                    }
-                } else {
-				    box.pos += speed;
+    if(state == MekaBugState::MOVING)
+    {
+        Vec2 evaPos = focus->box.GetCenter();
+        if(Collision::IsColliding(focus->hitbox, hitbox, 
+                    focus->rotation, rotation))
+        {
+            state = MekaBugState::RESTING;
+            speed = Vec2(0, 0);
+            currentSprite = 1;
+            restTimer.Restart();
+        } else {
+            speed = evaPos;
+            speed -= box.pos;
+            speed = speed.Norm();
+            speed *= 40*dt;
+            previousPos = box.pos;
+            if (stuck) {
+                stuckTimer.Update(dt);
+                float angle = Config::Rand(M_PI, 2*M_PI);
+                box.pos += speed.Rotate(angle);
+                if (stuckTimer.Get() >= 0.5) {
+                    stuck = false;
+                    stuckTimer.Restart();
                 }
-			}
+            } else {
+                box.pos += speed;
+            }
+        }
 
-			hitbox.pos = Vec2(previousPos.x, box.pos.y + 35);
-			if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
-			{
-				box.pos.y = previousPos.y;
-				state = MekaBugState::RESTING;
-				restTimer.Restart();
-			}
+        hitbox.pos = Vec2(previousPos.x, box.pos.y + 35);
+        if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
+        {
+            box.pos.y = previousPos.y;
+            state = MekaBugState::RESTING;
+            restTimer.Restart();
+        }
 
-			hitbox.pos = Vec2(box.pos.x, previousPos.y + 35);
-			if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
-			{
-				box.pos.x = previousPos.x;
-				state = MekaBugState::RESTING;
-				restTimer.Restart();
-			}
+        hitbox.pos = Vec2(box.pos.x, previousPos.y + 35);
+        if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
+        {
+            box.pos.x = previousPos.x;
+            state = MekaBugState::RESTING;
+            restTimer.Restart();
+        }
 
-			hitbox.pos = Vec2(box.pos.x, box.pos.y + 35);
-		}
-	}
-	sprites[currentSprite].Update(dt);
+        hitbox.pos = Vec2(box.pos.x, box.pos.y + 35);
+    }
+    sprites[currentSprite].Update(dt);
 }
 
 void MekaBug::NotifyCollision(GameObject &other, bool movement)
 {
-	if (other.Is("Bullet")) {
-		Bullet& bullet = (Bullet&) other;
-		if (!bullet.targetsPlayer) {
-			TakeDamage(10);
-		}
-	} else if (movement && (!other.Is("Ball"))) {
-		box.pos = previousPos;
+    if (other.Is("Bullet")) {
+        Bullet& bullet = (Bullet&) other;
+        if (!bullet.targetsPlayer) {
+            TakeDamage(10);
+        }
+    } else if (movement && (!other.Is("Ball"))) {
+        box.pos = previousPos;
         if (other.Is("MekaBug")) {
             stuck = true;
         }
-	}
+    }
 }
 
 bool MekaBug::Is(std::string className)
 {
-	return ("MekaBug" == className);
+    return ("MekaBug" == className);
 }
 
 void MekaBug::TakeDamage(float dmg)
 {
-	hp -= dmg;
-	if(IsDead())
-	{
-		Game::GetInstance()->GetCurrentState().AddObject(new Animation(box.GetCenter(), 
-			0, "sprites/monsters/mekabug/MEKABUG_DEATH.png", 3, 0.5, true));
-	}
+    hp -= dmg;
+    if(IsDead())
+    {
+        Game::GetInstance()->GetCurrentState().AddObject(new Animation(box.GetCenter(), 
+                    0, "sprites/monsters/mekabug/MEKABUG_DEATH.png", 3, 0.5, true));
+    }
 }

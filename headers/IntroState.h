@@ -3,6 +3,7 @@
 #include "State.h"
 #include "LevelMap.h"
 #include "GameObject.h"
+#include "Vec2.h"
 
 /***************************************************************************//**
  * Intro level managment state.
@@ -13,10 +14,10 @@ class IntroState : public State
 		/**
 		 * Initialises a Intro State loading intro map and Eva character.
 		 */
-		IntroState(void);
+		IntroState(Vec2 evaPos);
 
 		/**
-		 * Sets room based on EVa position on the map.
+		 * Sets room based on Eva position on the map.
 		 * @param dt time elapsed between th current and the last frame
 		 */
 		void Update(float dt);
@@ -41,10 +42,17 @@ class IntroState : public State
 		 */
 		bool IsCollidingWithWall(GameObject* o);
 
+		/**
+		 * Update state array of objects, including checking if Eva changed room.
+		 * @param dt time elapsed between th current and the last frame
+		 */
         void UpdateArray(float dt);
 
 		void CheckMovementCollisions();
+
 	private:
 		LevelMap map;
+
+		void UpdateEva(int i);
 };
 

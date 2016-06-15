@@ -7,7 +7,7 @@
 class TurretMob : public GameObject
 {
 	public:
-		TurretMob(Vec2 pos);
+		TurretMob(Vec2 pos, GameObject *focus);
 		~TurretMob();
 		void Render();
 		bool IsDead();
@@ -18,6 +18,8 @@ class TurretMob : public GameObject
 
 	private:
 		enum TurretMobState {RESTING, MOVING};
+
+        GameObject *focus;
 		TurretMobState state;
 		Timer restTimer;
 		Timer attackTimer;

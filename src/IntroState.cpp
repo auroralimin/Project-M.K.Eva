@@ -11,45 +11,31 @@
 #include "Game.h"
 #include "Collision.h"
 
-IntroState::IntroState(void) : map("map/procedural_generated_map1.txt")
+IntroState::IntroState(Vec2 evaPos) : map("map/intro.txt")
 {
 	Camera::pos = Vec2(0.0, 0.0);
-	//AddObject(new Turret(Vec2(Game::GetInstance()->GetWinWidth()/2 + 50, Game::GetInstance()->GetWinHeight()/2)));
-	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 + 100, Game::GetInstance()->GetWinHeight()/2 + 100)));
-	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 - 100, Game::GetInstance()->GetWinHeight()/2 - 100)));
-	/*AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2 - 200, Game::GetInstance()->GetWinHeight()/2 - 200)));
-	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/3, Game::GetInstance()->GetWinHeight()/2)));
-	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2, Game::GetInstance()->GetWinHeight()/3)));
-	AddObject(new MonsterBallManager(3));*/
-    AddObject(new Eva(Vec2(Game::GetInstance()->GetWinWidth()/2,
-                           Game::GetInstance()->GetWinHeight()/2)));
+    Eva *eva = new Eva(evaPos);
+    AddObject(eva);
+//	AddObject(new Turret(Vec2(Game::GetInstance()->GetWinWidth()/2 + 50,
+//                    Game::GetInstance()->GetWinHeight()/2), eva));
+//	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 + 100,
+//                    Game::GetInstance()->GetWinHeight()/2 + 100), eva));
+//	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 - 100,
+//                    Game::GetInstance()->GetWinHeight()/2 - 100), eva));
+//	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2 - 200,
+//                    Game::GetInstance()->GetWinHeight()/2 - 200), eva));
+//	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/3,
+//                    Game::GetInstance()->GetWinHeight()/2), eva));
+//	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2,
+//                    Game::GetInstance()->GetWinHeight()/3), eva));
+	AddObject(new MonsterBallManager(3, eva));
 }
 
 void IntroState::Update(float dt)
 {
-	UNUSED_VAR dt;
 	InputManager input = InputManager::GetInstance();
-    int roomWidth = Game::GetInstance()->GetWinWidth();
-    int roomHeight = Game::GetInstance()->GetWinHeight();
-
     quitRequested = (input.IsKeyDown(ESCAPE_KEY) || input.IsQuitRequested());
-
-    if (Eva::player) {
-        if (Eva::player->box.pos.x + Eva::player->box.dim.x < 0){
-            map.RoomLeft();
-            Eva::player->box.pos.x = roomWidth;
-        } else if (Eva::player->box.pos.x > roomWidth){
-            map.RoomRight();
-            Eva::player->box.pos.x = 0 - Eva::player->box.dim.x;
-        } else if (Eva::player->box.pos.y + Eva::player->box.dim.y < 0){
-            map.RoomUp();
-            Eva::player->box.pos.y = roomHeight;
-        } else if (Eva::player->box.pos.y >= roomHeight){
-            map.RoomDown();
-            Eva::player->box.pos.y = 0 - Eva::player->box.dim.y;
-        }
-    }
-    UpdateArray(dt);
+	UpdateArray(dt);
 	CheckMovementCollisions();
 }
 
@@ -80,9 +66,11 @@ void IntroState::UpdateArray(float dt)
         if (objectArray[i]->IsDead()) {
             objectArray.erase(objectArray.begin() + i);
         } else {
-            objectArray[i]->Update((float)(dt/1000));
-        }
-    }
+			if (objectArray[i]->Is("Eva"))
+				UpdateEva(i);
+			objectArray[i]->Update((float)(dt/1000));
+		}
+	}
 }
 
 void IntroState::CheckMovementCollisions()
@@ -100,3 +88,24 @@ void IntroState::CheckMovementCollisions()
 		}
 	}
 }
+
+void IntroState::UpdateEva(int i)
+{
+    int roomWidth = Game::GetInstance()->GetWinWidth();
+    int roomHeight = Game::GetInstance()->GetWinHeight();
+
+	if (objectArray[i]->box.pos.x + objectArray[i]->box.dim.x < 0) {
+		map.RoomLeft();
+		objectArray[i]->box.pos.x = roomWidth;
+	} else if (objectArray[i]->box.pos.x > roomWidth) {
+		map.RoomRight();
+		objectArray[i]->box.pos.x = 0 - objectArray[i]->box.dim.x;
+	} else if (objectArray[i]->box.pos.y + objectArray[i]->box.dim.y < 0) {
+		map.RoomUp();
+		objectArray[i]->box.pos.y = roomHeight;
+	} else if (objectArray[i]->box.pos.y >= roomHeight) {
+		map.RoomDown();
+		objectArray[i]->box.pos.y = 0 - objectArray[i]->box.dim.y;
+	}
+}
+

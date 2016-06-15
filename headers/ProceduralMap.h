@@ -25,12 +25,14 @@ class ProceduralMap
 		 * @param heigth a int with the to be generated map max heigth
 		 * @param totalRooms a int with the map total number of rooms
 		 * @param config a MapConfig with the map configuration
+         * @param render a bool to check if the minimap should be rendered ot not
 		 */
-		static std::string GenerateMap(int width, int height, int totalRooms, MapConfig config);
+		static std::string GenerateMap(int width, int height, int totalRooms, MapConfig config, bool Render);
 
 	private:
 		static int** map;
 		static int totalRooms, width, height, nMaps;
+        static bool render;
 		static Vec2 firstRoom;
 		static MapConfig config;
 		static std::string path;
