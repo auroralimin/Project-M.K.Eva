@@ -21,7 +21,8 @@ class AnimationFSM
 		 * @param frameCont a int argument containing the animations frameCount
 		 * @param frameTime a int argument containing the animations frameTime
 		 */
-        AnimationFSM(int nAnimations, std::string files[], int frameCount[], float frameTime[]);
+        AnimationFSM(int nAnimations, std::string files[], int frameCount[],
+                     float frameTime[]);
 
 		/**
 		 * Renders the sprite according to the current state.
@@ -55,7 +56,8 @@ class AnimationFSM
 		 * @param frameCount number of frames
 		 * @param frameTime duration of each frame
 		 */
-		void SetAnimation(int index, std::string file, int frameCount, float frameTime);
+        void SetAnimation(int index, std::string file, int frameCount,
+                          float frameTime);
 
 		/**
 		 * Returns the width of a frame.

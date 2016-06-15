@@ -9,11 +9,13 @@ AnimationFSM::AnimationFSM(int nAnimations)
     currentState = 0;
 }
 
-AnimationFSM::AnimationFSM(int nAnimations, std::string files[], int frameCount[], float frameTime[])
+AnimationFSM::AnimationFSM(int nAnimations, std::string files[],
+                           int frameCount[], float frameTime[])
 {
     this->nAnimations = nAnimations;
     for (int i = 0; i < nAnimations; ++i)
-        animationsArray.emplace_back(new Sprite(files[i], frameCount[i], frameTime[i]));
+        animationsArray.emplace_back(new Sprite(files[i],
+                                                frameCount[i], frameTime[i]));
     currentState = 0;
 }
 

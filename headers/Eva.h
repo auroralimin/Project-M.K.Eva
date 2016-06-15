@@ -2,7 +2,10 @@
 
 #include "Vec2.h"
 #include "GameObject.h"
-#include "AnimationFSM.h"
+#include "EvaBase.h"
+#include "EvaClass.h"
+
+#include <memory>
 
 /***************************************************************************//**
  * The representation of the game main character object.
@@ -16,7 +19,7 @@ class Eva : public GameObject
 		 * Enum to represent eva's classes.
 		 */
         enum Classes {
-            BASE = 0, DECKER, GUNSLINGER
+            BASE = 0, SAMURAI, DECKER, GUNSLINGER
 		};
 
 		/**
@@ -25,72 +28,43 @@ class Eva : public GameObject
 		 */
         Eva(Vec2 pos);
 
-		/**
-		 * Renders the current animation.
-		 */
-		void Render();
+        /**
+         * Renders the current animation.
+         */
+        void Render();
 
-		/**
-		 * Sets the current animation based on input and updates sprites.
-		 * @param dt time elapsed between th current and the last frame
-		 */
-		void Update(float dt);
+        /**
+         * Sets the current animation based on input and updates sprites.
+         * @param dt time elapsed between th current and the last frame
+         */
+        void Update(float dt);
 
-		/**
-		 * Returns if eva's hp reach 0 or below.
-		 * @return returns true if eva's hp reached 0 or below, returns false
-		 * otherwise
-		 */
-		bool IsDead();
+        /**
+         * Returns if eva's hp reach 0 or below.
+         * @return returns true if eva's hp reached 0 or below, returns false
+         * otherwise
+         */
+        bool IsDead();
 
-		/**
-		 * Reacts to a collision.
-		 * @param other reference define reaction to the collision
-		 */
-		void NotifyCollision(GameObject &other, bool movement);
+        /**
+         * Reacts to a collision.
+         * @param other reference define reaction to the collision
+         */
+        void NotifyCollision(GameObject &other, bool movement);
 
-		/**
-		 * Returns if this class is the class indicated by className.
-		 * @param className name of the class to be tested
-		 * @return if className is equal to this class' name then returns true,
-		 * returns false otherwise
-		 */
-		bool Is(std::string className);
+        /**
+         * Returns if this class is the class indicated by className.
+         * @param className name of the class to be tested
+         * @return if className is equal to this class' name then returns true,
+         * returns false otherwise
+         */
+        bool Is(std::string className);
 
-		/**
-		 * Reduces eva's hp.
-		 * @param dmg value that will be reduced from eva's hp
-		 */
-		void TakeDamage(float dmg = 1);
-
-		/**
-		 * Changes the file from which a given animation sprite will be created
-		 * and resets the sprite.
-		 * @param index an int argument containing the array file position
-		 * @param file new sprite file
-		 */
-		void SetAnimationFile(int index, std::string file);
-
-		/**
-		 * Sets the frameTime and resets all sprites to accomodate the new
-		 * frameTime.
-		 * @param time value to be attributed to frameTime
-		 */
-        void SetFrameTime(int index, float time);
-
-		/**
-		 * Sets the frameCount and resets all sprites to accomodate the new
-		 * frameCount.
-		 * @param count value to be attributed to frameCount
-		 */
-        void SetFrameCount(int index, int count);
-
-		/**
-		 * Changes the fileset from which all animations sprites will be created.
-		 * @param index an int argument containing the array file position
-		 * @param pClass a enum Classes value to represent the class
-		 */
-		void SetAnimationFileSet(Classes pClass);
+        /**
+         * Reduces eva's hp.
+         * @param dmg value that will be reduced from eva's hp
+         */
+        void TakeDamage(float dmg = 1);
 
         std::string GetEvaDeath(void);
 
@@ -104,10 +78,10 @@ class Eva : public GameObject
         float *frameTimes;
         int *frameCounts;
         int moveSpeed;
-		AnimationFSM evaAnimations;
-        int currentClass;
-		Vec2 previousPos;
+        Vec2 previousPos;
         std::string evaDeath;
+        std::vector<std::unique_ptr<EvaClass>> evaClasses;
+        unsigned int currentClass;
 
 		void SetClass(Classes c);
 };
