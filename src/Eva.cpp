@@ -57,36 +57,35 @@ void Eva::Update(float dt)
         TakeDamage(8000);
     }
 
-	if (manager.IsKeyDown(D_KEY))
-	{
-		isMoving = true;
-		if (!(manager.IsKeyDown(S_KEY)) && !(manager.IsKeyDown(W_KEY)))
-            evaAnimations.SetCurrentState(Animations::MOVING_RIGHT);
-		speed.x += 1;
-	}
-	if (manager.IsKeyDown(A_KEY))
-	{
-		isMoving = true;
-		if (!(manager.IsKeyDown(S_KEY)) && !(manager.IsKeyDown(W_KEY)))
-            evaAnimations.SetCurrentState(Animations::MOVING_LEFT);
-		speed.x -= 1;
-	}
-	if (manager.IsKeyDown(S_KEY))
-	{
-		isMoving = true;
-        evaAnimations.SetCurrentState(Animations::MOVING_DOWN);
-		speed.y += 1;
-	}
-	if (manager.IsKeyDown(W_KEY))
-	{
-		isMoving = true;
-        evaAnimations.SetCurrentState(Animations::MOVING_UP);
-		speed.y -= 1;
-	}
-	if (!isMoving)
-        evaAnimations.SetCurrentState(Animations::IDLE);
+    if (manager.IsKeyDown(D_KEY))
+    {
+        speed.x += 1;
+    }
+    if (manager.IsKeyDown(A_KEY))
+    {
+        speed.x -= 1;
+    }
+    if (manager.IsKeyDown(S_KEY))
+    {
+        speed.y += 1;
+    }
+    if (manager.IsKeyDown(W_KEY))
+    {
+        speed.y -= 1;
+    }
 
-	box.pos += speed.Normalize() * moveSpeed * dt;
+    box.pos += speed.Normalize() * moveSpeed * dt;
+
+    if (speed.Normalize().y > 0)
+        evaAnimations.SetCurrentState(MOVING_DOWN);
+    if (speed.Normalize().y < 0)
+        evaAnimations.SetCurrentState(MOVING_UP);
+    if (speed.Normalize().x > 0 && speed.y == 0)
+        evaAnimations.SetCurrentState(MOVING_RIGHT);
+    if (speed.Normalize().x < 0 && speed.y == 0)
+        evaAnimations.SetCurrentState(MOVING_LEFT);
+    if (speed.GetModule() == 0)
+        evaAnimations.SetCurrentState(IDLE);
 
     hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + 3*box.dim.y/4);
 	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
