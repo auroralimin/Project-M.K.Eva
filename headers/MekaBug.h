@@ -20,8 +20,10 @@ class MekaBug : public GameObject
 		enum MekaBugState {RESTING, MOVING};
 		MekaBugState state;
 		Timer restTimer;
+        Timer stuckTimer;
 		int currentSprite;
 		Sprite sprites[2];
 		Vec2 speed;
 		Vec2 previousPos;
+        bool stuck;
 };

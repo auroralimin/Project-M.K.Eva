@@ -23,6 +23,7 @@ MekaBug::MekaBug(Vec2 pos)
 	state = MekaBugState::RESTING;
 	rotation = 0;
 	speed = Vec2(0, 0);
+    stuck = false;
 }
 
 MekaBug::~MekaBug()
@@ -80,7 +81,17 @@ void MekaBug::Update(float dt)
 				speed = speed.Norm();
 				speed *= 40*dt;
 				previousPos = box.pos;
-				box.pos += speed;
+                if (stuck) {
+                    stuckTimer.Update(dt);
+                    float angle = Config::Rand(M_PI, 2*M_PI);
+                    box.pos += speed.Rotate(angle);
+                    if (stuckTimer.Get() >= 0.5) {
+                        stuck = false;
+                        stuckTimer.Restart();
+                    }
+                } else {
+				    box.pos += speed;
+                }
 			}
 
 			hitbox.pos = Vec2(previousPos.x, box.pos.y + 35);
@@ -114,6 +125,9 @@ void MekaBug::NotifyCollision(GameObject &other, bool movement)
 		}
 	} else if (movement && (!other.Is("Ball"))) {
 		box.pos = previousPos;
+        if (other.Is("MekaBug")) {
+            stuck = true;
+        }
 	}
 }
 

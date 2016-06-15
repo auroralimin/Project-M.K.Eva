@@ -30,6 +30,7 @@ MonsterBallManager::MonsterBallManager(int numBall)
 
 MonsterBallManager::~MonsterBallManager()
 {
+    ballArray.clear();
 }
 
 void MonsterBallManager::Render()
