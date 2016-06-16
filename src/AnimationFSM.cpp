@@ -21,12 +21,12 @@ AnimationFSM::AnimationFSM(int nAnimations, std::string files[],
 
 void AnimationFSM::Render(int x, int y)
 {
-	animationsArray[currentState].get()->Render(x, y);
+    animationsArray[currentState].get()->Render(x, y);
 }
 
 void AnimationFSM::Update(float dt)
 {
-	animationsArray[currentState].get()->Update(dt);
+    animationsArray[currentState].get()->Update(dt);
 }
 
 void AnimationFSM::SetCurrentState(int state)

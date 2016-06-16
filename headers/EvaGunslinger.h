@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EvaClass.h"
+#include "Timer.h"
 
 class EvaGunslinger : public EvaClass
 {
@@ -16,5 +17,13 @@ public:
     void Attack(int direction);
 
     void Die(Vec2 pos);
+
+    bool IsAttacking();
+
+    bool AttackReady();
+
+private:
+    Timer atkTimer;
+    Timer atkCooldown;
 
 };

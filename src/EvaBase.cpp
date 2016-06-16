@@ -18,6 +18,8 @@ EvaBase::EvaBase() : EvaClass(5)
     atk = 1;
     def = 1;
     atkSpeed = 1;
+    isAttacking = false;
+    atkReady = false;
 }
 
 void EvaBase::Update(float dt)
@@ -39,11 +41,21 @@ void EvaBase::SetCurrentState(int state)
 
 void EvaBase::Attack(int direction)
 {
-    //TODO
+    //Do Nothing
 }
 
 void EvaBase::Die(Vec2 pos)
 {
     //Do nothing
+}
+
+bool EvaBase::IsAttacking()
+{
+    return false;
+}
+
+bool EvaBase::AttackReady()
+{
+    return false;
 }
 

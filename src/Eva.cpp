@@ -42,58 +42,84 @@ void Eva::Update(float dt)
 	Vec2 previousPos = box.pos, speed = Vec2(0, 0);
 	InputManager &manager = InputManager::GetInstance();
 
-    if (manager.KeyPress(Q_KEY)) {
-        currentClass -= 1;
-        if (currentClass < 1)
-            currentClass = evaClasses.size() - 1;
-    } else if (manager.KeyPress(E_KEY)) {
-        currentClass += 1;
-        if (currentClass > evaClasses.size() - 1)
-            currentClass = 1;
+    if (!evaClasses[currentClass]->IsAttacking()) {
+        if (manager.KeyPress(Q_KEY)) {
+            if (currentClass == 0)
+                currentClass = evaClasses.size() - 1;
+            currentClass -= 1;
+            if (currentClass < 1)
+                currentClass = evaClasses.size() - 1;
+        } else if (manager.KeyPress(E_KEY)) {
+            currentClass += 1;
+            if (currentClass > evaClasses.size() - 1)
+                currentClass = 1;
+        }
+    }
+    if (!evaClasses[currentClass]->IsAttacking() || currentClass == GUNSLINGER){
+        if (manager.KeyPress(SPACEBAR)) { // temporary suicide button
+            TakeDamage(8000);
+        }
+
+        if (manager.IsKeyDown(D_KEY))
+        {
+            speed.x += 1;
+        }
+        if (manager.IsKeyDown(A_KEY))
+        {
+            speed.x -= 1;
+        }
+        if (manager.IsKeyDown(S_KEY))
+        {
+            speed.y += 1;
+        }
+        if (manager.IsKeyDown(W_KEY))
+        {
+            speed.y -= 1;
+        }
+
+        box.pos += speed.Normalize() * evaClasses[currentClass]->movSpeed * dt;
+
+        if (speed.Normalize().y > 0)
+            if (!(evaClasses[currentClass]->IsAttacking() && currentClass == GUNSLINGER))
+                    evaClasses[currentClass]->SetCurrentState(MOVING_DOWN);
+        if (speed.Normalize().y < 0)
+            if (!(evaClasses[currentClass]->IsAttacking() && currentClass == GUNSLINGER))
+                evaClasses[currentClass]->SetCurrentState(MOVING_UP);
+        if (speed.Normalize().x > 0 && speed.y == 0)
+            if (!(evaClasses[currentClass]->IsAttacking() && currentClass == GUNSLINGER))
+                evaClasses[currentClass]->SetCurrentState(MOVING_RIGHT);
+        if (speed.Normalize().x < 0 && speed.y == 0)
+            if (!(evaClasses[currentClass]->IsAttacking() && currentClass == GUNSLINGER))
+                evaClasses[currentClass]->SetCurrentState(MOVING_LEFT);
+        if (speed.GetModule() == 0)
+            if (!(evaClasses[currentClass]->IsAttacking() && currentClass == GUNSLINGER))
+                evaClasses[currentClass]->SetCurrentState(IDLE);
+
+        if (manager.IsKeyDown(UP_ARROW_KEY)){
+            if (evaClasses[currentClass]->AttackReady())
+                evaClasses[currentClass]->Attack(ATTACKING_UP);
+        }
+        if (manager.IsKeyDown(DOWN_ARROW_KEY)){
+            if (evaClasses[currentClass]->AttackReady())
+                evaClasses[currentClass]->Attack(ATTACKING_DOWN);
+        }
+        if (manager.IsKeyDown(LEFT_ARROW_KEY)){
+            if (evaClasses[currentClass]->AttackReady())
+                evaClasses[currentClass]->Attack(ATTACKING_LEFT);
+        }
+        if (manager.IsKeyDown(RIGHT_ARROW_KEY)){
+            if (evaClasses[currentClass]->AttackReady())
+                evaClasses[currentClass]->Attack(ATTACKING_RIGHT);
+        }
     }
 
-    if (manager.KeyPress(SPACEBAR)) { // temporary suicide button
-        TakeDamage(8000);
-    }
-
-	if (manager.IsKeyDown(D_KEY))
-	{
-		speed.x += 1;
-	}
-	if (manager.IsKeyDown(A_KEY))
-	{
-		speed.x -= 1;
-	}
-	if (manager.IsKeyDown(S_KEY))
-	{
-		speed.y += 1;
-	}
-	if (manager.IsKeyDown(W_KEY))
-	{
-		speed.y -= 1;
-	}
-
-
-    box.pos += speed.Normalize() * evaClasses[currentClass]->movSpeed * dt;
-
-    if (speed.Normalize().y > 0)
-        evaClasses[currentClass]->SetCurrentState(MOVING_DOWN);
-    if (speed.Normalize().y < 0)
-        evaClasses[currentClass]->SetCurrentState(MOVING_UP);
-    if (speed.Normalize().x > 0 && speed.y == 0)
-        evaClasses[currentClass]->SetCurrentState(MOVING_RIGHT);
-    if (speed.Normalize().x < 0 && speed.y == 0)
-        evaClasses[currentClass]->SetCurrentState(MOVING_LEFT);
-    if (speed.GetModule() == 0)
-        evaClasses[currentClass]->SetCurrentState(IDLE);
+    hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + 3*box.dim.y/4);
+    if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
+        box.pos.y = previousPos.y;
 
     hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + 3*box.dim.y/4);
-	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
-		box.pos.y = previousPos.y;
-
-    hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + 3*box.dim.y/4);
-	if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
-		box.pos.x = previousPos.x;
+    if(Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
+        box.pos.x = previousPos.x;
 
     hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + 3*box.dim.y/4);
     evaClasses[currentClass]->Update(dt);
@@ -129,7 +155,8 @@ bool Eva::Is(std::string className)
 
 void Eva::TakeDamage(float dmg)
 {
-	hp -= dmg;
+    hp -= dmg - (float)dmg*evaClasses[currentClass]->def/100;
+    std::cout << hp << std::endl;
     if (IsDead()) {
         evaClasses[currentClass]->Die(box.GetCenter());
     }

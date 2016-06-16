@@ -20,6 +20,11 @@ public:
     virtual void Attack(int direction) = 0;
 
     virtual void Die(Vec2 pos) = 0;
+
+    virtual bool IsAttacking() = 0;
+
+    virtual bool AttackReady() = 0;
+
     int movSpeed;
     int atk;
     int def;
@@ -31,5 +36,7 @@ protected:
     std::string *files;
     float *frameTimes;
     int *frameCounts;
+    bool isAttacking;
+    bool atkReady;
 
 };

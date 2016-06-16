@@ -69,7 +69,8 @@ class Eva : public GameObject
         std::string GetEvaDeath(void);
 
         enum Animations {
-            IDLE, MOVING_UP, MOVING_DOWN, MOVING_LEFT, MOVING_RIGHT
+            IDLE = 0, MOVING_UP, MOVING_DOWN, MOVING_LEFT, MOVING_RIGHT,
+            ATTACKING_UP, ATTACKING_DOWN, ATTACKING_LEFT, ATTACKING_RIGHT
         };
 
 	private:

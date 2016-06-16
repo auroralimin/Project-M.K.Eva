@@ -17,4 +17,8 @@ public:
 
     void Die(Vec2 pos);
 
+    bool IsAttacking();
+
+    bool AttackReady();
+
 };
