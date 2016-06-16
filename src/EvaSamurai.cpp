@@ -1,6 +1,8 @@
 #include "EvaSamurai.h"
 #include "Game.h"
 #include "Animation.h"
+#include "Bullet.h"
+#include "AttackClass.h"
 
 EvaSamurai::EvaSamurai() : EvaClass(9)
 {
@@ -9,13 +11,13 @@ EvaSamurai::EvaSamurai() : EvaClass(9)
               std::string("sprites/eva/movement/EVA-SAMURAI-DOWN.png"),
               std::string("sprites/eva/movement/EVA-SAMURAI-LEFT.png"),
               std::string("sprites/eva/movement/EVA-SAMURAI-RIGHT.png"),
-              std::string("sprites/eva/movement/EVA-SAMURAI-UP.png"),
-              std::string("sprites/eva/movement/EVA-SAMURAI-DOWN.png"),
-              std::string("sprites/eva/movement/EVA-SAMURAI-LEFT.png"),
-              std::string("sprites/eva/movement/EVA-SAMURAI-RIGHT.png")
+              std::string("sprites/eva/attack/EVA-SAMURAI-ATTACK-UP.png"),
+              std::string("sprites/eva/attack/EVA-SAMURAI-ATTACK-DOWN.png"),
+              std::string("sprites/eva/attack/EVA-SAMURAI-ATTACK-LEFT.png"),
+              std::string("sprites/eva/attack/EVA-SAMURAI-ATTACK-RIGHT.png")
             };
     files = tFiles;
-    frameCounts = new int[9] {6, 6, 6, 6, 6, 6, 6, 6, 6};
+    frameCounts = new int[9] {6, 6, 6, 6, 6, 4, 4, 4, 4};
     frameTimes = new float[9] {0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08};
     for (int i = 0; i < 9; i++) {
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
@@ -23,7 +25,7 @@ EvaSamurai::EvaSamurai() : EvaClass(9)
     movSpeed = 200;
     atk = 1;
     def = 99;
-    atkSpeed = 0.9;
+    atkSpeed = 0.8;
     isAttacking = false;
     atkReady = true;
 }
@@ -58,11 +60,46 @@ void EvaSamurai::SetCurrentState(int state)
     animations.SetCurrentState(state);
 }
 
-void EvaSamurai::Attack(int direction)
+void EvaSamurai::Attack(Vec2 pos, int direction)
 {
     if (direction > 4 && direction < 9) {
         SetCurrentState(direction);
         isAttacking = true;
+        atkReady = false;
+        switch (direction) {
+        case 5:
+            Game::GetInstance()->GetCurrentState().AddObject(
+                        new AttackClass(pos, direction,
+                                   std::string(
+                                       "sprites/eva/attack/SAMURAI-SPELLEFFECT-RIGHT.png"),
+                                   4, 0.08f));
+            break;
+        case 6:
+            Game::GetInstance()->GetCurrentState().AddObject(
+                        new AttackClass(pos, direction,
+                                   std::string(
+                                       "sprites/eva/attack/SAMURAI-SPELLEFFECT-RIGHT.png"),
+                                   4, 0.08f));
+            break;
+        case 7:
+            Game::GetInstance()->GetCurrentState().AddObject(
+                        new AttackClass(pos, direction,
+                                   std::string(
+                                       "sprites/eva/attack/SAMURAI-SPELLEFFECT-LEFT.png"),
+                                   4, 0.08f));
+            break;
+        case 8:
+            Game::GetInstance()->GetCurrentState().AddObject(
+                        new AttackClass(pos, direction,
+                                   std::string(
+                                       "sprites/eva/attack/SAMURAI-SPELLEFFECT-RIGHT.png"),
+                                   4, 0.08f));
+            break;
+        default:
+            break;
+        }
+
+
     }
 }
 

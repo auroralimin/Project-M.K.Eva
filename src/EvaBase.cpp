@@ -39,7 +39,7 @@ void EvaBase::SetCurrentState(int state)
     animations.SetCurrentState(state);
 }
 
-void EvaBase::Attack(int direction)
+void EvaBase::Attack(Vec2 pos, int direction)
 {
     //Do Nothing
 }

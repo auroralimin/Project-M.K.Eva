@@ -17,7 +17,7 @@ public:
 
     virtual void SetCurrentState(int state) = 0;
 
-    virtual void Attack(int direction) = 0;
+    virtual void Attack(Vec2 pos, int direction) = 0;
 
     virtual void Die(Vec2 pos) = 0;
 

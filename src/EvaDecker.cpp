@@ -1,6 +1,7 @@
 #include "EvaDecker.h"
 #include "Game.h"
 #include "Animation.h"
+#include "AttackClass.h"
 
 EvaDecker::EvaDecker() : EvaClass(6)
 {
@@ -25,6 +26,7 @@ EvaDecker::EvaDecker() : EvaClass(6)
     atkCooldown.Restart();
     isAttacking = false;
     atkReady = true;
+    atkStarted = false;
 }
 
 void EvaDecker::Update(float dt)
@@ -32,6 +34,8 @@ void EvaDecker::Update(float dt)
     animations.Update(dt);
     if (isAttacking) {
         atkTimer.Update(dt);
+        if (atkTimer.Get() >= 13*frameTimes[5] && atkStarted)
+            Shockwave(atkPos);
         if (atkTimer.Get() >= 18*frameTimes[5]){
             isAttacking = false;
             atkTimer.Restart();
@@ -57,11 +61,13 @@ void EvaDecker::SetCurrentState(int state)
     animations.SetCurrentState(state);
 }
 
-void EvaDecker::Attack(int direction)
+void EvaDecker::Attack(Vec2 pos, int direction)
 {
     SetCurrentState(5);
     isAttacking = true;
     atkReady = false;
+    atkPos = pos;
+    atkStarted = true;
 }
 
 void EvaDecker::Die(Vec2 pos)
@@ -81,4 +87,32 @@ bool EvaDecker::IsAttacking()
 bool EvaDecker::AttackReady()
 {
     return atkReady;
+}
+
+void EvaDecker::Shockwave(Vec2 pos)
+{
+    atkStarted = false;
+    Game::GetInstance()->GetCurrentState().AddObject(
+                new AttackClass(pos + Vec2(60, 60), 0,
+                           std::string(
+                               "sprites/eva/attack/aliendeath.png"),
+                           4, 0.08f));
+
+    Game::GetInstance()->GetCurrentState().AddObject(
+                new AttackClass(pos + Vec2(-60, 60), 0,
+                           std::string(
+                               "sprites/eva/attack/aliendeath.png"),
+                           4, 0.08f));
+
+    Game::GetInstance()->GetCurrentState().AddObject(
+                new AttackClass(pos + Vec2(-60, -60), 0,
+                           std::string(
+                               "sprites/eva/attack/aliendeath.png"),
+                           4, 0.08f));
+
+    Game::GetInstance()->GetCurrentState().AddObject(
+                new AttackClass(pos + Vec2(60, -60), 0,
+                           std::string(
+                               "sprites/eva/attack/aliendeath.png"),
+                           4, 0.08f));
 }

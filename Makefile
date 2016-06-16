@@ -9,7 +9,7 @@ _OBJ += Resources.o InputManager.o Timer.o Animation.o Music.o Sound.o Text.o
 _OBJ += LevelMap.o IntroState.o ProceduralMap.o ProceduralState.o AnimationFSM.o
 _OBJ += Eva.o Turret.o Bullet.o MekaBug.o TurretMob.o Ball.o MonsterBallManager.o
 _OBJ += Eva.o HubState.o FirstLevelState.o ProceduralFirstRooms.o EvaClass.o
-_OBJ += EvaBase.o EvaDecker.o EvaGunslinger.o EvaSamurai.o
+_OBJ += EvaBase.o EvaDecker.o EvaGunslinger.o EvaSamurai.o Bullet.o AttackClass.o
 OBJ = $(patsubst %,$(BIN_PATH)/%,$(_OBJ))
 
 DIRECTIVES = -std=c++11 -Wall -Wextra -c -I $(HEADER_PATH)

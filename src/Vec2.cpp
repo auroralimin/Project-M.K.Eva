@@ -19,7 +19,9 @@ float Vec2::GetModule(void)
 
 Vec2 Vec2::Normalize(void)
 {
-	float module = GetModule();
+    float module = GetModule();
+    if (module == 0)
+        return Vec2();
 	return Vec2(x/module, y/module);
 }
 
