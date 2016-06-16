@@ -8,7 +8,7 @@ _OBJ  = Main.o Game.o Camera.o State.o Sprite.o Vec2.o Rect.o TileSet.o TileMap.
 _OBJ += Resources.o InputManager.o Timer.o Animation.o Music.o Sound.o Text.o
 _OBJ += LevelMap.o IntroState.o ProceduralMap.o ProceduralState.o AnimationFSM.o
 _OBJ += Eva.o Turret.o Bullet.o MekaBug.o TurretMob.o Ball.o MonsterBallManager.o
-_OBJ += HubState.o FirstLevelState.o
+_OBJ += Eva.o HubState.o FirstLevelState.o ProceduralFirstRooms.o
 OBJ = $(patsubst %,$(BIN_PATH)/%,$(_OBJ))
 
 DIRECTIVES = -std=c++11 -Wall -Wextra -c -I $(HEADER_PATH)
@@ -37,7 +37,7 @@ doc:
 
 .PHONY: clean
 clean:
-	-@rm -r $(BIN_PATH) $(DEP_PATH) def/ html/ latex/ map/procedural_generated_map* $(FINAL_EXEC) 2>/dev/null || true
+	-@rm -r $(BIN_PATH) $(DEP_PATH) def/ html/ latex/ map/procedural_generated_map* tilemap/procedural_generated_* $(FINAL_EXEC) 2>/dev/null || true
 
 $(DEP_PATH)/%.d: ;
 .PRECIOUS: $(DEP_PATH)/%.d

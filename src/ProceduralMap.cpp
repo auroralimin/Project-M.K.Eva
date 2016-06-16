@@ -196,10 +196,17 @@ std::string ProceduralMap::GenerateMapFile(void)
 {
 	std::string file = "map/procedural_generated_map" + std::to_string(nMaps) + ".txt";
 	std::ofstream out;
+
 	out.open(file);
+    if (!out)
+    {
+        std::cerr << "Failed to write on file: " << file << std::endl;
+        std::cerr << "Error: " << strerror(errno) << std::endl;
+        exit(EXIT_SUCCESS);	
+    }
 
 	out << "tileset/lab.png" << std::endl << std::endl;
-	out << "tilemap/procedural_generated/" << std::endl << std::endl;
+	out << "tilemap/procedural_generated_1/" << std::endl << std::endl;
 
 	out << width << "," << height << std::endl;
 	out << firstRoom.x << "," << firstRoom.y << std::endl << std::endl;

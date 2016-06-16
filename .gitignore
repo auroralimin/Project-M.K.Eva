@@ -22,6 +22,7 @@ latex/
 *.includes
 *.user
 
-#no procedural generated maps
+#no procedural generated files
 map/procedural_generated_map*
+tilemap/procedural_generated_*
 
