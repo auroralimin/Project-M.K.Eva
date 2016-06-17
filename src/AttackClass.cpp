@@ -12,26 +12,27 @@ AttackClass::AttackClass(Vec2 pos, int orientation, std::string sprite,
     duration = frameCount*frameTime;
     hitbox.dim = Vec2(box.dim.x/2, box.dim.y);
     hitbox.pos = Vec2(box.pos.x, box.pos.y);
+    float angle = 90;
     switch (orientation) {
     case 5:
-        rotation = -90;
-        hitbox.dim = Vec2(2.5*box.dim.x/8, 1.5*box.dim.y);
+        rotation = -angle;
+        hitbox.dim = Vec2(2.5*box.dim.x/8, 2*box.dim.y);
         hitbox.pos = Vec2(box.pos.x + 3.5*box.dim.x/10, box.pos.y - box.dim.y);
         break;
     case 6:
-        rotation = 90;
-        hitbox.dim = Vec2(2.5*box.dim.x/8, 1.5*box.dim.y);
-        hitbox.pos = Vec2(box.pos.x + 3.5*box.dim.x/10, box.pos.y + box.dim.y/2);
+        rotation = angle;
+        hitbox.dim = Vec2(2.5*box.dim.x/8, 1.8*box.dim.y);
+        hitbox.pos = Vec2(box.pos.x + 3.5*box.dim.x/10, box.pos.y + 0.4*box.dim.y);
         break;
     case 7:
         rotation = 0;
-        hitbox.dim = Vec2(5.5*box.dim.x/10, box.dim.y);
+        hitbox.dim = Vec2(2.5*box.dim.x/4, box.dim.y);
         hitbox.pos = Vec2(box.pos.x, box.pos.y);
         break;
     case 8:
         rotation = 0;
-        hitbox.dim = Vec2(5*box.dim.x/10, box.dim.y);
-        hitbox.pos = Vec2(box.pos.x + 5*box.dim.x/10, box.pos.y);
+        hitbox.dim = Vec2(2.5*box.dim.x/4, box.dim.y);
+        hitbox.pos = Vec2(box.pos.x + 3*box.dim.x/8, box.pos.y);
         break;
     default:
         rotation = 0;

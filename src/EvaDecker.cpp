@@ -3,9 +3,12 @@
 #include "Animation.h"
 #include "AttackClass.h"
 
-EvaDecker::EvaDecker() : EvaClass(6)
+#define DECKER_ANIMATIONS 6
+#define DECKER_ATTACKING 5
+
+EvaDecker::EvaDecker() : EvaClass(DECKER_ANIMATIONS)
 {
-    std::string tFiles[6] = { std::string("sprites/eva/movement/EVA-DECKER-IDLE.png"),
+    std::string tFiles[DECKER_ANIMATIONS] = { std::string("sprites/eva/movement/EVA-DECKER-IDLE.png"),
               std::string("sprites/eva/movement/EVA-DECKER-UP.png"),
               std::string("sprites/eva/movement/EVA-DECKER-DOWN.png"),
               std::string("sprites/eva/movement/EVA-DECKER-LEFT.png"),
@@ -13,9 +16,9 @@ EvaDecker::EvaDecker() : EvaClass(6)
               std::string("sprites/eva/movement/EVA-DECKER-DOWN.png"),
             };
     files = tFiles;
-    frameCounts = new int[6] {6, 6, 6, 6, 6, 6};
-    frameTimes = new float[6] {0.08, 0.08, 0.08, 0.08, 0.08, 0.08};
-    for (int i = 0; i < 6; i++) {
+    frameCounts = new int[DECKER_ANIMATIONS] {6, 6, 6, 6, 6, 6};
+    frameTimes = new float[DECKER_ANIMATIONS] {0.08, 0.08, 0.08, 0.08, 0.08, 0.08};
+    for (int i = 0; i < DECKER_ANIMATIONS; i++) {
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
     }
     movSpeed = 200;
@@ -32,18 +35,19 @@ EvaDecker::EvaDecker() : EvaClass(6)
 void EvaDecker::Update(float dt)
 {
     animations.Update(dt);
+    //hardcoded numbers will be changed with final sprite
     if (isAttacking) {
         atkTimer.Update(dt);
-        if (atkTimer.Get() >= 13*frameTimes[5] && atkStarted)
+        if (atkTimer.Get() >= 13*frameTimes[DECKER_ATTACKING] && atkStarted)
             Shockwave(atkPos);
-        if (atkTimer.Get() >= 18*frameTimes[5]){
+        if (atkTimer.Get() >= 18*frameTimes[DECKER_ATTACKING]){
             isAttacking = false;
             atkTimer.Restart();
         }
     }
     if (!atkReady) {
         atkCooldown.Update(dt);
-        if (atkCooldown.Get() >= 18*frameTimes[5]/atkSpeed) {
+        if (atkCooldown.Get() >= 18*frameTimes[DECKER_ATTACKING]/atkSpeed) {
             atkReady = true;
             atkCooldown.Restart();
         }
@@ -63,7 +67,7 @@ void EvaDecker::SetCurrentState(int state)
 
 void EvaDecker::Attack(Vec2 pos, int direction)
 {
-    SetCurrentState(5);
+    SetCurrentState(DECKER_ATTACKING);
     isAttacking = true;
     atkReady = false;
     atkPos = pos;

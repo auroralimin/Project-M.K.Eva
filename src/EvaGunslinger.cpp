@@ -2,10 +2,13 @@
 #include "Game.h"
 #include "Animation.h"
 #include "Bullet.h"
+#include "Config.h"
 
-EvaGunslinger::EvaGunslinger() : EvaClass(9)
+#define GUN_ANIMATIONS 9
+
+EvaGunslinger::EvaGunslinger() : EvaClass(GUN_ANIMATIONS)
 {
-    std::string tFiles[9] = { std::string("sprites/eva/movement/EVA-GUN-IDLE.png"),
+    std::string tFiles[GUN_ANIMATIONS] = { std::string("sprites/eva/movement/EVA-GUN-IDLE.png"),
               std::string("sprites/eva/movement/EVA-GUN-UP.png"),
               std::string("sprites/eva/movement/EVA-GUN-DOWN.png"),
               std::string("sprites/eva/movement/EVA-GUN-LEFT.png"),
@@ -16,9 +19,9 @@ EvaGunslinger::EvaGunslinger() : EvaClass(9)
               std::string("sprites/eva/movement/EVA-GUN-RIGHT.png")
             };
     files = tFiles;
-    frameCounts = new int[9] {6, 6, 6, 6, 6, 6, 6, 6, 6};
-    frameTimes = new float[9] {0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08};
-    for (int i = 0; i < 9; i++) {
+    frameCounts = new int[GUN_ANIMATIONS] {6, 6, 6, 6, 6, 6, 6, 6, 6};
+    frameTimes = new float[GUN_ANIMATIONS] {0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08};
+    for (int i = 0; i < GUN_ANIMATIONS; i++) {
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
     }
     movSpeed = 300;
@@ -63,36 +66,39 @@ void EvaGunslinger::SetCurrentState(int state)
 
 void EvaGunslinger::Attack(Vec2 pos, int direction)
 {
-    if (direction > 4 && direction < 9) {
+    if (direction > UP - 1 && direction < RIGHT + 1) {
         SetCurrentState(direction);
         isAttacking = true;
         atkReady = false;
         float range = 400;
+        Vec2 offsetUp(95, 0);
+        Vec2 offsetDown(110, 0);
+        Vec2 offsetHorizontal(120, 0);
         switch (direction) {
-        case 5:
+        case UP:
             Game::GetInstance()->GetCurrentState().AddObject(
-                        new Bullet(pos + Vec2(95, 0), -M_PI/2, 500, range,
+                        new Bullet(pos + offsetUp, -M_PI/2, 500, range,
                                    std::string(
                                        "sprites/eva/attack/GUN-SPELLEFFECT.png"),
                                    4, 0.08f));
             break;
-        case 6:
+        case DOWN:
             Game::GetInstance()->GetCurrentState().AddObject(
-                        new Bullet(pos + Vec2(110, 0), M_PI/2, 500, range,
+                        new Bullet(pos + offsetDown, M_PI/2, 500, range,
                                    std::string(
                                        "sprites/eva/attack/GUN-SPELLEFFECT.png"),
                                    4, 0.08f));
             break;
-        case 7:
+        case LEFT:
             Game::GetInstance()->GetCurrentState().AddObject(
-                        new Bullet(pos + Vec2(120, -10), M_PI, 500, range,
+                        new Bullet(pos + offsetHorizontal, M_PI, 500, range,
                                    std::string(
                                        "sprites/eva/attack/GUN-SPELLEFFECT-2.png"),
                                    4, 0.08f));
             break;
-        case 8:
+        case RIGHT:
             Game::GetInstance()->GetCurrentState().AddObject(
-                        new Bullet(pos + Vec2(120, -10), 0, 500, range,
+                        new Bullet(pos + offsetHorizontal, 0, 500, range,
                                    std::string(
                                        "sprites/eva/attack/GUN-SPELLEFFECT-2.png"),
                                    4, 0.08f));

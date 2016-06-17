@@ -1,17 +1,19 @@
 #include "EvaBase.h"
 
-EvaBase::EvaBase() : EvaClass(5)
+#define BASE_ANIMATIONS 5
+
+EvaBase::EvaBase() : EvaClass(BASE_ANIMATIONS)
 {
-    std::string tFiles[5] = { std::string("sprites/eva/movement/EVA-BASE-IDLE.png"),
+    std::string tFiles[BASE_ANIMATIONS] = { std::string("sprites/eva/movement/EVA-BASE-IDLE.png"),
               std::string("sprites/eva/movement/EVA-BASE-UP.png"),
               std::string("sprites/eva/movement/EVA-BASE-DOWN.png"),
               std::string("sprites/eva/movement/EVA-BASE-LEFT.png"),
               std::string("sprites/eva/movement/EVA-BASE-RIGHT.png"),
             };
     files = tFiles;
-    frameCounts = new int[5] {6, 6, 6, 6, 6};
-    frameTimes = new float[5] {0.08, 0.08, 0.08, 0.08, 0.08};
-    for (int i = 0; i < 5; i++) {
+    frameCounts = new int[BASE_ANIMATIONS] {6, 6, 6, 6, 6};
+    frameTimes = new float[BASE_ANIMATIONS] {0.08, 0.08, 0.08, 0.08, 0.08};
+    for (int i = 0; i < BASE_ANIMATIONS; i++) {
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
     }
     movSpeed = 200;

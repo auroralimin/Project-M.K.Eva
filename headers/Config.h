@@ -11,6 +11,10 @@
 #define COLOR_T_GREY_1 	{245, 184,  50, 125}
 #define COLOR_T_GREY_2 	{  0, 100, 100, 200}
 #define COLOR_T_GREY_3 	{  0, 200, 200, 230}
+#define UP 5
+#define DOWN 6
+#define LEFT 7
+#define RIGHT 8
 
 /***************************************************************************//**
  * The game config file.
