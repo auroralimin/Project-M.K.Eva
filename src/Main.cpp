@@ -14,7 +14,7 @@ int main(int argc, char **argv)
         exit(EXIT_SUCCESS);
     }
 
-    int variants[2] = {2, 4};
+    int variants[2] = {5, 4};
     for (int i = 1; i <= PROCEDURAL_GENERATED_SET; ++i)
         ProceduralFirstRooms::GenerateRooms(variants, i);
 

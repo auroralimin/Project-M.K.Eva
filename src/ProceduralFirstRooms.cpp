@@ -68,8 +68,8 @@ void ProceduralFirstRooms::GenerateRoomFloor(void)
 {
     int random;
     LoadModule("modules/fixed/floor/BASE.txt", &floor);
+    random = 1 + std::rand() % variants[0];
     for (int i = 0; i < 5; ++i) {
-        random = 1 + std::rand() % variants[0];
         LoadModule("modules/" + std::to_string(random) +
             "/floor/" + floorModules[i], &floor);
     }
