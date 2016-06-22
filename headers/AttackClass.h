@@ -6,26 +6,27 @@
 
 class AttackClass : public GameObject
 {
-public:
-    AttackClass(Vec2 pos, int orientation, std::string sprite, int frameCount = 1, float frameTime = 1);
+    public:
+        AttackClass(Vec2 pos, Vec2 hitboxOffset, Vec2 hitboxDim,
+                int orientation, std::string sprite,
+                int frameCount = 1, float frameTime = 1);
 
-    void Render();
+        void Render();
 
-    bool IsDead();
+        bool IsDead();
 
-    void Update(float dt);
+        void Update(float dt);
 
-    void NotifyCollision(GameObject &other, bool movements);
+        void NotifyCollision(GameObject &other, bool movements);
 
-    bool Is(std::string className);
+        bool Is(std::string className);
 
-    void TakeDamage(float dmg = 1);
+        void TakeDamage(float dmg = 1);
 
-private:
-    Sprite sp;
-    Timer timeElapsed;
-    float duration;
+    private:
+        Sprite sp;
+        Timer timeElapsed;
+        float duration;
 
 };
-
 

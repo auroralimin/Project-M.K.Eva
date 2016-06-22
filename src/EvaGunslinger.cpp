@@ -8,22 +8,22 @@
 
 EvaGunslinger::EvaGunslinger() : EvaClass(GUN_ANIMATIONS)
 {
-    std::string tFiles[GUN_ANIMATIONS] = { std::string("sprites/eva/movement/EVA-GUN-IDLE.png"),
-              std::string("sprites/eva/movement/EVA-GUN-UP.png"),
-              std::string("sprites/eva/movement/EVA-GUN-DOWN.png"),
-              std::string("sprites/eva/movement/EVA-GUN-LEFT.png"),
-              std::string("sprites/eva/movement/EVA-GUN-RIGHT.png"),
-              std::string("sprites/eva/movement/EVA-GUN-UP.png"),
-              std::string("sprites/eva/movement/EVA-GUN-DOWN.png"),
-              std::string("sprites/eva/movement/EVA-GUN-LEFT.png"),
-              std::string("sprites/eva/movement/EVA-GUN-RIGHT.png")
-            };
+    std::string tFiles[GUN_ANIMATIONS] = {
+        "sprites/eva/movement/EVA-GUN-IDLE.png",
+        "sprites/eva/movement/EVA-GUN-UP.png",
+        "sprites/eva/movement/EVA-GUN-LEFT.png",
+        "sprites/eva/movement/EVA-GUN-DOWN.png",
+        "sprites/eva/movement/EVA-GUN-RIGHT.png",
+        "sprites/eva/movement/EVA-GUN-UP.png",
+        "sprites/eva/movement/EVA-GUN-LEFT.png",
+        "sprites/eva/movement/EVA-GUN-DOWN.png",
+        "sprites/eva/movement/EVA-GUN-RIGHT.png"};
     files = tFiles;
     frameCounts = new int[GUN_ANIMATIONS] {6, 6, 6, 6, 6, 6, 6, 6, 6};
     frameTimes = new float[GUN_ANIMATIONS] {0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08};
-    for (int i = 0; i < GUN_ANIMATIONS; i++) {
+    for (int i = 0; i < GUN_ANIMATIONS; i++)
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
-    }
+
     movSpeed = 300;
     atk = 1;
     def = 1;
@@ -53,77 +53,26 @@ void EvaGunslinger::Update(float dt)
     }
 }
 
-void EvaGunslinger::Render(float x, float y)
-{
-    animations.Render(x, y);
-}
-
-void EvaGunslinger::SetCurrentState(int state)
-{
-    currentState = state;
-    animations.SetCurrentState(state);
-}
-
 void EvaGunslinger::Attack(Vec2 pos, int direction)
 {
-    if (direction > UP - 1 && direction < RIGHT + 1) {
-        SetCurrentState(direction);
+    if (direction >= Config::directions::UP &&
+            direction <= Config::directions::RIGHT) {
+        SetCurrentState(direction + 5);
         isAttacking = true;
         atkReady = false;
-        float range = 400;
-        Vec2 offsetUp(95, 0);
-        Vec2 offsetDown(110, 0);
-        Vec2 offsetHorizontal(120, 0);
-        switch (direction) {
-        case UP:
-            Game::GetInstance()->GetCurrentState().AddObject(
-                        new Bullet(pos + offsetUp, -M_PI/2, 500, range,
-                                   std::string(
-                                       "sprites/eva/attack/GUN-SPELLEFFECT.png"),
-                                   4, 0.08f));
-            break;
-        case DOWN:
-            Game::GetInstance()->GetCurrentState().AddObject(
-                        new Bullet(pos + offsetDown, M_PI/2, 500, range,
-                                   std::string(
-                                       "sprites/eva/attack/GUN-SPELLEFFECT.png"),
-                                   4, 0.08f));
-            break;
-        case LEFT:
-            Game::GetInstance()->GetCurrentState().AddObject(
-                        new Bullet(pos + offsetHorizontal, M_PI, 500, range,
-                                   std::string(
-                                       "sprites/eva/attack/GUN-SPELLEFFECT-2.png"),
-                                   4, 0.08f));
-            break;
-        case RIGHT:
-            Game::GetInstance()->GetCurrentState().AddObject(
-                        new Bullet(pos + offsetHorizontal, 0, 500, range,
-                                   std::string(
-                                       "sprites/eva/attack/GUN-SPELLEFFECT-2.png"),
-                                   4, 0.08f));
-            break;
-        default:
-            break;
-        }
+
+        Vec2 offsets[4] = {{62, 0}, {10, 28}, {62, 46}, {110, 28}};
+        Game::GetInstance()->GetCurrentState().AddObject(
+                new Bullet(pos + offsets[direction], 3*(M_PI/2) - (M_PI/2)*direction,
+                    500, 400, "sprites/eva/attack/GUN-SPELLEFFECT.png",
+                    Vec2(-10, -10), Vec2(20, 20), 4, 0.08f));
     }
 }
 
 void EvaGunslinger::Die(Vec2 pos)
 {
     Game::GetInstance()->GetCurrentState().AddObject(
-                new Animation(pos, 0,
-                              std::string(
-                                  "sprites/eva/death/EVA-GUN-DEATH.png"),
-                              16, 0.08));
+            new Animation(pos, 0,
+                "sprites/eva/death/EVA-GUN-DEATH.png", 16, 0.08));
 }
 
-bool EvaGunslinger::IsAttacking()
-{
-    return isAttacking;
-}
-
-bool EvaGunslinger::AttackReady()
-{
-    return atkReady;
-}

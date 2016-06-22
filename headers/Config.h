@@ -15,10 +15,6 @@
 #define COLOR_T_GREY_1 	{245, 184,  50, 125}
 #define COLOR_T_GREY_2 	{  0, 100, 100, 200}
 #define COLOR_T_GREY_3 	{  0, 200, 200, 230}
-#define UP 5
-#define DOWN 6
-#define LEFT 7
-#define RIGHT 8
 
 /***************************************************************************//**
  * The game config file.
@@ -27,19 +23,22 @@
 class Config
 {
 	public:
+        enum directions {UP, LEFT, DOWN, RIGHT};
+
 		/*
 		 * Attribute to set if the game is on debug mode.
 		 */
-		static const bool DEBUG = false;
+		static const bool DEBUG = true;
 
 		/*
 		 * Attribute to set if the game is on hitbox mode.
 		 */
-		static const bool HITBOX_MODE = false;
+		static const bool HITBOX_MODE = true;
 
-		static float Rand(float fMin, float fMax) {
-			float f = (float)rand() / RAND_MAX;
-			return fMin + f*(fMax - fMin);
-		}
+		static int Rand(int fMin, int fMax)
+        {
+			return fMin + (rand() % (fMax - fMin + 1));
+        }
+
 };
 

@@ -1,14 +1,13 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Sprite.h"
+#include "AnimationFSM.h"
 #include "Timer.h"
 
 class MekaBug : public GameObject
 {
 	public:
 		MekaBug(Vec2 pos, GameObject *focus);
-		~MekaBug();
 		void Render();
 		bool IsDead();
 		void Update(float dt);
@@ -17,15 +16,15 @@ class MekaBug : public GameObject
 		void TakeDamage(float dmg = 1);
 
 	private:
-		enum MekaBugState {RESTING, MOVING};
+		enum MekaBugMovement {RESTING, MOVING, TRAPED};
+		enum MekaBugState {PASSIVE, AGRESSIVE};
 
         GameObject *focus;
-		MekaBugState state;
-		Timer restTimer;
-        Timer stuckTimer;
-		int currentSprite;
-		Sprite sprites[2];
-		Vec2 speed;
+        AnimationFSM animations;
+		MekaBugMovement movState;
 		Vec2 previousPos;
         bool stuck;
+
+        void MovementAndAttack(float dt);
 };
+

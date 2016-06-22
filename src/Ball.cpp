@@ -5,27 +5,25 @@
 #include "Animation.h"
 #include "Bullet.h"
 
-Ball::Ball(Vec2 pos)
+#define BALL_ANIMATIONS 3
+
+Ball::Ball(Vec2 pos) : animations(BALL_ANIMATIONS), previousPos(pos)
 {
+    std::string files[BALL_ANIMATIONS] = {
+        "sprites/monsters/ball/BOLOTA_IDLE.png",
+        "sprites/monsters/ball/BOLOTA_WARNING.png",
+        "sprites/monsters/ball/BOLOTA_ATTACK.png"};
+    int frameCounts[BALL_ANIMATIONS] = {6, 10, 6};
+    float frameTimes[BALL_ANIMATIONS] = {0.3, 0.1, 0.3};
+    for (int i = 0; i < BALL_ANIMATIONS; ++i) {
+        animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
+    }
+
 	box.pos = pos;
-	previousPos = pos;
-
-	sprites[0] = Sprite("sprites/monsters/ball/BOLOTA_IDLE.png", 6, 0.3);
-	sprites[1] = Sprite("sprites/monsters/ball/BOLOTA_ATTACK.png", 6, 0.3);
-	sprites[2] = Sprite("sprites/monsters/ball/BOLOTA_WARNING.png", 10, 0.1);
-
-	box.dim = Vec2(sprites[0].GetWidth(), sprites[0].GetHeight());
-
-	hitbox.dim = Vec2(box.dim.x/3, box.dim.y/5);
-	hitbox.pos = Vec2(box.pos.x + 43, box.pos.y + 110); 
+	box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
 
 	hp = 100;
-	currentSprite = 0;
 	rotation = 0;
-}
-
-Ball::~Ball()
-{
 }
 
 void Ball::Render()
@@ -34,7 +32,7 @@ void Ball::Render()
 	if (Config::HITBOX_MODE)
 		hitbox.RenderFilledRect(color);
 
-	sprites[currentSprite].Render(box.pos.x, box.pos.y, rotation);
+	animations.Render(box.pos.x, box.pos.y);
 }
 
 bool Ball::IsDead()
@@ -49,12 +47,13 @@ void Ball::Update(float dt)
 	if (manager.KeyPress(K_KEY)) { // temporary suicide button
         TakeDamage(8000);
     }
-	sprites[currentSprite].Update(dt);
-	hitbox.pos = Vec2(box.pos.x + 43, box.pos.y + 110);
+	animations.Update(dt);
 }
 
 void Ball::NotifyCollision(GameObject &other, bool movement)
 {
+    UNUSED_VAR movement;
+
 	if (other.Is("Bullet")) {
 		Bullet& bullet = (Bullet&) other;
 		if (!bullet.targetsPlayer) {
@@ -87,7 +86,8 @@ bool Ball::IsInsideWall()
 	return false;
 }
 
-void Ball::SetCurrentSprite(int sprite)
+void Ball::SetCurrentState(int state)
 {
-	currentSprite = sprite;
+    animations.SetCurrentState(state);
 }
+

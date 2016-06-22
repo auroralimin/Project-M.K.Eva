@@ -21,8 +21,8 @@ Eva::Eva(Vec2 pos)
     evaClasses.emplace_back(new EvaDecker());
     evaClasses.emplace_back(new EvaGunslinger());
     box.pos = pos;
-    box.dim = Vec2(evaClasses[currentClass]->animations.GetSpriteWidth(),
-                   evaClasses[currentClass]->animations.GetSpriteHeight());
+    box.dim = Vec2(evaClasses[currentClass]->animations.GetCurrentWidth(),
+                   evaClasses[currentClass]->animations.GetCurrentHeight());
     hitbox.dim = Vec2(box.dim.x/2, box.dim.y/4);
     hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + 3*box.dim.y/4);
     rotation = 0;
@@ -39,9 +39,15 @@ void Eva::Render()
 
 void Eva::Update(float dt)
 {
-    Vec2 previousPos = box.pos, speed = Vec2(0, 0);
+    const int keys[4] = {
+        UP_ARROW_KEY, LEFT_ARROW_KEY, DOWN_ARROW_KEY, RIGHT_ARROW_KEY}; 
+    Vec2 speed = Vec2(0, 0);
     InputManager &manager = InputManager::GetInstance();
 
+    if (manager.KeyPress(SPACEBAR)) // temporary suicide button
+        TakeDamage(8000);
+
+    previousPos = box.pos;
     if (!evaClasses[currentClass]->IsAttacking()) {
         if (manager.KeyPress(Q_KEY)) {
             if (currentClass == 0)
@@ -56,9 +62,6 @@ void Eva::Update(float dt)
         }
     }
     if (!evaClasses[currentClass]->IsAttacking() || currentClass == GUNSLINGER){
-        if (manager.KeyPress(SPACEBAR)) // temporary suicide button
-            TakeDamage(8000);
-
         if (manager.IsKeyDown(D_KEY))
             speed.x += 1;
         if (manager.IsKeyDown(A_KEY))
@@ -68,69 +71,39 @@ void Eva::Update(float dt)
         if (manager.IsKeyDown(W_KEY))
             speed.y -= 1;
 
+        speed = speed.Normalize();
         if (!evaClasses[currentClass]->IsAttacking() || currentClass == GUNSLINGER)
-            box.pos += speed.Normalize() * evaClasses[currentClass]->movSpeed * dt;
+            box.pos += speed * evaClasses[currentClass]->movSpeed * dt;
 
-        if (speed.Normalize().y > 0 &&
-                !(evaClasses[currentClass]->IsAttacking() &&
+        if (speed.y > 0 && !(evaClasses[currentClass]->IsAttacking() &&
                   currentClass == GUNSLINGER))
             evaClasses[currentClass]->SetCurrentState(MOVING_DOWN);
-        if (speed.Normalize().y < 0 &&
-                !(evaClasses[currentClass]->IsAttacking() &&
+        if (speed.y < 0 && !(evaClasses[currentClass]->IsAttacking() &&
                   currentClass == GUNSLINGER))
             evaClasses[currentClass]->SetCurrentState(MOVING_UP);
-        if (speed.Normalize().x > 0 && speed.y == 0 &&
+        if (speed.x > 0 && speed.y == 0 &&
                 !(evaClasses[currentClass]->IsAttacking() &&
-                  currentClass == GUNSLINGER))
+                currentClass == GUNSLINGER))
             evaClasses[currentClass]->SetCurrentState(MOVING_RIGHT);
-        if (speed.Normalize().x < 0 && speed.y == 0 &&
+        if (speed.x < 0 && speed.y == 0 && 
                 !(evaClasses[currentClass]->IsAttacking() &&
-                  currentClass == GUNSLINGER))
+                currentClass == GUNSLINGER))
             evaClasses[currentClass]->SetCurrentState(MOVING_LEFT);
         if (speed.GetModule() == 0 &&
                 !(evaClasses[currentClass]->IsAttacking() &&
                   currentClass == GUNSLINGER))
             evaClasses[currentClass]->SetCurrentState(IDLE);
 
-        if (manager.IsKeyDown(UP_ARROW_KEY) &&
-                evaClasses[currentClass]->AttackReady())
-            currentClass == DECKER ?
-                       evaClasses[currentClass]->Attack(Vec2(box.pos.x ,
-                                                              box.pos.y),
-                                                         ATTACKING_LEFT)
-                      : evaClasses[currentClass]->Attack(Vec2(box.pos.x - 3*box.dim.x/8,
-                                                  box.pos.y - box.dim.y/4),
-                                             ATTACKING_UP);
-
-        if (manager.IsKeyDown(DOWN_ARROW_KEY) &&
-                evaClasses[currentClass]->AttackReady())
-            currentClass == DECKER ?
-                       evaClasses[currentClass]->Attack(Vec2(box.pos.x ,
-                                                              box.pos.y),
-                                                         ATTACKING_LEFT)
-                      : evaClasses[currentClass]->Attack(Vec2(box.pos.x - box.dim.x/2,
-                                                  box.pos.y + 3*box.dim.y/4),
-                                             ATTACKING_DOWN);
-
-        if (manager.IsKeyDown(LEFT_ARROW_KEY) &&
-                evaClasses[currentClass]->AttackReady())
-            currentClass == DECKER ?
-                       evaClasses[currentClass]->Attack(Vec2(box.pos.x ,
-                                                              box.pos.y),
-                                                         ATTACKING_LEFT)
-                      : evaClasses[currentClass]->Attack(Vec2(box.pos.x - box.dim.x,
-                                                  box.pos.y + box.dim.y/4),
-                                             ATTACKING_LEFT);
-
-        if (manager.IsKeyDown(RIGHT_ARROW_KEY) &&
-                evaClasses[currentClass]->AttackReady())
-            currentClass == DECKER ?
-                       evaClasses[currentClass]->Attack(Vec2(box.pos.x ,
-                                                              box.pos.y),
-                                                         ATTACKING_LEFT)
-                      : evaClasses[currentClass]->Attack(Vec2(box.pos.x - box.dim.x/8,
-                                                  box.pos.y + box.dim.y/4),
-                                             ATTACKING_RIGHT);
+        for (int i = 0; i < 4; i++) {
+            if (manager.IsKeyDown(keys[i]) &&
+                    evaClasses[currentClass]->AttackReady())
+            {
+                if (currentClass == DECKER)
+                    evaClasses[currentClass]->Attack(box.pos, 1);
+                else
+                    evaClasses[currentClass]->Attack(box.pos, i);
+            }
+        } 
     }
 
     hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + 3*box.dim.y/4);
@@ -143,7 +116,6 @@ void Eva::Update(float dt)
 
     hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + 3*box.dim.y/4);
     evaClasses[currentClass]->Update(dt);
-
 }
 
 bool Eva::IsDead()
@@ -153,19 +125,19 @@ bool Eva::IsDead()
 
 void Eva::NotifyCollision(GameObject &other, bool movement)
 {
-	if (other.Is("Bullet")) {
-		Bullet& bullet = (Bullet&) other;
-		if (bullet.targetsPlayer) {
-			TakeDamage(10);
-		}
-	} if (other.Is("Ball")) {
-		TakeDamage(0);
-	} else if (movement && (!other.Is("Ball"))) {
-		box.pos = previousPos;
-		if (other.Is("MekaBug")) {
-			TakeDamage(5);
-		}
-	}
+    if (other.Is("Bullet")) {
+        Bullet& bullet = (Bullet&) other;
+        if (bullet.targetsPlayer)
+            TakeDamage(10);
+    } else if (other.Is("Ball")) {
+        TakeDamage(0);
+    } else if (other.Is("MonsterBallManager")) {
+       TakeDamage(1);
+    } else if (movement && (!other.Is("Ball"))) {
+        box.pos = previousPos;
+        if (other.Is("MekaBug"))
+            TakeDamage(5);
+    }
 }
 
 bool Eva::Is(std::string className)
@@ -175,9 +147,12 @@ bool Eva::Is(std::string className)
 
 void Eva::TakeDamage(float dmg)
 {
-    hp -= dmg - (float)dmg*evaClasses[currentClass]->def/100;
-    std::cout << hp << std::endl;
+    hp -= (dmg - (float)dmg*evaClasses[currentClass]->def/100);
+    if (Config::DEBUG)
+        std::cout << "[Eva] hp: " << hp << std::endl;
     if (IsDead()) {
+        evaDeath = std::string("Animation:sprites/eva/death/EVA-") +
+            classes[currentClass] + std::string("-DEATH.png");
         evaClasses[currentClass]->Die(box.GetCenter());
     }
 }

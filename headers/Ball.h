@@ -1,13 +1,12 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Sprite.h"
+#include "AnimationFSM.h"
 
 class Ball : public GameObject
 {
 	public:
 		Ball(Vec2 pos);
-		~Ball();
 		void Render();
 		bool IsDead();
 		void Update(float dt);
@@ -15,10 +14,9 @@ class Ball : public GameObject
 		bool Is(std::string className);
 		void TakeDamage(float dmg = 1);
 		bool IsInsideWall();
-		void SetCurrentSprite(int state);
+		void SetCurrentState(int state);
 
 	private:
-		int currentSprite;
-		Sprite sprites[3];
+        AnimationFSM animations;
 		Vec2 previousPos;
 };

@@ -50,3 +50,4 @@ void Animation::TakeDamage(float dmg)
 	UNUSED_VAR dmg;
 	//D0 NOTHING
 }
+

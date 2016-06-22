@@ -47,7 +47,7 @@ class AnimationFSM
 		 * Returns the current state of the animation.
 		 * @return returns the value of the current state
 		 */
-        int GetCurrentState();
+        int GetCurrentState(void);
 
 		/**
 		 * Sets a animation sprite from the animation vector.
@@ -63,13 +63,13 @@ class AnimationFSM
 		 * Returns the width of a frame.
 		 * @return returns sprite width/frameCount
 		 */
-		int GetSpriteWidth();
+		int GetCurrentWidth(void);
 
 		/**
 		 * Returns the height of a frame.
 		 * @return returns sprite height
 		 */
-		int GetSpriteHeight();
+		int GetCurrentHeight(void);
 
         void SetNAnimations(int nAnimations);
 

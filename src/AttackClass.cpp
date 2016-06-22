@@ -1,45 +1,20 @@
 #include "AttackClass.h"
 #include "Config.h"
 
-AttackClass::AttackClass(Vec2 pos, int orientation, std::string sprite,
-               int frameCount, float frameTime)
+AttackClass::AttackClass(Vec2 pos, Vec2 hitboxOffset, Vec2 hitboxDim,
+        int orientation, std::string sprite, int frameCount, float frameTime) :
+    sp(sprite, frameCount, frameTime),
+    timeElapsed(), duration(frameCount*frameTime)
 {
-    timeElapsed.Restart();
-    sp = Sprite(sprite, frameCount, frameTime);
     box.pos = pos;
-    box.dim.x = sp.GetWidth();
-    box.dim.y = sp.GetHeight();
-    duration = frameCount*frameTime;
+    box.dim = Vec2(sp.GetWidth(), sp.GetHeight());
     hitbox.dim = Vec2(box.dim.x/2, box.dim.y);
     hitbox.pos = Vec2(box.pos.x, box.pos.y);
-    float angle = 90;
-    switch (orientation) {
-    case 5:
-        rotation = -angle;
-        hitbox.dim = Vec2(2.5*box.dim.x/8, 2*box.dim.y);
-        hitbox.pos = Vec2(box.pos.x + 3.5*box.dim.x/10, box.pos.y - box.dim.y);
-        break;
-    case 6:
-        rotation = angle;
-        hitbox.dim = Vec2(2.5*box.dim.x/8, 1.8*box.dim.y);
-        hitbox.pos = Vec2(box.pos.x + 3.5*box.dim.x/10, box.pos.y + 0.4*box.dim.y);
-        break;
-    case 7:
-        rotation = 0;
-        hitbox.dim = Vec2(2.5*box.dim.x/4, box.dim.y);
-        hitbox.pos = Vec2(box.pos.x, box.pos.y);
-        break;
-    case 8:
-        rotation = 0;
-        hitbox.dim = Vec2(2.5*box.dim.x/4, box.dim.y);
-        hitbox.pos = Vec2(box.pos.x + 3*box.dim.x/8, box.pos.y);
-        break;
-    default:
-        rotation = 0;
-        hitbox.dim = Vec2(box.dim.x, box.dim.y);
-        hitbox.pos = Vec2(box.pos.x, box.pos.y);
-        break;
-    }
+
+    std::cout << orientation << std::endl;
+    rotation = (90*orientation);
+    hitbox.dim = hitboxDim;
+    hitbox.pos = pos + hitboxOffset;
 }
 
 void AttackClass::Render()
@@ -64,6 +39,8 @@ void AttackClass::Update(float dt)
 
 void AttackClass::NotifyCollision(GameObject &other, bool movements)
 {
+    UNUSED_VAR other;
+    UNUSED_VAR movements;
     //TODO: make it only hit enemies once
 }
 
@@ -74,4 +51,7 @@ bool AttackClass::Is(std::string className)
 
 void AttackClass::TakeDamage(float dmg)
 {
+    UNUSED_VAR dmg;
+    //do nothing
 }
+

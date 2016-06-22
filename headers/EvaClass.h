@@ -9,21 +9,22 @@ class EvaClass
 public:
     EvaClass(int nAnimations);
 
-    virtual ~EvaClass() {}
+    virtual ~EvaClass(void) {}
 
     virtual void Update(float dt) = 0;
 
-    virtual void Render(float x, float y) = 0;
-
-    virtual void SetCurrentState(int state) = 0;
 
     virtual void Attack(Vec2 pos, int direction) = 0;
 
     virtual void Die(Vec2 pos) = 0;
 
-    virtual bool IsAttacking() = 0;
+    virtual void Render(float x, float y);
 
-    virtual bool AttackReady() = 0;
+    virtual void SetCurrentState(int state);
+
+    virtual bool IsAttacking(void);
+
+    virtual bool AttackReady(void);
 
     int movSpeed;
     int atk;
@@ -40,3 +41,4 @@ protected:
     bool atkReady;
 
 };
+

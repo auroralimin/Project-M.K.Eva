@@ -4,21 +4,13 @@
 
 class EvaBase : public EvaClass
 {
-public:
-    EvaBase();
+    public:
+        EvaBase(void);
 
-    void Update(float dt);
+        void Update(float dt);
 
-    void Render(float x, float y);
+        void Attack(Vec2 pos, int direction);
 
-    void SetCurrentState(int state);
-
-    void Attack(Vec2 pos, int direction);
-
-    void Die(Vec2 pos);
-
-    bool IsAttacking();
-
-    bool AttackReady();
-
+        void Die(Vec2 pos);
 };
+

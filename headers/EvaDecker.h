@@ -5,27 +5,21 @@
 
 class EvaDecker : public EvaClass
 {
-public:
-    EvaDecker();
+    public:
+        EvaDecker();
 
-    void Update(float dt);
+        void Update(float dt);
 
-    void Render(float x, float y);
+        void Attack(Vec2 pos, int direction);
 
-    void SetCurrentState(int state);
+        void Die(Vec2 pos);
 
-    void Attack(Vec2 pos, int direction);
+    private:
+        Timer atkTimer;
+        Timer atkCooldown;
+        bool atkStarted;
+        Vec2 atkPos;
 
-    void Die(Vec2 pos);
-
-    bool IsAttacking();
-
-    bool AttackReady();
-
-private:
-    Timer atkTimer;
-    Timer atkCooldown;
-    bool atkStarted;
-    void Shockwave(Vec2 pos);
-    Vec2 atkPos;
+        void Shockwave(Vec2 pos);
 };
+

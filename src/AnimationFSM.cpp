@@ -39,7 +39,7 @@ void AnimationFSM::SetCurrentState(int state)
     }
 }
 
-int AnimationFSM::GetCurrentState()
+int AnimationFSM::GetCurrentState(void)
 {
     return currentState;
 }
@@ -57,13 +57,13 @@ void AnimationFSM::SetAnimation(int index, std::string file, int frameCount,
     animationsArray[index].get()->Open(file);
 }
 
-int AnimationFSM::GetSpriteWidth()
+int AnimationFSM::GetCurrentWidth(void)
 {
-    return animationsArray[0].get()->GetWidth();
+    return animationsArray[currentState]->GetWidth();
 }
 
-int AnimationFSM::GetSpriteHeight()
+int AnimationFSM::GetCurrentHeight(void)
 {
-    return animationsArray[0].get()->GetHeight();
+    return animationsArray[currentState]->GetHeight();
 }
 

@@ -5,24 +5,17 @@
 
 class EvaSamurai : public EvaClass
 {
-public:
-    EvaSamurai();
+    public:
+        EvaSamurai();
 
-    void Update(float dt);
+        void Update(float dt);
 
-    void Render(float x, float y);
+        void Attack(Vec2 pos, int direction);
 
-    void SetCurrentState(int state);
+        void Die(Vec2 pos);
 
-    void Attack(Vec2 pos, int direction);
-
-    void Die(Vec2 pos);
-
-    bool IsAttacking();
-
-    bool AttackReady();
-
-private:
-    Timer atkTimer;
-    Timer atkCooldown;
+    private:
+        Timer atkTimer;
+        Timer atkCooldown;
 };
+

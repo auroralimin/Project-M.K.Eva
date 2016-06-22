@@ -12,7 +12,7 @@
 #include "Collision.h"
 #include "Timer.h"
 
-IntroState::IntroState(Vec2 evaPos) : map("map/intro.txt"), isEvaDead(false)
+IntroState::IntroState(Vec2 evaPos) : map("map/intro.txt")
 {
 	Camera::pos = Vec2(0.0, 0.0);
     Eva *eva = new Eva(evaPos);
@@ -29,7 +29,10 @@ IntroState::IntroState(Vec2 evaPos) : map("map/intro.txt"), isEvaDead(false)
 //                    Game::GetInstance()->GetWinHeight()/2), eva));
 //	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2,
 //                    Game::GetInstance()->GetWinHeight()/3), eva));
-	AddObject(new MonsterBallManager(3, eva));
+    MonsterBallManager *ballManager = new MonsterBallManager(eva);
+	AddObject(ballManager);
+    for (int i = 0; i < 5; ++i)
+        AddObject(*(ballManager->AddBall()));
 }
 
 void IntroState::Update(float dt)
@@ -67,13 +70,9 @@ void IntroState::UpdateArray(float dt)
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i]->IsDead()) {
             if (objectArray[i]->Is("Eva"))
-            {
                 evaDeath = ((Eva*)(objectArray[i].get()))->GetEvaDeath();
-                isEvaDead = true;
-            }
-            if (isEvaDead && objectArray[i]->Is(evaDeath))
+            else if (objectArray[i]->Is(evaDeath))
                 popRequested = quitRequested = true;
-
             objectArray.erase(objectArray.begin() + i);
         } else {
 			if (objectArray[i]->Is("Eva"))

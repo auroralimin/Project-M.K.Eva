@@ -1,8 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Sprite.h"
-#include "Timer.h"
+#include "AnimationFSM.h"
 
 /*****************************************
  * The representation of the turret enemy
@@ -12,18 +11,18 @@ class Turret : public GameObject
 {
 	public:
 		Turret(Vec2 pos, GameObject *focus);
-		~Turret();
-		void Render();
-		bool IsDead();
+		void Render(void);
+		bool IsDead(void);
 		void Update(float dt);
 		void NotifyCollision(GameObject &other, bool movement);
 		bool Is(std::string className);
 		void TakeDamage(float dmg = 1);
-		void ShootPattern1();
-		void ShootPattern2();
 
 	private:
         GameObject *focus;
-		Sprite sp;
-		Timer timer;
+        AnimationFSM animations;
+
+		void ShootPattern1(void);
+		void ShootPattern2(void);
 };
+

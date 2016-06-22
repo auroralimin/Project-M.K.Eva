@@ -19,7 +19,7 @@ class Eva : public GameObject
 		 * Enum to represent eva's classes.
 		 */
         enum Classes {
-            BASE = 0, SAMURAI, DECKER, GUNSLINGER
+            BASE, SAMURAI, DECKER, GUNSLINGER
 		};
 
 		/**
@@ -69,13 +69,12 @@ class Eva : public GameObject
         std::string GetEvaDeath(void);
 
         enum Animations {
-            IDLE = 0, MOVING_UP, MOVING_DOWN, MOVING_LEFT, MOVING_RIGHT,
-            ATTACKING_UP, ATTACKING_DOWN, ATTACKING_LEFT, ATTACKING_RIGHT
+            IDLE, MOVING_UP, MOVING_LEFT, MOVING_DOWN, MOVING_RIGHT,
+            ATTACKING_UP, ATTACKING_LEFT, ATTACKING_DOWN, ATTACKING_RIGHT
         };
 
 	private:
-        const std::string classes[3] = {"DECKER", "GUN", "SAMURAI"};
-		std::string *files;
+        const std::string classes[4] = {"BASE", "SAMURAI", "DECKER", "GUN"};
         float *frameTimes;
         int *frameCounts;
         int moveSpeed;

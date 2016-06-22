@@ -87,7 +87,7 @@ class Vec2
 
 		Vec2 operator-(const Vec2& v)
 		{
-			return Vec2(v.x - x, v.y - y);
+			return Vec2(x - v.x, y - v.y);
 		}
 
 		Vec2 operator-=(const Vec2& v)

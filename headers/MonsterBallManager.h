@@ -1,13 +1,14 @@
 #pragma once
 
+#include <vector>
+
 #include "Ball.h"
 #include "Timer.h"
-#include <vector>
 
 class MonsterBallManager : public GameObject {
 	public:
-		MonsterBallManager(int n, GameObject *focus);
-		~MonsterBallManager();
+		MonsterBallManager(GameObject *focus);
+        Ball** AddBall(void);
 		void Render();
 		bool IsDead();
 		void Update(float dt);
@@ -16,14 +17,14 @@ class MonsterBallManager : public GameObject {
 		void TakeDamage(float dmg = 1);
 
 	private:
-		enum BallManagerState {RESTING, WARNING, ATTACKING};
+		enum BallsState {RESTING, WARNING, ATTACKING};
 
         GameObject *focus;
-		BallManagerState state;
-		std::vector<Ball> ballArray;
+		unsigned int currentState;
+		std::vector<Ball*> ballArray;
 		Timer timer;
 
-		void SwitchSprite(int sprite);
+		void SetCurrentState(int state);
 		void RandTeleport();
-		bool b;
 };
+
