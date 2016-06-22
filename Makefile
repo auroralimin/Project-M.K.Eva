@@ -20,7 +20,7 @@ else
 	CC = $(TOOLSET)-g++ -static-libgcc -static-libstdc++
 	BIN_PATH = wbin
 	CFLAGS += -I $(CROSSPATH)/include -D WINDOWS 
-	LDFLAGS = -Wl,-Bstatic `$(CROSSPATH)/bin/sdl2-config --libs` -lSDL2_image.dll
+	LDFLAGS = `$(CROSSPATH)/bin/sdl2-config --libs` -lSDL2_image.dll
 	LDFLAGS += -lSDL2_ttf.dll -lSDL2_mixer.dll -L${CROSSPATH}/lib/ -lpthread
 	FINAL_EXEC = Project-M.K.Eva.exe
 endif
