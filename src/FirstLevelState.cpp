@@ -17,10 +17,13 @@ FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), isEvaDead(false), music("
     std::srand(seed);
     std::string mapString = ProceduralMap::GenerateMap(
         7, 5, 15, ProceduralMap::MapConfig::SPARSE, false);
+
+    Camera::pos = Vec2(0.0, 0.0);
+    Eva *eva = new Eva(evaPos);
+    AddObject(eva);
+    map.SetFocus(eva);
     map.Load(mapString);
     map.InitMiniroom();
-    Camera::pos = Vec2(0.0, 0.0);
-    AddObject(new Eva(evaPos));
     music.Play(-1);
 }
 

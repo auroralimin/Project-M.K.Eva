@@ -48,7 +48,7 @@ void LevelMap::Load(std::string file)
         if (r != -1 && rooms.find(r) == rooms.end())
             rooms.emplace(
                 r, new Room(roomsPath + std::to_string(r) + ".txt",
-                    tileSet, focus, Config::Rand(0, 4)));
+                    tileSet, focus, Config::Rand(1, 5)));
         mapMatrix.emplace_back(r);
     }
     index = mapMatrix[currentRoom.x + (mapWidth * currentRoom.y)];

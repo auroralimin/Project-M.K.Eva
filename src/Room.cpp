@@ -52,7 +52,7 @@ std::vector<Rect> Room::GetWallRect(void)
 void Room::SetDoors(std::string file)
 {
 #ifdef WINDOWS
-    std::string delim = "\\";
+    std::string delim = "/";
 #else
     std::string delim = "/";
 #endif
