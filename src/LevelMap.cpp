@@ -17,7 +17,7 @@ LevelMap::LevelMap(void)
 {
 }
 
-LevelMap::LevelMap(std::string file)
+LevelMap::LevelMap(std::string file, GameObject *focus) : focus(focus)
 {
     Load(file);
     InitMiniroom();
@@ -47,7 +47,8 @@ void LevelMap::Load(std::string file)
     while (fscanf(fp, "%d,", &r) != EOF) {
         if (r != -1 && rooms.find(r) == rooms.end())
             rooms.emplace(
-                r, new Room(roomsPath + std::to_string(r) + ".txt", tileSet));
+                r, new Room(roomsPath + std::to_string(r) + ".txt",
+                    tileSet, focus, 1));
         mapMatrix.emplace_back(r);
     }
     index = mapMatrix[currentRoom.x + (mapWidth * currentRoom.y)];
@@ -64,6 +65,16 @@ void LevelMap::InitMiniroom(void)
 
     miniRoom2.dim.x = MINI_ROOM_SIZE_X - MINI_ROOM_BORDER * 2;
     miniRoom2.dim.y = MINI_ROOM_SIZE_Y - MINI_ROOM_BORDER * 2;
+}
+
+void LevelMap::SetFocus(GameObject *focus)
+{
+    this->focus = focus;
+}
+
+void LevelMap::Update(float dt)
+{
+    rooms[index]->Update(dt);
 }
 
 void LevelMap::Render(void)

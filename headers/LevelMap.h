@@ -24,7 +24,7 @@ class LevelMap
      * file.
      * @param file a string with the map file path
      */
-    LevelMap(std::string file);
+    LevelMap(std::string file, GameObject *focus);
 
     /**
      * Loads map attributes values from a giver map file.
@@ -36,6 +36,10 @@ class LevelMap
      * Initialise miniroom values.
      */
     void InitMiniroom(void);
+
+    void SetFocus(GameObject *focus);
+
+    void Update(float dt);
 
     /**
      * Renders the current map room.
@@ -100,6 +104,7 @@ class LevelMap
     bool IsCollidingWithWall(GameObject *obj);
 
   private:
+    GameObject *focus;
     int mapWidth, mapHeight, index;
     Vec2 currentRoom;
     std::unordered_map<int, Room *> rooms;

@@ -3,10 +3,16 @@
 #include "Room.h"
 #include "Config.h"
 
-Room::Room(std::string file, TileSet *tileSet) : tileMap(file, tileSet)
+Room::Room(std::string file, TileSet *tileSet, GameObject *focus, int type) :
+    tileMap(file, tileSet), focus(focus), currentState(roomState::INACTIVE)
 {
     SetDoors(file);
     LoadWallRects();
+}
+
+void Room::Update(float dt)
+{
+
 }
 
 void Room::Render(int cameraX, int cameraY)
@@ -57,13 +63,13 @@ void Room::LoadWallRects(void)
 
     for (int i = 0; i < 4; ++i)
         if (hasDoors[i]) {
-            wallRect.emplace_back(Vec2(posWidtposHeight1[i], h1[i]),
+            wallRect.emplace_back(Vec2(posWidth1[i], posHeight1[i]),
                                   Vec2(dimWidth1[i], dimHeight1[i]));
             wallRect.emplace_back(Vec2(posWidth2[i], posHeight2[i]),
                                   Vec2(dimWidth1[i], dimHeight1[i]));
         } else {
-            wallRect.emplace_back(Vec2(posWidth1[i], h1[i]),
-                                  Vec2(dimWidth2[i], dimHeighth2[i]));
+            wallRect.emplace_back(Vec2(posWidth1[i], posHeight1[i]),
+                                  Vec2(dimWidth2[i], dimHeight2[i]));
         }
 }
 

@@ -12,7 +12,7 @@
 #include "Collision.h"
 #include "Timer.h"
 
-IntroState::IntroState(Vec2 evaPos) : map("map/intro.txt")
+IntroState::IntroState(Vec2 evaPos) : map()
 {
     Camera::pos = Vec2(0.0, 0.0);
     Eva *eva = new Eva(evaPos);
@@ -33,12 +33,16 @@ IntroState::IntroState(Vec2 evaPos) : map("map/intro.txt")
     AddObject(ballManager);
     for (int i = 0; i < 5; ++i)
         AddObject(*(ballManager->AddBall()));
+    map.Load("map/intro.txt");
+    map.InitMiniroom();
+    map.SetFocus(eva);
 }
 
 void IntroState::Update(float dt)
 {
     InputManager input = InputManager::GetInstance();
     quitRequested = (input.IsKeyDown(ESCAPE_KEY) || input.IsQuitRequested());
+    map.Update(dt);
     UpdateArray(dt);
     CheckMovementCollisions();
 }
