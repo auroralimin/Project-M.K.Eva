@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <memory>
 
-#include "TileMap.h"
+#include "Room.h"
 #include "Vec2.h"
 #include "Rect.h"
 #include "GameObject.h"
@@ -17,7 +17,6 @@ class LevelMap
     /**
      * Default initialisation
      */
-
     LevelMap(void);
 
     /**
@@ -103,7 +102,7 @@ class LevelMap
   private:
     int mapWidth, mapHeight, index;
     Vec2 currentRoom;
-    std::unordered_map<int, TileMap *> rooms;
+    std::unordered_map<int, Room *> rooms;
     std::vector<int> mapMatrix;
     Rect miniRoom, miniRoom2;
 };

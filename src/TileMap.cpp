@@ -24,8 +24,6 @@ void TileMap::Load(std::string file)
         tileMatrix.emplace_back(tile);
 
     fclose(fp);
-
-    LoadWallRects();
 }
 
 void TileMap::SetTileSet(TileSet *tileSet)
@@ -54,11 +52,6 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY)
         for (int j = 0; j < mapHeight; ++j)
             tileSet->Render(At(i, j, layer), (i * tileWidth) - cameraX,
                             (j * tileHeight) - cameraY);
-
-    int color[4] = COLOR_HITBOX;
-    if (Config::HITBOX_MODE && (layer == 1))
-        for (auto hitbox : wallRect)
-            hitbox.RenderFilledRect(color);
 }
 
 int TileMap::GetWidth(void)
@@ -74,62 +67,5 @@ int TileMap::GetHeight(void)
 int TileMap::GetDepth(void)
 {
     return mapDepth;
-}
-
-void TileMap::LoadWallRects(void)
-{
-    int tileWidth = tileSet->GetTileWidth();
-    int tileHeight = tileSet->GetTileHeight();
-
-    for (int i = 1; i < mapWidth - 1; i++) {
-        int x = i * tileWidth, y = 2 * tileHeight;
-        if (At(i, y / tileHeight, 1) > -1)
-            wallRect.emplace_back(Vec2(x, 2 * tileHeight),
-                                  Vec2(tileWidth, tileHeight));
-        else if (At(i - 1, y / tileHeight, 1) > -1)
-            for (int j = -4; j < 0; j++)
-                wallRect.emplace_back(Vec2(x - tileWidth, y + j * tileHeight),
-                                      Vec2(tileWidth, tileHeight));
-        else if (At(i + 1, y / tileHeight, 1) > -1)
-            for (int j = -4; j < 0; j++)
-                wallRect.emplace_back(Vec2(x + tileWidth, y + j * tileHeight),
-                                      Vec2(tileWidth, tileHeight));
-
-        y = (mapHeight - 1) * tileHeight;
-        if (At(i, y / tileHeight, 1) > -1)
-            wallRect.emplace_back(Vec2(x, (mapHeight - 1) * tileHeight),
-                                  Vec2(tileWidth, tileHeight));
-        else if (At(i - 1, y / tileHeight, 1) > -1)
-            for (int j = 1; j < 4; j++)
-                wallRect.emplace_back(Vec2(x - tileWidth, y + j * tileHeight),
-                                      Vec2(tileWidth, tileHeight));
-        else if (At(i + 1, y / tileHeight, 1) > -1)
-            for (int j = 1; j < 4; j++)
-                wallRect.emplace_back(Vec2(x + tileWidth, y + j * tileHeight),
-                                      Vec2(tileWidth, tileHeight));
-    }
-
-    for (int i = 3; i < mapHeight - 1; i++) {
-        int x = 0, y = i * tileHeight;
-        if (At(x / tileWidth, y / tileHeight, 1) > -1)
-            wallRect.emplace_back(Vec2(x, y), Vec2(tileWidth, tileHeight));
-        else if (At(x / tileWidth, y / tileHeight - 1, 1) > -1)
-            for (int j = -4; j < 0; j++)
-                wallRect.emplace_back(Vec2(x + j * tileWidth, y - tileHeight),
-                                      Vec2(tileWidth, tileHeight));
-
-        x = (mapWidth - 1) * tileWidth;
-        if (At(x / tileWidth, y / tileHeight, 1) > -1)
-            wallRect.emplace_back(Vec2(x, y), Vec2(tileWidth, tileHeight));
-        else if (At(x / tileWidth, y / tileHeight + 1, 1) > -1)
-            for (int j = 1; j < 4; j++)
-                wallRect.emplace_back(Vec2(x + j * tileWidth, y - tileHeight),
-                                      Vec2(tileWidth, tileHeight));
-    }
-}
-
-std::vector<Rect> TileMap::GetWallRect(void)
-{
-    return wallRect;
 }
 

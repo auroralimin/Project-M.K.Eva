@@ -16,8 +16,8 @@ int **ProceduralFirstRooms::details = nullptr;
 std::string ProceduralFirstRooms::path = "";
 std::string ProceduralFirstRooms::floorModules[5] = {
     "ULC.txt", "URC.txt", "LLC.txt", "LRC.txt", "CENTER.txt"};
-std::string ProceduralFirstRooms::wallsModules[4] = {"DOWN.txt", "UP.txt",
-                                                     "LEFT.txt", "RIGHT.txt"};
+std::string ProceduralFirstRooms::wallsModules[4] = {"RIGHT.txt", "DOWN.txt",
+                                                     "LEFT.txt", "UP.txt"};
 std::string ProceduralFirstRooms::detailsModules[6] = {
     "LWLC.txt", "LWCENTER.txt", "LWRC.txt",
     "RWLC.txt", "RWCENTER.txt", "RWRC.txt"};
@@ -35,11 +35,11 @@ void ProceduralFirstRooms::GenerateRooms(int variants[2], int pathId)
     mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 #endif
 
-    for (int d = 0; d < 2; ++d)
-        for (int u = 0; u < 2; ++u)
-            for (int l = 0; l < 2; ++l)
+    for (int u = 0; u < 2; ++u)
+        for (int l = 0; l < 2; ++l)
+            for (int d = 0; d < 2; ++d)
                 for (int r = 0; r < 2; ++r)
-                    GenerateRoom(d * 10 + u * 100 + l * 1000 + r * 10000);
+                    GenerateRoom(u * 10000 + l * 1000 + d * 100 + r * 10);
 }
 
 void ProceduralFirstRooms::GenerateRoom(int roomId)

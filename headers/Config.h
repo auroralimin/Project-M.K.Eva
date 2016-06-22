@@ -5,6 +5,9 @@
 #define M_PI 3.14159265359
 #endif
 
+#define SCREEN_W 1280
+#define SCREEN_H 704
+
 #define TILE_SIZE 64
 #define PROCEDURAL_GENERATED_SET 1
 #define UNUSED_VAR (void)

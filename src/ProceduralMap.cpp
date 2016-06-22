@@ -170,13 +170,13 @@ void ProceduralMap::LabelRooms(void)
     for (int i = 0; i < width; ++i)
         for (int j = 0; j < height; ++j) {
             if (map[i][j] > 0) {
-                if ((j < height - 1) && (map[i][j + 1] > 0))
+                if ((i < width - 1) && (map[i + 1][j] > 0))
                     roomId += 10;
-                if ((j > 0) && (map[i][j - 1] > 0))
+                if ((j < height - 1) && (map[i][j + 1] > 0))
                     roomId += 100;
                 if ((i > 0) && (map[i - 1][j] > 0))
                     roomId += 1000;
-                if ((i < width - 1) && (map[i + 1][j] > 0))
+                if ((j > 0) && (map[i][j - 1] > 0))
                     roomId += 10000;
                 if ((i == firstRoom.x) && (j == firstRoom.y))
                     roomId += 1000;

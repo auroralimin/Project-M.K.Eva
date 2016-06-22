@@ -69,13 +69,9 @@ class TileMap
      */
     int GetDepth(void);
 
-    void LoadWallRects(void);
-    std::vector<Rect> GetWallRect(void);
-
   private:
     TileSet *tileSet;
     std::vector<int> tileMatrix;
-    std::vector<Rect> wallRect;
     int mapWidth, mapHeight, mapDepth;
 };
 

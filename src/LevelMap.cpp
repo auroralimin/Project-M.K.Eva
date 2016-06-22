@@ -46,8 +46,8 @@ void LevelMap::Load(std::string file)
     int r;
     while (fscanf(fp, "%d,", &r) != EOF) {
         if (r != -1 && rooms.find(r) == rooms.end())
-            rooms.emplace(r, new TileMap(roomsPath + std::to_string(r) + ".txt",
-                                         tileSet));
+            rooms.emplace(
+                r, new Room(roomsPath + std::to_string(r) + ".txt", tileSet));
         mapMatrix.emplace_back(r);
     }
     index = mapMatrix[currentRoom.x + (mapWidth * currentRoom.y)];

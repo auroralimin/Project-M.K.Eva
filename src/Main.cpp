@@ -18,8 +18,8 @@ int main(int argc, char **argv)
         ProceduralFirstRooms::GenerateRooms(variants, i);
 
     if (std::string(argv[1]) == "intro") {
-        Game *game = Game::GetInstance("Project M.K.Eva", 1280, 704);
-        game->Push(new IntroState(Vec2(1280 / 2, 704 / 2)));
+        Game *game = Game::GetInstance("Project M.K.Eva", SCREEN_W, SCREEN_H);
+        game->Push(new IntroState(Vec2(SCREEN_W / 2, SCREEN_H / 2)));
         game->Run();
         delete game;
     } else if (std::string(argv[1]) == "procedural") {
@@ -29,7 +29,7 @@ int main(int argc, char **argv)
         game->Run();
         delete game;
     } else if (std::string(argv[1]) == "hub") {
-        Game *game = Game::GetInstance("Project M.K.Eva", 1280, 704);
+        Game *game = Game::GetInstance("Project M.K.Eva", SCREEN_W, SCREEN_H);
         game->Push(new HubState());
         game->Run();
         delete game;
