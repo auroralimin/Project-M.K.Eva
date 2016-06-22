@@ -31,6 +31,8 @@ TurretMob::TurretMob(Vec2 pos, GameObject *focus)
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
     hitbox.dim = Vec2(box.dim.x / 2, box.dim.y / 4);
     hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 80);
+    attackHitbox.dim = Vec2(box.dim.x/3, box.dim.y/1.5);
+    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y + box.dim.y/4);
 
     hp = 100;
     rotation = 0;
@@ -41,6 +43,10 @@ void TurretMob::Render(void)
     int color[4] = COLOR_HITBOX;
     if (Config::HITBOX_MODE)
         hitbox.RenderFilledRect(color);
+
+    int attackColor[4] = COLOR_ATTACK_HITBOX;
+    if (Config::ATTACK_HITBOX_MODE)
+        attackHitbox.RenderFilledRect(attackColor);
 
     animations.Render(box.pos.x, box.pos.y);
 }
@@ -144,6 +150,7 @@ void TurretMob::Movement(float dt)
     }
 
     hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 80);
+    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y + box.dim.y/4);
 }
 
 void TurretMob::Attack(float dt)
@@ -154,15 +161,15 @@ void TurretMob::Attack(float dt)
     if (attackTimer.Get() >= Config::Rand(20, 60) / 10.0f) {
         Vec2 evaPos = focus->box.GetCenter();
         Vec2 boxVector = box.GetCenter();
-        boxVector.y -= 25;
+        boxVector.y -= 10;
         boxVector.x -= 10;
         float angle = 0;
 
         evaPos -= box.GetCenter();
         angle = atan2(evaPos.y, evaPos.x);
         Bullet *b = new Bullet(boxVector, angle, 200, 1000,
-                               "sprites/monsters/turret/penguinbullet.png",
-                               Vec2(-15, -15), Vec2(30, 30), 4, 0.3, true);
+                               "sprites/monsters/projectiles/BlueBombSpritesheet.png",
+                               Vec2(-10, -10), Vec2(20, 20), 8, 0.3, true);
 
         Game::GetInstance()->GetCurrentState().AddObject(b);
 

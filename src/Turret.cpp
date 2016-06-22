@@ -13,21 +13,33 @@ Turret::Turret(Vec2 pos, GameObject *focus)
     : focus(focus), animations(TURRET_ANIMATIONS)
 {
     std::string files[TURRET_ANIMATIONS] = {
-        "sprites/monsters/turret/alien.png"};
-    int frameCounts[TURRET_ANIMATIONS] = {1};
-    float frameTimes[TURRET_ANIMATIONS] = {300.0};
+        "sprites/monsters/turret/SpriteSheetStationaryTurret.png"};
+    int frameCounts[TURRET_ANIMATIONS] = {20};
+    float frameTimes[TURRET_ANIMATIONS] = {0.1};
     for (int i = 0; i < TURRET_ANIMATIONS; i++) {
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
     }
 
     box.pos = pos;
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
+    hitbox.dim = Vec2(box.dim.x/2, box.dim.y/4);
+    hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + box.dim.y/1.5);
+    attackHitbox.dim = Vec2(box.dim.x/2, box.dim.y/1.5);
+    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + box.dim.y/4);
     hp = 100;
     rotation = 0;
 }
 
 void Turret::Render(void)
 {
+    int color[4] = COLOR_HITBOX;
+    if (Config::HITBOX_MODE)
+        hitbox.RenderFilledRect(color);
+
+    int attackColor[4] = COLOR_ATTACK_HITBOX;
+    if (Config::ATTACK_HITBOX_MODE)
+        attackHitbox.RenderFilledRect(attackColor);
+
     animations.Render(box.pos.x, box.pos.y);
 }
 
@@ -98,8 +110,8 @@ void Turret::ShootPattern1(void)
     for (int i = 0; i < nBullets; ++i)
         Game::GetInstance()->GetCurrentState().AddObject(
             new Bullet(box.GetCenter(), angle + anglesOffsets[i], 200, 1000,
-                       "sprites/monsters/turret/penguinbullet.png",
-                       Vec2(-15, -15), Vec2(30, 30), 4, 0.3, true));
+                       "sprites/monsters/projectiles/BlueBombSpritesheet.png",
+                       Vec2(-10, -10), Vec2(20, 20), 8, 0.3, true));
 }
 
 void Turret::ShootPattern2(void)
@@ -107,8 +119,8 @@ void Turret::ShootPattern2(void)
     for (int i = 0; i < 15; i++) {
         Bullet *b =
             new Bullet(box.GetCenter(), 2 * M_PI * (i + 1) / 15, 200, 1000,
-                       "sprites/monsters/turret/penguinbullet.png",
-                       Vec2(-15, -15), Vec2(30, 30), 4, 0.3, true);
+                       "sprites/monsters/projectiles/GreatEnergyBallSpriteSheet.png",
+                       Vec2(-35, -35), Vec2(70, 70), 4, 0.3, true);
 
         Game::GetInstance()->GetCurrentState().AddObject(b);
     }

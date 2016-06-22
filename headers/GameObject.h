@@ -19,6 +19,11 @@ class GameObject
     Rect hitbox;
 
     /**
+     * Contains the position and the dimentions of the object attack hitbox.
+     */
+    Rect attackHitbox;
+
+    /**
      * Contains the rotation of the object.
      */
     float rotation;

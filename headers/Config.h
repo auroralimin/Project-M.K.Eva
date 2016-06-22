@@ -28,6 +28,10 @@
     {                                                                          \
         255, 0, 0, 150                                                         \
     }
+#define COLOR_ATTACK_HITBOX                                                           \
+    {                                                                          \
+        0, 255, 0, 150                                                         \
+    }
 #define COLOR_T_GREY_1                                                         \
     {                                                                          \
         245, 184, 50, 125                                                      \
@@ -59,6 +63,8 @@ class Config
      * Attribute to set if the game is on hitbox mode.
      */
     static const bool HITBOX_MODE = true;
+
+    static const bool ATTACK_HITBOX_MODE = true;
 
     static int Rand(int fMin, int fMax)
     {

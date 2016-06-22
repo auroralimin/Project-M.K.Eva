@@ -26,6 +26,8 @@ MekaBug::MekaBug(Vec2 pos, GameObject *focus)
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
     hitbox.dim = Vec2(box.dim.x, box.dim.y / 2);
     hitbox.pos = Vec2(box.pos.x, box.pos.y + 35);
+    attackHitbox.dim = Vec2(box.dim.x, box.dim.y/1.5);
+    attackHitbox.pos = Vec2(box.pos.x, box.pos.y + box.dim.y/1.5);
 
     hp = 100;
     rotation = 0;
@@ -36,6 +38,10 @@ void MekaBug::Render()
     int color[4] = COLOR_HITBOX;
     if (Config::HITBOX_MODE)
         hitbox.RenderFilledRect(color);
+
+    int attackColor[4] = COLOR_ATTACK_HITBOX;
+    if (Config::ATTACK_HITBOX_MODE)
+        attackHitbox.RenderFilledRect(attackColor);
 
     animations.Render(box.pos.x, box.pos.y);
 }
@@ -102,7 +108,7 @@ void MekaBug::MovementAndAttack(float dt)
             animations.SetCurrentState(MekaBugState::AGRESSIVE);
             restTimer.Restart();
         } else {
-            speed = (evaPos - box.pos).Norm() * 40 * dt;
+            speed = (evaPos - box.pos).Norm() * 100 * dt;
             previousPos = box.pos;
             if (stuck) {
                 stuckTimer.Update(dt);
@@ -125,5 +131,6 @@ void MekaBug::MovementAndAttack(float dt)
     }
 
     hitbox.pos = Vec2(box.pos.x, box.pos.y + 35);
+    attackHitbox.pos = Vec2(box.pos.x, box.pos.y + box.dim.y/3);
 }
 

@@ -7,9 +7,9 @@
 #define ARENA_WIDTH_END 1152
 #define ARENA_HEIGHT_INIT 256
 #define ARENA_HEIGHT_END 576
-#define REST_TIME 5.8
-#define WARN_TIME 3.2
-#define ATTACK_TIME 5.0
+#define REST_TIME 3.6
+#define WARN_TIME 2.0
+#define ATTACK_TIME 1.8
 #define BALL_EVA_DISTANCE 50
 
 MonsterBallManager::MonsterBallManager(GameObject *focus)

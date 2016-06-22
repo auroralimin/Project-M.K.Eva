@@ -17,22 +17,23 @@ IntroState::IntroState(Vec2 evaPos) : map()
     Camera::pos = Vec2(0.0, 0.0);
     Eva *eva = new Eva(evaPos);
     AddObject(eva);
-    //	AddObject(new Turret(Vec2(Game::GetInstance()->GetWinWidth()/2 + 50,
-    //                    Game::GetInstance()->GetWinHeight()/2), eva));
-    //	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 + 100,
+    //	AddObject(new Turret(Vec2(Game::GetInstance()->GetWinWidth()/2 + 100,
     //                    Game::GetInstance()->GetWinHeight()/2 + 100), eva));
-    //	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 - 100,
-    //                    Game::GetInstance()->GetWinHeight()/2 - 100), eva));
+    	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 + 100,
+                        Game::GetInstance()->GetWinHeight()/2 + 100), eva));
+    	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 - 100,
+                        Game::GetInstance()->GetWinHeight()/2 - 100), eva));
     //	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2 - 200,
     //                    Game::GetInstance()->GetWinHeight()/2 - 200), eva));
     //	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/3,
     //                    Game::GetInstance()->GetWinHeight()/2), eva));
     //	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2,
     //                    Game::GetInstance()->GetWinHeight()/3), eva));
-    MonsterBallManager *ballManager = new MonsterBallManager(eva);
-    AddObject(ballManager);
-    for (int i = 0; i < 5; ++i)
-        AddObject(*(ballManager->AddBall()));
+    //MonsterBallManager *ballManager = new MonsterBallManager(eva);
+    //AddObject(ballManager);
+    //for (int i = 0; i < 3; ++i)
+    //    AddObject(*(ballManager->AddBall()));
+
     map.Load("map/intro.txt");
     map.InitMiniroom();
     map.SetFocus(eva);
@@ -98,6 +99,16 @@ void IntroState::CheckMovementCollisions()
                   (objectArray[j]->Is("Bullet")))) {
                 if (Collision::IsColliding(
                         objectArray[i]->hitbox, objectArray[j]->hitbox,
+                        objectArray[i]->rotation, objectArray[j]->rotation)) {
+
+                    objectArray[i]->NotifyCollision(*objectArray[j].get(),
+                                                    true);
+                    objectArray[j]->NotifyCollision(*objectArray[i].get(),
+                                                    true);
+                }
+            } else {
+                if (Collision::IsColliding(
+                        objectArray[i]->attackHitbox, objectArray[j]->attackHitbox,
                         objectArray[i]->rotation, objectArray[j]->rotation)) {
 
                     objectArray[i]->NotifyCollision(*objectArray[j].get(),

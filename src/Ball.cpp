@@ -21,6 +21,8 @@ Ball::Ball(Vec2 pos) : animations(BALL_ANIMATIONS), previousPos(pos)
 
     box.pos = pos;
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
+    attackHitbox.dim = Vec2(box.dim.x/3, box.dim.y/3);
+    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y + box.dim.y/2);
 
     hp = 100;
     rotation = 0;
@@ -31,6 +33,10 @@ void Ball::Render()
     int color[4] = COLOR_HITBOX;
     if (Config::HITBOX_MODE)
         hitbox.RenderFilledRect(color);
+
+    int attackColor[4] = COLOR_ATTACK_HITBOX;
+    if (Config::ATTACK_HITBOX_MODE)
+        attackHitbox.RenderFilledRect(attackColor);
 
     animations.Render(box.pos.x, box.pos.y);
 }
@@ -48,6 +54,7 @@ void Ball::Update(float dt)
         TakeDamage(8000);
     }
     animations.Update(dt);
+    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y + box.dim.y/2);
 }
 
 void Ball::NotifyCollision(GameObject &other, bool movement)

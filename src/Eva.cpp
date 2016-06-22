@@ -25,6 +25,8 @@ Eva::Eva(Vec2 pos)
                    evaClasses[currentClass]->animations.GetCurrentHeight());
     hitbox.dim = Vec2(box.dim.x / 2, box.dim.y / 4);
     hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
+    attackHitbox.dim = Vec2(box.dim.x/3, box.dim.y);
+    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y);
     rotation = 0;
     hp = 100;
 }
@@ -34,6 +36,11 @@ void Eva::Render()
     int color[4] = COLOR_HITBOX;
     if (Config::HITBOX_MODE)
         hitbox.RenderFilledRect(color);
+
+    int attackColor[4] = COLOR_ATTACK_HITBOX;
+    if (Config::ATTACK_HITBOX_MODE)
+        attackHitbox.RenderFilledRect(attackColor);
+
     evaClasses[currentClass]->Render(box.pos.x - Camera::pos.x,
                                      box.pos.y - Camera::pos.y);
 }
@@ -120,6 +127,7 @@ void Eva::Update(float dt)
 
     hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
     evaClasses[currentClass]->Update(dt, hp);
+    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y);
 }
 
 bool Eva::IsDead()
@@ -132,15 +140,15 @@ void Eva::NotifyCollision(GameObject &other, bool movement)
     if (other.Is("Bullet")) {
         Bullet &bullet = (Bullet &)other;
         if (bullet.targetsPlayer)
-            TakeDamage(10);
+            TakeDamage(3);
     } else if (other.Is("Ball")) {
         TakeDamage(0);
     } else if (other.Is("MonsterBallManager")) {
-        TakeDamage(1);
+        TakeDamage(0.1);
     } else if (movement && (!other.Is("Ball"))) {
         box.pos = previousPos;
         if (other.Is("MekaBug"))
-            TakeDamage(5);
+            TakeDamage(3);
     }
 }
 

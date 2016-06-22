@@ -15,6 +15,8 @@ Bullet::Bullet(Vec2 pos, float angle, float speed, float maxDistance,
     box.dim = Vec2(sp.GetWidth(), sp.GetHeight());
     hitbox.dim = hitboxDim;
     hitbox.pos = box.pos + hitboxOffset;
+    attackHitbox.dim = hitboxDim;
+    attackHitbox.pos = box.pos + hitboxOffset;
 
     rotation = angle;
 }
@@ -37,16 +39,21 @@ void Bullet::Update(float dt)
     }
 
     hitbox.pos = box.pos + hitboxOffset;
+    attackHitbox.pos = box.pos + hitboxOffset;
 }
 
 void Bullet::Render()
 {
+    sp.Render(box.pos.x - box.dim.x / 2, box.pos.y - box.dim.y / 2,
+              rotation * 180 / M_PI);
+
     int color[4] = COLOR_HITBOX;
     if (Config::HITBOX_MODE)
         hitbox.RenderFilledRect(color);
 
-    sp.Render(box.pos.x - box.dim.x / 2, box.pos.y - box.dim.y / 2,
-              rotation * 180 / M_PI);
+    int attackColor[4] = COLOR_ATTACK_HITBOX;
+    if (Config::ATTACK_HITBOX_MODE)
+        attackHitbox.RenderFilledRect(attackColor);
 }
 
 bool Bullet::IsDead()
