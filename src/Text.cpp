@@ -3,62 +3,66 @@
 #include "Resources.h"
 #include "Config.h"
 
-Text::Text(void) { }
+Text::Text(void)
+{
+}
 
 Text::Text(std::string fontFile, int fontSize, TextStyle style,
-		std::string text, SDL_Color color, int x, int y) :
-	texture(nullptr), fontSize(fontSize), style(style), text(text), color(color)
+           std::string text, SDL_Color color, int x, int y)
+    : texture(nullptr), fontSize(fontSize), style(style), text(text),
+      color(color)
 {
-	font = Resources::GetFont(fontFile, fontSize);
-	SetPos(x, y, true, true);
-	RemakeTexture();
+    font = Resources::GetFont(fontFile, fontSize);
+    SetPos(x, y, true, true);
+    RemakeTexture();
 }
 
 Text::~Text(void)
 {
-	if (texture != nullptr)
-		SDL_DestroyTexture(texture);
+    if (texture != nullptr)
+        SDL_DestroyTexture(texture);
 }
 
 void Text::Render(int CameraX, int CameraY)
 {
-	clipRect.x = 0 + CameraX;
-	clipRect.y = 0 + CameraY;
-	SDL_RenderCopy(Game::GetInstance()->GetRenderer(), texture, &clipRect, &dstRect);
+    clipRect.x = 0 + CameraX;
+    clipRect.y = 0 + CameraY;
+    SDL_RenderCopy(Game::GetInstance()->GetRenderer(), texture, &clipRect,
+                   &dstRect);
 }
 
 void Text::SetPos(int x, int y, bool centerX, bool centerY)
 {
-	if (centerX)
-		box.pos.x -= box.dim.x/2;
-	if (centerY)
-		box.pos.y -= box.dim.y/2;
-	dstRect.x = clipRect.x = box.pos.x = x;
-	dstRect.y = clipRect.y = box.pos.y = y;
+    if (centerX)
+        box.pos.x -= box.dim.x / 2;
+    if (centerY)
+        box.pos.y -= box.dim.y / 2;
+    dstRect.x = clipRect.x = box.pos.x = x;
+    dstRect.y = clipRect.y = box.pos.y = y;
 }
 
 void Text::SetText(std::string text)
 {
-	this->text = text;
-	RemakeTexture();
+    this->text = text;
+    RemakeTexture();
 }
 
 void Text::SetColor(SDL_Color color)
 {
-	this->color = color;
-	RemakeTexture();
+    this->color = color;
+    RemakeTexture();
 }
 
 void Text::SetStyle(TextStyle style)
 {
-	this->style = style;
-	RemakeTexture();
+    this->style = style;
+    RemakeTexture();
 }
 
 void Text::SetFontSize(int fontSize)
 {
-	this->fontSize = fontSize;
-	RemakeTexture();
+    this->fontSize = fontSize;
+    RemakeTexture();
 }
 
 /*
@@ -66,31 +70,31 @@ void Text::SetFontSize(int fontSize)
  */
 void Text::RemakeTexture(void)
 {
-	int w = Game::GetInstance()->GetWinWidth();
-	SDL_Surface *surface = nullptr;
-	if (texture != nullptr)
-		SDL_DestroyTexture(texture);
+    int w = Game::GetInstance()->GetWinWidth();
+    SDL_Surface *surface = nullptr;
+    if (texture != nullptr)
+        SDL_DestroyTexture(texture);
 
-	switch(style)
-	{
-		case TextStyle::SOLID:
-			surface = TTF_RenderText_Solid(font.get(), text.c_str(), color);
-			break;
-		case TextStyle::SHADED:
-			surface = TTF_RenderText_Shaded(font.get(), text.c_str(), color, COLOR_BLACK);
-			break;
-		case TextStyle::BLENDED:
-			surface = TTF_RenderText_Blended_Wrapped(font.get(), text.c_str(), color, w);
-			break;
-		default:
-			//do nothing
-			break;
-	}
-	dstRect.w = clipRect.w = box.dim.x = surface->w;
-	dstRect.h = clipRect.h = box.dim.y = surface->h;
-	texture = SDL_CreateTextureFromSurface(Game::GetInstance()->GetRenderer(),
-			surface);
-	SDL_FreeSurface(surface);
-
+    switch (style) {
+    case TextStyle::SOLID:
+        surface = TTF_RenderText_Solid(font.get(), text.c_str(), color);
+        break;
+    case TextStyle::SHADED:
+        surface =
+            TTF_RenderText_Shaded(font.get(), text.c_str(), color, COLOR_BLACK);
+        break;
+    case TextStyle::BLENDED:
+        surface =
+            TTF_RenderText_Blended_Wrapped(font.get(), text.c_str(), color, w);
+        break;
+    default:
+        // do nothing
+        break;
+    }
+    dstRect.w = clipRect.w = box.dim.x = surface->w;
+    dstRect.h = clipRect.h = box.dim.y = surface->h;
+    texture = SDL_CreateTextureFromSurface(Game::GetInstance()->GetRenderer(),
+                                           surface);
+    SDL_FreeSurface(surface);
 }
 

@@ -1,6 +1,8 @@
 #include "EvaClass.h"
 
-EvaClass::EvaClass(int nAnimations) : animations(nAnimations) {}
+EvaClass::EvaClass(int nAnimations) : animations(nAnimations)
+{
+}
 
 void EvaClass::Render(float x, float y)
 {

@@ -2,131 +2,120 @@
 #include "Game.h"
 #include "Config.h"
 
-std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> Resources::imageTable;
-std::unordered_map<std::string, std::shared_ptr<Mix_Music>> Resources::musicTable;
-std::unordered_map<std::string, std::shared_ptr<Mix_Chunk>> Resources::soundTable;
+std::unordered_map<std::string, std::shared_ptr<SDL_Texture>>
+    Resources::imageTable;
+std::unordered_map<std::string, std::shared_ptr<Mix_Music>>
+    Resources::musicTable;
+std::unordered_map<std::string, std::shared_ptr<Mix_Chunk>>
+    Resources::soundTable;
 std::unordered_map<std::string, std::shared_ptr<TTF_Font>> Resources::fontTable;
 
 std::shared_ptr<SDL_Texture> Resources::GetImage(std::string file)
 {
-	SDL_Texture *img;
+    SDL_Texture *img;
 
-	if (imageTable.find(file) == imageTable.end())
-	{
-		img = IMG_LoadTexture(Game::GetInstance()->GetRenderer(), file.c_str());
-		if (!img)
-		{
-			std::cerr << "Failed to load texture: " << Mix_GetError() << std::endl;
-			exit(EXIT_SUCCESS);
-		}
-		std::shared_ptr<SDL_Texture> texture(img,
-				[](SDL_Texture *ptr){
-					SDL_DestroyTexture(ptr);
-				});
-		imageTable.emplace(file, texture);
-		return texture;
-	}
+    if (imageTable.find(file) == imageTable.end()) {
+        img = IMG_LoadTexture(Game::GetInstance()->GetRenderer(), file.c_str());
+        if (!img) {
+            std::cerr << "Failed to load texture: " << Mix_GetError()
+                      << std::endl;
+            exit(EXIT_SUCCESS);
+        }
+        std::shared_ptr<SDL_Texture> texture(
+            img, [](SDL_Texture *ptr) { SDL_DestroyTexture(ptr); });
+        imageTable.emplace(file, texture);
+        return texture;
+    }
 
-	return imageTable.find(file)->second;
+    return imageTable.find(file)->second;
 }
 
 void Resources::ClearImages(void)
 {
-	for (auto element : imageTable)
-		if (element.second.unique())
-			imageTable.erase(element.first);	
+    for (auto element : imageTable)
+        if (element.second.unique())
+            imageTable.erase(element.first);
 }
 
 std::shared_ptr<Mix_Music> Resources::GetMusic(std::string file)
 {
-	Mix_Music *music;
+    Mix_Music *music;
 
-	if (musicTable.find(file) == musicTable.end())
-	{
-		music = Mix_LoadMUS(file.c_str());
-		if (!music)
-		{
-			std::cerr << "Failed to load music: " << Mix_GetError() << std::endl;
-			exit(EXIT_SUCCESS);
-		}
-		std::shared_ptr<Mix_Music> mixMusic(music,
-				[](Mix_Music *ptr){
-					Mix_FreeMusic(ptr);
-				});
-		musicTable.emplace(file, mixMusic);
-		return mixMusic;
-	}
+    if (musicTable.find(file) == musicTable.end()) {
+        music = Mix_LoadMUS(file.c_str());
+        if (!music) {
+            std::cerr << "Failed to load music: " << Mix_GetError()
+                      << std::endl;
+            exit(EXIT_SUCCESS);
+        }
+        std::shared_ptr<Mix_Music> mixMusic(
+            music, [](Mix_Music *ptr) { Mix_FreeMusic(ptr); });
+        musicTable.emplace(file, mixMusic);
+        return mixMusic;
+    }
 
-	return musicTable.find(file)->second;
+    return musicTable.find(file)->second;
 }
 
 void Resources::ClearMusics(void)
 {
-	for (auto element : musicTable)
-		if (element.second.unique())
-			musicTable.erase(element.first);	
+    for (auto element : musicTable)
+        if (element.second.unique())
+            musicTable.erase(element.first);
 }
 
 std::shared_ptr<Mix_Chunk> Resources::GetSound(std::string file)
 {
-	Mix_Chunk *sound;
+    Mix_Chunk *sound;
 
-	if (soundTable.find(file) == soundTable.end())
-	{
-		sound = Mix_LoadWAV(file.c_str());
-		if (!sound)
-		{
-			std::cerr << "Failed to load WAV: " << Mix_GetError() << std::endl;
-			exit(EXIT_SUCCESS);
-		}
-		std::shared_ptr<Mix_Chunk> chunk(sound,
-				[](Mix_Chunk *ptr){
-					Mix_FreeChunk(ptr);
-				});
-		soundTable.emplace(file, chunk);
-		return chunk;
-	}
+    if (soundTable.find(file) == soundTable.end()) {
+        sound = Mix_LoadWAV(file.c_str());
+        if (!sound) {
+            std::cerr << "Failed to load WAV: " << Mix_GetError() << std::endl;
+            exit(EXIT_SUCCESS);
+        }
+        std::shared_ptr<Mix_Chunk> chunk(
+            sound, [](Mix_Chunk *ptr) { Mix_FreeChunk(ptr); });
+        soundTable.emplace(file, chunk);
+        return chunk;
+    }
 
-	return soundTable.find(file)->second;
+    return soundTable.find(file)->second;
 }
 
 void Resources::ClearSounds(void)
 {
-	for (auto element : soundTable)
-		if (element.second.unique())
-			soundTable.erase(element.first);	
+    for (auto element : soundTable)
+        if (element.second.unique())
+            soundTable.erase(element.first);
 }
 
 std::shared_ptr<TTF_Font> Resources::GetFont(std::string file, int fontSize)
 {
-	std::string key = file + std::to_string(fontSize);
-	TTF_Font *font;
+    std::string key = file + std::to_string(fontSize);
+    TTF_Font *font;
 
-	if (fontTable.find(key) == fontTable.end())
-	{
-		font = TTF_OpenFont(file.c_str(), fontSize);
-		if (!font)
-		{
-			std::cerr << "Failed to open Font: " << Mix_GetError() << std::endl;
-			exit(EXIT_SUCCESS);
-		}
-		std::shared_ptr<TTF_Font> tff(font,
-				[](TTF_Font *ptr)
-				{
-					UNUSED_VAR ptr;
-					//TODO: fix segfault generated by TTF_CloseFont(ptr);
-				});
-		fontTable.emplace(key, tff);
-		return tff;
-	}
+    if (fontTable.find(key) == fontTable.end()) {
+        font = TTF_OpenFont(file.c_str(), fontSize);
+        if (!font) {
+            std::cerr << "Failed to open Font: " << Mix_GetError() << std::endl;
+            exit(EXIT_SUCCESS);
+        }
+        std::shared_ptr<TTF_Font> tff(font, [](TTF_Font *ptr) {
+            UNUSED_VAR ptr;
+            // TODO: fix segfault generated by TTF_CloseFont(ptr);
+        });
+        fontTable.emplace(key, tff);
+        return tff;
+    }
 
-	return fontTable.find(key)->second;
+    return fontTable.find(key)->second;
 }
 
 void Resources::ClearFonts(void)
 {
-	for (auto element : fontTable)
-		if (element.second.unique())
-			fontTable.erase(element.first);
+    for (auto element : fontTable)
+        if (element.second.unique())
+            fontTable.erase(element.first);
 }
 

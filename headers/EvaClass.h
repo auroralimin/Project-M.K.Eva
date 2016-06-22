@@ -6,13 +6,14 @@
 
 class EvaClass
 {
-public:
+  public:
     EvaClass(int nAnimations);
 
-    virtual ~EvaClass(void) {}
+    virtual ~EvaClass(void)
+    {
+    }
 
     virtual void Update(float dt) = 0;
-
 
     virtual void Attack(Vec2 pos, int direction) = 0;
 
@@ -32,13 +33,12 @@ public:
     float atkSpeed;
     AnimationFSM animations;
 
-protected:
+  protected:
     int currentState;
     std::string *files;
     float *frameTimes;
     int *frameCounts;
     bool isAttacking;
     bool atkReady;
-
 };
 

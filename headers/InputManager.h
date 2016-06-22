@@ -67,94 +67,93 @@
 /** \def E_KEY keyboard E key */
 #define E_KEY SDLK_e
 
-
-
-/***************************************************************************//**
- * This class manages the game input.
- ******************************************************************************/
+/***************************************************************************/ /**
+  * This class manages the game input.
+  ******************************************************************************/
 class InputManager
 {
-	public:
-		/**
-		 * Ensures that this class is a Singleton.
-		 * Thus, it returns always the same instance.
-		 * @return Returns a poiter to the unique instance of InputManager class
-		 */
-		static InputManager& GetInstance(void);
+  public:
+    /**
+     * Ensures that this class is a Singleton.
+     * Thus, it returns always the same instance.
+     * @return Returns a poiter to the unique instance of InputManager class
+     */
+    static InputManager &GetInstance(void);
 
-		/**
-		 * Updates and process SDL input from keyborad and mouse.
-		 */
-		void Update(void);
+    /**
+     * Updates and process SDL input from keyborad and mouse.
+     */
+    void Update(void);
 
-		/**
-		 * Checks if a given key was pressed.
-		 * @param key a int containing the key value
-		 * @return If the key was pressed
-		 */
-		bool KeyPress(int key);
+    /**
+     * Checks if a given key was pressed.
+     * @param key a int containing the key value
+     * @return If the key was pressed
+     */
+    bool KeyPress(int key);
 
-		/**
-		 * Checks if a given key was released.
-		 * @param key a int containing the key value
-		 * @return If the key was released
-		 */
-		bool KeyRelease(int key);
+    /**
+     * Checks if a given key was released.
+     * @param key a int containing the key value
+     * @return If the key was released
+     */
+    bool KeyRelease(int key);
 
-		/**
-		 * Checks if a given key is being pressed.
-		 * @param key a int containing the key value
-		 * @return If the key is currently being pressed.
-		 */
-		bool IsKeyDown(int key);
+    /**
+     * Checks if a given key is being pressed.
+     * @param key a int containing the key value
+     * @return If the key is currently being pressed.
+     */
+    bool IsKeyDown(int key);
 
-		/**
-		 * Checks if a given mouse button was pressed.
-		 * @param button a int containing the mouse button value
-		 * @return If the key was pressed
-		 */
-		bool MousePress(int button);
+    /**
+     * Checks if a given mouse button was pressed.
+     * @param button a int containing the mouse button value
+     * @return If the key was pressed
+     */
+    bool MousePress(int button);
 
-		/**
-		 * Checks if a given mouse button was released.
-		 * @param button a int containing the mouse button value
-		 * @return If the mouse button was released.
-		 */
-		bool MouseRelease(int button);
+    /**
+     * Checks if a given mouse button was released.
+     * @param button a int containing the mouse button value
+     * @return If the mouse button was released.
+     */
+    bool MouseRelease(int button);
 
-		/**
-		 * Checks if a given mouse button is being pressed.
-		 * @param button a int containing the mouse button value
-		 * @return If the mouse button is currently being pressed
-		 */
-		bool IsMouseDown(int button);
+    /**
+     * Checks if a given mouse button is being pressed.
+     * @param button a int containing the mouse button value
+     * @return If the mouse button is currently being pressed
+     */
+    bool IsMouseDown(int button);
 
-		/**
-		 * Gets the mouse x position.
-		 * @return Returns x position of the mouse
-		 */
-		int GetMouseX(void);
+    /**
+     * Gets the mouse x position.
+     * @return Returns x position of the mouse
+     */
+    int GetMouseX(void);
 
-		/**
-		 * Gets the mouse y position.
-		 * @return Returns y position of the mouse
-		 */
-		int GetMouseY(void);
+    /**
+     * Gets the mouse y position.
+     * @return Returns y position of the mouse
+     */
+    int GetMouseY(void);
 
-		/**
-		 * Checks if SDL input received a quit signal.
-		 * @return Returns if the input requested quit
-		 */
-		bool IsQuitRequested(void);
-	private:
-		InputManager(void);
+    /**
+     * Checks if SDL input received a quit signal.
+     * @return Returns if the input requested quit
+     */
+    bool IsQuitRequested(void);
 
-		bool quitRequested;
-		bool mouseState[5];
-		int mouseUpdate[5];
-		int updateCounter;
-		int mouseX, mouseY;
-		std::unordered_map<int, bool> keyState;
-		std::unordered_map<int, int> keyUpdate;
+  private:
+    InputManager(void);
+
+    bool quitRequested;
+    bool mouseState[5];
+    int mouseUpdate[5];
+    int updateCounter;
+    int mouseX, mouseY;
+    std::unordered_map<int, bool> keyState;
+    std::unordered_map<int, int> keyUpdate;
 };
 

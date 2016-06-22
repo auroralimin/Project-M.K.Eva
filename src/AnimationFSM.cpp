@@ -1,6 +1,5 @@
 #include "AnimationFSM.h"
 
-
 AnimationFSM::AnimationFSM(int nAnimations)
 {
     this->nAnimations = nAnimations;
@@ -14,8 +13,8 @@ AnimationFSM::AnimationFSM(int nAnimations, std::string files[],
 {
     this->nAnimations = nAnimations;
     for (int i = 0; i < nAnimations; ++i)
-        animationsArray.emplace_back(new Sprite(files[i],
-                                                frameCount[i], frameTime[i]));
+        animationsArray.emplace_back(
+            new Sprite(files[i], frameCount[i], frameTime[i]));
     currentState = 0;
 }
 
@@ -31,11 +30,11 @@ void AnimationFSM::Update(float dt)
 
 void AnimationFSM::SetCurrentState(int state)
 {
-    //Resets all the animations when the state changes
+    // Resets all the animations when the state changes
     if (currentState != state) {
         currentState = state;
         for (int i = 0; i < nAnimations; ++i)
-			animationsArray[i].get()->SetFrame(0);
+            animationsArray[i].get()->SetFrame(0);
     }
 }
 
@@ -50,7 +49,7 @@ void AnimationFSM::SetNAnimations(int nAnimations)
 }
 
 void AnimationFSM::SetAnimation(int index, std::string file, int frameCount,
-                                    float frameTime)
+                                float frameTime)
 {
     animationsArray[index].get()->SetFrameCount(frameCount);
     animationsArray[index].get()->SetFrameTime(frameTime);

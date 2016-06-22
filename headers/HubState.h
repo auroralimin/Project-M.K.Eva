@@ -4,54 +4,54 @@
 #include "GameObject.h"
 #include "LevelMap.h"
 
-/***************************************************************************//**
- * Hub level managment state.
- ******************************************************************************/
+/***************************************************************************/ /**
+  * Hub level managment state.
+  ******************************************************************************/
 class HubState : public State
 {
-    public:
-        /**
-         * Initialises a Hub Menu State and Eva character.
-         */
-        HubState(void);
+  public:
+    /**
+     * Initialises a Hub Menu State and Eva character.
+     */
+    HubState(void);
 
-        /**
-         * Checks if Eva went to another room and change state based on that room
-         * @param dt time elapsed between th current and the last frame
-         */
-        void Update(float dt);
+    /**
+     * Checks if Eva went to another room and change state based on that room
+     * @param dt time elapsed between th current and the last frame
+     */
+    void Update(float dt);
 
-        /**
-         * Renders the morgue scenario
-         */
-        void Render(void);
+    /**
+     * Renders the morgue scenario
+     */
+    void Render(void);
 
-        /**
-         * Do nothing. It is necessary to inherit from State.
-         */
-        void Pause(void);
+    /**
+     * Do nothing. It is necessary to inherit from State.
+     */
+    void Pause(void);
 
-        /**
-         * Do nothing. It is necessary to inherit from State.
-         */
-        void Resume(void);
+    /**
+     * Do nothing. It is necessary to inherit from State.
+     */
+    void Resume(void);
 
-        /**
-         * Checks if some object is colliding with the current room wall.
-         */
-        bool IsCollidingWithWall(GameObject* o);
+    /**
+     * Checks if some object is colliding with the current room wall.
+     */
+    bool IsCollidingWithWall(GameObject *o);
 
-        /**
-         * Update state array of objects, including checking if Eva changed room.
-         * @param dt time elapsed between th current and the last frame
-         */
-        void UpdateArray(float dt);
+    /**
+     * Update state array of objects, including checking if Eva changed room.
+     * @param dt time elapsed between th current and the last frame
+     */
+    void UpdateArray(float dt);
 
-		void CheckMovementCollisions();
+    void CheckMovementCollisions();
 
-    private:
-        LevelMap map;
+  private:
+    LevelMap map;
 
-        void UpdateEva(int i);
+    void UpdateEva(int i);
 };
 

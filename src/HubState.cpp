@@ -11,8 +11,8 @@ HubState::HubState(void) : map()
 {
     map.Load("map/hub.txt");
     Camera::pos = Vec2(0.0, 0.0);
-    AddObject(new Eva(Vec2(Game::GetInstance()->GetWinWidth()/2,
-                    Game::GetInstance()->GetWinHeight()/2)));
+    AddObject(new Eva(Vec2(Game::GetInstance()->GetWinWidth() / 2,
+                           Game::GetInstance()->GetWinHeight() / 2)));
 }
 
 void HubState::Update(float dt)
@@ -30,15 +30,15 @@ void HubState::Render(void)
 
 void HubState::Pause(void)
 {
-    //do nothing
+    // do nothing
 }
 
 void HubState::Resume(void)
 {
-    //do nothing
+    // do nothing
 }
 
-bool HubState::IsCollidingWithWall(GameObject* o)
+bool HubState::IsCollidingWithWall(GameObject *o)
 {
     return map.IsCollidingWithWall(o);
 }
@@ -51,7 +51,7 @@ void HubState::UpdateArray(float dt)
         } else {
             if (objectArray[i]->Is("Eva"))
                 UpdateEva(i);
-            objectArray[i]->Update((float)(dt/1000));
+            objectArray[i]->Update((float)(dt / 1000));
         }
     }
 }
@@ -64,14 +64,14 @@ void HubState::UpdateEva(int i)
     if (objectArray[i]->box.pos.x + objectArray[i]->box.dim.x < 0) {
         Game *game = Game::GetInstance();
         game->Push(new IntroState(Vec2(roomWidth, objectArray[i]->box.pos.y)));
-        objectArray[i]->box.pos.x = Game::GetInstance()->GetWinWidth()/2;
-        objectArray[i]->box.pos.y = Game::GetInstance()->GetWinHeight()/2;
+        objectArray[i]->box.pos.x = Game::GetInstance()->GetWinWidth() / 2;
+        objectArray[i]->box.pos.y = Game::GetInstance()->GetWinHeight() / 2;
     } else if (objectArray[i]->box.pos.x > roomWidth) {
         Game *game = Game::GetInstance();
-        game->Push(new FirstLevelState(Vec2(-objectArray[i]->box.dim.x,
-                        objectArray[i]->box.pos.y)));
-        objectArray[i]->box.pos.x = Game::GetInstance()->GetWinWidth()/2;
-        objectArray[i]->box.pos.y = Game::GetInstance()->GetWinHeight()/2;
+        game->Push(new FirstLevelState(
+            Vec2(-objectArray[i]->box.dim.x, objectArray[i]->box.pos.y)));
+        objectArray[i]->box.pos.x = Game::GetInstance()->GetWinWidth() / 2;
+        objectArray[i]->box.pos.y = Game::GetInstance()->GetWinHeight() / 2;
     } else if (objectArray[i]->box.pos.y + objectArray[i]->box.dim.y < 0) {
         map.RoomUp();
         objectArray[i]->box.pos.y = roomHeight;
@@ -81,5 +81,7 @@ void HubState::UpdateEva(int i)
     }
 }
 
-void HubState::CheckMovementCollisions() {}
+void HubState::CheckMovementCollisions()
+{
+}
 

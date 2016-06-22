@@ -12,18 +12,18 @@
 #define ATTACK_TIME 5.0
 #define BALL_EVA_DISTANCE 50
 
-MonsterBallManager::MonsterBallManager(GameObject *focus) : focus(focus),
-    currentState(BallsState::RESTING)
+MonsterBallManager::MonsterBallManager(GameObject *focus)
+    : focus(focus), currentState(BallsState::RESTING)
 {
     hitbox.dim = Vec2(0, 0);
 }
 
-Ball** MonsterBallManager::AddBall(void)
+Ball **MonsterBallManager::AddBall(void)
 {
     float x = Config::Rand(ARENA_WIDTH_INIT, ARENA_WIDTH_END);
     float y = Config::Rand(ARENA_HEIGHT_INIT, ARENA_HEIGHT_END);
     ballArray.emplace_back(new Ball(Vec2(x - 43, y - 110)));
-    return &ballArray[ballArray.size()-1];
+    return &ballArray[ballArray.size() - 1];
 }
 
 void MonsterBallManager::Render()
@@ -35,7 +35,7 @@ void MonsterBallManager::Render()
 
 bool MonsterBallManager::IsDead()
 {
-	return ballArray.empty();
+    return ballArray.empty();
 }
 
 void MonsterBallManager::Update(float dt)
@@ -49,22 +49,23 @@ void MonsterBallManager::Update(float dt)
         currentState = BallsState::WARNING;
         timer.Restart();
         SetCurrentState(WARNING);
-    } else if (currentState == BallsState::WARNING && timer.Get() >= WARN_TIME) {
+    } else if (currentState == BallsState::WARNING &&
+               timer.Get() >= WARN_TIME) {
         currentState = BallsState::ATTACKING;
         timer.Restart();
         SetCurrentState(ATTACKING);
     } else if (currentState == BallsState::ATTACKING) {
         hitbox.dim = Vec2(220, 180);
         for (size_t i = 0; i < ballArray.size(); i++) {
-            float angle = 2*M_PI*(i+1)/ballArray.size();
+            float angle = 2 * M_PI * (i + 1) / ballArray.size();
             Vec2 pos = Vec2(BALL_EVA_DISTANCE, 0);
-            ballArray[i]->box.pos = Vec2(pos.x*cos(angle) - pos.y*sin(angle), 
-                    pos.y*cos(angle) + pos.x*sin(angle));
+            ballArray[i]->box.pos =
+                Vec2(pos.x * cos(angle) - pos.y * sin(angle),
+                     pos.y * cos(angle) + pos.x * sin(angle));
 
             Vec2 evaPos = focus->box.pos;
-            evaPos.y -= focus->box.dim.y/2;
+            evaPos.y -= focus->box.dim.y / 2;
             ballArray[i]->box.pos += evaPos;
-
         }
 
         if (timer.Get() >= ATTACK_TIME) {

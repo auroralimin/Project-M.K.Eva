@@ -5,19 +5,17 @@
 
 class EvaGunslinger : public EvaClass
 {
-    public:
-        EvaGunslinger();
+  public:
+    EvaGunslinger();
 
-        void Update(float dt);
+    void Update(float dt);
 
-        void Attack(Vec2 pos, int direction);
+    void Attack(Vec2 pos, int direction);
 
-        void Die(Vec2 pos);
+    void Die(Vec2 pos);
 
-    private:
-
-        Timer atkTimer;
-        Timer atkCooldown;
-
+  private:
+    Timer atkTimer;
+    Timer atkCooldown;
 };
 

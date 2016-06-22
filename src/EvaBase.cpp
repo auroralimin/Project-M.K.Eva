@@ -12,8 +12,8 @@ EvaBase::EvaBase(void) : EvaClass(BASE_ANIMATIONS)
         "sprites/eva/movement/EVA-BASE-DOWN.png",
         "sprites/eva/movement/EVA-BASE-RIGHT.png"};
     files = tFiles;
-    frameCounts = new int[BASE_ANIMATIONS] {6, 6, 6, 6, 6};
-    frameTimes = new float[BASE_ANIMATIONS] {0.08, 0.08, 0.08, 0.08, 0.08};
+    frameCounts = new int[BASE_ANIMATIONS]{6, 6, 6, 6, 6};
+    frameTimes = new float[BASE_ANIMATIONS]{0.08, 0.08, 0.08, 0.08, 0.08};
     for (int i = 0; i < BASE_ANIMATIONS; i++)
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
 
@@ -24,7 +24,7 @@ EvaBase::EvaBase(void) : EvaClass(BASE_ANIMATIONS)
 
 void EvaBase::Update(float dt)
 {
-    //TODO: update possible timers
+    // TODO: update possible timers
     animations.Update(dt);
 }
 
@@ -32,12 +32,12 @@ void EvaBase::Attack(Vec2 pos, int direction)
 {
     UNUSED_VAR pos;
     UNUSED_VAR direction;
-    //do Nothing
+    // do Nothing
 }
 
 void EvaBase::Die(Vec2 pos)
 {
     UNUSED_VAR pos;
-    //do nothing
+    // do nothing
 }
 

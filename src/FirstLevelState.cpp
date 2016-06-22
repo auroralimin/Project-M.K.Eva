@@ -15,8 +15,8 @@ FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), isEvaDead(false)
     if (Config::DEBUG)
         std::cout << "seed: " << seed << std::endl;
     std::srand(seed);
-    std::string mapString = ProceduralMap::GenerateMap(7, 5, 15,
-            ProceduralMap::MapConfig::SPARSE, false);
+    std::string mapString = ProceduralMap::GenerateMap(
+        7, 5, 15, ProceduralMap::MapConfig::SPARSE, false);
     map.Load(mapString);
     map.InitMiniroom();
     Camera::pos = Vec2(0.0, 0.0);
@@ -38,15 +38,15 @@ void FirstLevelState::Render(void)
 
 void FirstLevelState::Pause(void)
 {
-    //do nothing
+    // do nothing
 }
 
 void FirstLevelState::Resume(void)
 {
-    //do nothing
+    // do nothing
 }
 
-bool FirstLevelState::IsCollidingWithWall(GameObject* o)
+bool FirstLevelState::IsCollidingWithWall(GameObject *o)
 {
     return map.IsCollidingWithWall(o);
 }
@@ -56,9 +56,8 @@ void FirstLevelState::UpdateArray(float dt)
     static std::string evaDeath = "";
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i]->IsDead()) {
-            if (objectArray[i]->Is("Eva"))
-            {
-                evaDeath = ((Eva*)(objectArray[i].get()))->GetEvaDeath();
+            if (objectArray[i]->Is("Eva")) {
+                evaDeath = ((Eva *)(objectArray[i].get()))->GetEvaDeath();
                 isEvaDead = true;
             }
             if (isEvaDead && objectArray[i]->Is(evaDeath))
@@ -68,7 +67,7 @@ void FirstLevelState::UpdateArray(float dt)
         } else {
             if (objectArray[i]->Is("Eva"))
                 UpdateEva(i);
-            objectArray[i]->Update((float)(dt/1000));
+            objectArray[i]->Update((float)(dt / 1000));
         }
     }
 }
@@ -93,5 +92,7 @@ void FirstLevelState::UpdateEva(int i)
     }
 }
 
-void FirstLevelState::CheckMovementCollisions() {}
+void FirstLevelState::CheckMovementCollisions()
+{
+}
 

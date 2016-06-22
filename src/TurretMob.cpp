@@ -10,10 +10,10 @@
 
 #define TURRET_MOB_ANIMATIONS 5
 
-TurretMob::TurretMob(Vec2 pos, GameObject *focus) :
-    focus(focus), animations(TURRET_MOB_ANIMATIONS),
-    movementMode(TurretMobMovement::RESTING),
-    previousPos(0, 0), destination(0, 0), restTimer()
+TurretMob::TurretMob(Vec2 pos, GameObject *focus)
+    : focus(focus), animations(TURRET_MOB_ANIMATIONS),
+      movementMode(TurretMobMovement::RESTING), previousPos(0, 0),
+      destination(0, 0), restTimer()
 {
     std::string files[TURRET_MOB_ANIMATIONS] = {
         "sprites/monsters/turretmob/TurretMobIdle.png",
@@ -29,7 +29,7 @@ TurretMob::TurretMob(Vec2 pos, GameObject *focus) :
 
     box.pos = pos;
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
-    hitbox.dim = Vec2(box.dim.x/2, box.dim.y/4);
+    hitbox.dim = Vec2(box.dim.x / 2, box.dim.y / 4);
     hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 80);
 
     hp = 100;
@@ -65,7 +65,7 @@ void TurretMob::Update(float dt)
 void TurretMob::NotifyCollision(GameObject &other, bool movement)
 {
     if (other.Is("Bullet")) {
-        Bullet& bullet = (Bullet&) other;
+        Bullet &bullet = (Bullet &)other;
         if (!bullet.targetsPlayer)
             TakeDamage(10);
     } else if (movement && (!other.Is("Ball"))) {
@@ -82,9 +82,10 @@ bool TurretMob::Is(std::string className)
 void TurretMob::TakeDamage(float dmg)
 {
     hp -= dmg;
-    if(IsDead())
-        Game::GetInstance()->GetCurrentState().AddObject(new Animation(box.GetCenter(),
-                    0, "sprites/monsters/turretmob/TurretMobDeath.png", 7, 0.2, true));
+    if (IsDead())
+        Game::GetInstance()->GetCurrentState().AddObject(new Animation(
+            box.GetCenter(), 0, "sprites/monsters/turretmob/TurretMobDeath.png",
+            7, 0.2, true));
 }
 
 void TurretMob::LookAtFocus(void)
@@ -92,12 +93,12 @@ void TurretMob::LookAtFocus(void)
     Vec2 lookVector = focus->box.GetCenter() - box.GetCenter();
 
     if (lookVector.y < 0) {
-        if(lookVector.x >= 0)
+        if (lookVector.x >= 0)
             animations.SetCurrentState(BACK);
         else
             animations.SetCurrentState(BACK_MIRROR);
     } else {
-        if(lookVector.x >= 0)
+        if (lookVector.x >= 0)
             animations.SetCurrentState(FRONT_MIRROR);
         else
             animations.SetCurrentState(FRONT);
@@ -112,10 +113,10 @@ void TurretMob::Movement(float dt)
         animations.SetCurrentState(IDLE);
         restTimer.Update(dt);
 
-        if (restTimer.Get() >= (Config::Rand(10, 35)/10.0f)) {
+        if (restTimer.Get() >= (Config::Rand(10, 35) / 10.0f)) {
             movementMode = TurretMobMovement::MOVING;
             destination = Vec2(Config::Rand(100, 250), 0);
-            float angle = (float)(Config::Rand(0, 180)*M_PI)/180.0f;
+            float angle = (float)(Config::Rand(0, 180) * M_PI) / 180.0f;
             destination = destination.Rotate(angle) + box.pos;
         }
     } else if (movementMode == TurretMobMovement::MOVING) {
@@ -125,7 +126,7 @@ void TurretMob::Movement(float dt)
             movementMode = TurretMobMovement::RESTING;
             destination = Vec2(0, 0);
         } else {
-            speed = (destination - box.pos).Norm()*25*dt;
+            speed = (destination - box.pos).Norm() * 25 * dt;
             previousPos = box.pos;
             box.pos += speed;
         }
@@ -135,13 +136,13 @@ void TurretMob::Movement(float dt)
             movementMode = TurretMobMovement::TRAPED;
         }
     } else if (movementMode == TurretMobMovement::TRAPED) {
-        destination = destination.Rotate(1*M_PI);
-        speed = (destination - box.pos).Norm()*25*dt;
+        destination = destination.Rotate(1 * M_PI);
+        speed = (destination - box.pos).Norm() * 25 * dt;
         previousPos = box.pos;
         box.pos += speed;
         movementMode = TurretMobMovement::MOVING;
     }
-    
+
     hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 80);
 }
 
@@ -150,8 +151,7 @@ void TurretMob::Attack(float dt)
     static Timer attackTimer = Timer();
     attackTimer.Update(dt);
 
-    if(attackTimer.Get() >= Config::Rand(20, 60)/10.0f)
-    {
+    if (attackTimer.Get() >= Config::Rand(20, 60) / 10.0f) {
         Vec2 evaPos = focus->box.GetCenter();
         Vec2 boxVector = box.GetCenter();
         boxVector.y -= 25;
@@ -160,9 +160,9 @@ void TurretMob::Attack(float dt)
 
         evaPos -= box.GetCenter();
         angle = atan2(evaPos.y, evaPos.x);
-        Bullet* b = new Bullet(boxVector, angle, 200, 1000,
-                "sprites/monsters/turret/penguinbullet.png",
-                Vec2(-15, -15), Vec2(30, 30), 4, 0.3, true);
+        Bullet *b = new Bullet(boxVector, angle, 200, 1000,
+                               "sprites/monsters/turret/penguinbullet.png",
+                               Vec2(-15, -15), Vec2(30, 30), 4, 0.3, true);
 
         Game::GetInstance()->GetCurrentState().AddObject(b);
 

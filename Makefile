@@ -51,8 +51,14 @@ debug: all
 release: CFLAGS += -Ofast -mtune=native
 release: all
 
+.PHONY: doc
 doc: 
 	@doxygen Doxyfile
+
+.PHONY: format
+format:
+	bash format.sh
+	
 
 .PHONY: clean
 clean:

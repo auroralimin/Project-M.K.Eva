@@ -27,8 +27,10 @@ latex/
 map/procedural_generated_map*
 tilemap/procedural_generated_*
 
-#no tiled files
+#no tiled related files
 *.tmx*
+convert_all_tmx2txt.sh
+json2txt.py
 
 #no temporary files
 *~

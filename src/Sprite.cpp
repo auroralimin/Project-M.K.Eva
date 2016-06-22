@@ -4,101 +4,101 @@
 
 Sprite::Sprite(void) : texture(nullptr)
 {
-	this->frameCount = 1;
-	currentFrame = 0;
-	this->frameTime = 1.0;
-	timeElapsed = 0.0;
-	scaleX = scaleY = 1.0;
+    this->frameCount = 1;
+    currentFrame = 0;
+    this->frameTime = 1.0;
+    timeElapsed = 0.0;
+    scaleX = scaleY = 1.0;
 }
 
 Sprite::Sprite(std::string file, int frameCount, float frameTime)
 {
-	this->frameCount = frameCount;
-	currentFrame = 0;
-	this->frameTime = frameTime;
-	timeElapsed = 0.0;
-	scaleX = scaleY = 1.0;
-	texture = nullptr;
-	Open(file);
+    this->frameCount = frameCount;
+    currentFrame = 0;
+    this->frameTime = frameTime;
+    timeElapsed = 0.0;
+    scaleX = scaleY = 1.0;
+    texture = nullptr;
+    Open(file);
 }
 
 void Sprite::Open(std::string file)
 {
-	texture = Resources::GetImage(file);
-	SDL_QueryTexture(texture.get(), nullptr, nullptr, &width, &height);
-	SetClip(0, 0, width/frameCount, height);
-	width = width/frameCount;
+    texture = Resources::GetImage(file);
+    SDL_QueryTexture(texture.get(), nullptr, nullptr, &width, &height);
+    SetClip(0, 0, width / frameCount, height);
+    width = width / frameCount;
 }
 
 void Sprite::Update(float dt)
 {
-	timeElapsed+=dt;
-	if (timeElapsed >= frameTime)
-	{
-		SetFrame(++currentFrame >= frameCount ? 0 : currentFrame);
-		timeElapsed = 0.0;
-	}
+    timeElapsed += dt;
+    if (timeElapsed >= frameTime) {
+        SetFrame(++currentFrame >= frameCount ? 0 : currentFrame);
+        timeElapsed = 0.0;
+    }
 }
 
 void Sprite::SetFrame(int frame)
 {
-	currentFrame = frame;
-	SetClip(frame*width, 0.0, width, height);
+    currentFrame = frame;
+    SetClip(frame * width, 0.0, width, height);
     timeElapsed = 0.0;
 }
 
 void Sprite::SetFrameCount(int frameCount)
 {
-	this->frameCount = frameCount;
+    this->frameCount = frameCount;
 }
 
 void Sprite::SetFrameTime(float frameTime)
 {
-	this->frameTime = frameTime;
+    this->frameTime = frameTime;
 }
 
 void Sprite::SetClip(int x, int y, int w, int h)
 {
-	clipRect.x = x;
-	clipRect.y = y;
-	clipRect.w = w;
-	clipRect.h = h;
+    clipRect.x = x;
+    clipRect.y = y;
+    clipRect.w = w;
+    clipRect.h = h;
 }
 
 void Sprite::Render(int x, int y, float angle)
 {
-	dstRect.x = x;
-	dstRect.y = y;
-	dstRect.w = clipRect.w*scaleX;
-	dstRect.h = clipRect.h*scaleY;
+    dstRect.x = x;
+    dstRect.y = y;
+    dstRect.w = clipRect.w * scaleX;
+    dstRect.h = clipRect.h * scaleY;
 
-	SDL_RenderCopyEx(Game::GetInstance()->GetRenderer(), texture.get(), &clipRect, &dstRect, angle, nullptr, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(Game::GetInstance()->GetRenderer(), texture.get(),
+                     &clipRect, &dstRect, angle, nullptr, SDL_FLIP_NONE);
 }
 
 int Sprite::GetWidth(void)
 {
-	return width*scaleX;
+    return width * scaleX;
 }
 
 int Sprite::GetHeight(void)
 {
-	return height*scaleY;
+    return height * scaleY;
 }
 
 bool Sprite::IsOpen(void)
 {
-	if (!Sprite::texture)
-		return false;
-	return true;
+    if (!Sprite::texture)
+        return false;
+    return true;
 }
 
 void Sprite::SetScaleX(float x)
 {
-	scaleX = x;
+    scaleX = x;
 }
 
 void Sprite::SetScaleY(float y)
 {
-	scaleY = y;
+    scaleY = y;
 }
 
