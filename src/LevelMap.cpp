@@ -48,7 +48,7 @@ void LevelMap::Load(std::string file)
         if (r != -1 && rooms.find(r) == rooms.end())
             rooms.emplace(
                 r, new Room(roomsPath + std::to_string(r) + ".txt",
-                    tileSet, focus, 1));
+                    tileSet, focus, Config::Rand(0, 4)));
         mapMatrix.emplace_back(r);
     }
     index = mapMatrix[currentRoom.x + (mapWidth * currentRoom.y)];
@@ -168,5 +168,10 @@ bool LevelMap::IsCollidingWithWall(GameObject *obj)
             return true;
 
     return false;
+}
+
+void LevelMap::NotifyDeadMonster(void)
+{
+    rooms[index]->DecreaseNMonsters();
 }
 

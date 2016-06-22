@@ -103,6 +103,8 @@ class LevelMap
      */
     bool IsCollidingWithWall(GameObject *obj);
 
+    void NotifyDeadMonster(void);
+
   private:
     GameObject *focus;
     int mapWidth, mapHeight, index;

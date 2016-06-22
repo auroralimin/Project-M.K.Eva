@@ -3,10 +3,6 @@
 #include "Vec2.h"
 #include "InputManager.h"
 #include "Eva.h"
-#include "Turret.h"
-#include "MekaBug.h"
-#include "TurretMob.h"
-#include "MonsterBallManager.h"
 #include "Config.h"
 #include "Game.h"
 #include "Collision.h"
@@ -17,28 +13,13 @@ IntroState::IntroState(Vec2 evaPos) : map(), music("music/introMusic.ogg")
     Camera::pos = Vec2(0.0, 0.0);
     Eva *eva = new Eva(evaPos);
     AddObject(eva);
-    //	AddObject(new Turret(Vec2(Game::GetInstance()->GetWinWidth()/2 + 100,
-    //                    Game::GetInstance()->GetWinHeight()/2 + 100), eva));
-    //	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 + 100,
-    //                    Game::GetInstance()->GetWinHeight()/2 + 100), eva));
-    //	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 - 100,
-    //                    Game::GetInstance()->GetWinHeight()/2 - 100), eva));
-    //	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2 - 200,
-    //                    Game::GetInstance()->GetWinHeight()/2 - 200), eva));
-    //	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/3,
-    //                    Game::GetInstance()->GetWinHeight()/2), eva));
-    //	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2,
-    //                    Game::GetInstance()->GetWinHeight()/3), eva));
-    MonsterBallManager *ballManager = new MonsterBallManager(eva);
-    AddObject(ballManager);
-    for (int i = 0; i < 3; ++i)
-        AddObject(*(ballManager->AddBall()));
-
+    map.SetFocus(eva);
     map.Load("map/intro.txt");
     map.InitMiniroom();
     map.SetFocus(eva);
     music.Play(-1);
 }
+
 IntroState::~IntroState()
 {
     music.Stop();
@@ -85,6 +66,11 @@ void IntroState::UpdateArray(float dt)
         if (objectArray[i]->IsDead()) {
             if (objectArray[i]->Is("Eva"))
                 evaDeath = ((Eva *)(objectArray[i].get()))->GetEvaDeath();
+            else if (objectArray[i]->Is("Turret") ||
+                    objectArray[i]->Is("TurretMob") ||
+                    objectArray[i]->Is("Mekabug") ||
+                    objectArray[i]->Is("Ball"))
+                map.NotifyDeadMonster();
             else if (objectArray[i]->Is(evaDeath))
                 popRequested = quitRequested = true;
             objectArray.erase(objectArray.begin() + i);
