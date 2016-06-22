@@ -13,7 +13,7 @@ class EvaClass
     {
     }
 
-    virtual void Update(float dt) = 0;
+    virtual void Update(float dt, float hp) = 0;
 
     virtual void Attack(Vec2 pos, int direction) = 0;
 

@@ -49,6 +49,10 @@ void IntroState::Update(float dt)
 
 void IntroState::Render(void)
 {
+    Rect bg(Vec2(-SCREEN_PADDING/2, -SCREEN_PADDING/2),
+            Vec2(SCREEN_W + 2*SCREEN_PADDING, SCREEN_H + 2*SCREEN_PADDING));
+    int color[4] = COLOR_BLACK;
+    bg.RenderFilledRect(color);
     map.Render();
     RenderArray();
 }

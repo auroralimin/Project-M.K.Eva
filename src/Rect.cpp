@@ -1,5 +1,6 @@
 #include "Rect.h"
 #include "Game.h"
+#include "Camera.h"
 
 #include <iostream>
 #include <cmath>
@@ -35,8 +36,8 @@ void Rect::RenderFilledRect(int color[4])
 {
     SDL_Rect rect;
 
-    rect.x = pos.x;
-    rect.y = pos.y;
+    rect.x = pos.x - Camera::pos.x;
+    rect.y = pos.y - Camera::pos.y;
     rect.w = dim.x;
     rect.h = dim.y;
 

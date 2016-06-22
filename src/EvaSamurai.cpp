@@ -6,7 +6,9 @@
 #include "Config.h"
 
 #define SAMURAI_ANIMATIONS 9
-EvaSamurai::EvaSamurai() : EvaClass(SAMURAI_ANIMATIONS)
+EvaSamurai::EvaSamurai() : EvaClass(SAMURAI_ANIMATIONS),
+  healthBar("sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI.png",
+            "sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI-OVERLAY.png")
 {
     std::string tFiles[SAMURAI_ANIMATIONS] = {
         "sprites/eva/movement/EVA-SAMURAI-IDLE.png",
@@ -33,9 +35,11 @@ EvaSamurai::EvaSamurai() : EvaClass(SAMURAI_ANIMATIONS)
     atkReady = true;
 }
 
-void EvaSamurai::Update(float dt)
+void EvaSamurai::Update(float dt, float hp)
 {
     animations.Update(dt);
+    healthBar.Update(hp);
+
     if (isAttacking) {
         atkTimer.Update(dt);
         if (atkTimer.Get() >=
@@ -80,6 +84,12 @@ void EvaSamurai::Attack(Vec2 pos, int direction)
 void EvaSamurai::Die(Vec2 pos)
 {
     Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-        pos, 0, "sprites/eva/death/EVA-SAMURAI-DEATH.png", 16, 0.08));
+                                                         pos, 0, "sprites/eva/death/EVA-SAMURAI-DEATH.png", 16, 0.08));
+}
+
+void EvaSamurai::Render(float x, float y)
+{
+    animations.Render(x, y);
+    healthBar.Render();
 }
 

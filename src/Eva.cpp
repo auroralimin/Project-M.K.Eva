@@ -119,7 +119,7 @@ void Eva::Update(float dt)
         box.pos.x = previousPos.x;
 
     hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
-    evaClasses[currentClass]->Update(dt);
+    evaClasses[currentClass]->Update(dt, hp);
 }
 
 bool Eva::IsDead()

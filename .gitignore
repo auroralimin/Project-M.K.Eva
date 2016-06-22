@@ -21,7 +21,7 @@ latex/
 *.creator
 *.files
 *.includes
-*.user
+*.user*
 
 #no procedural generated files
 map/procedural_generated_map*

@@ -31,7 +31,7 @@ _OBJ += LevelMap.o IntroState.o ProceduralMap.o ProceduralState.o AnimationFSM.o
 _OBJ += Eva.o Turret.o Bullet.o MekaBug.o TurretMob.o Ball.o MonsterBallManager.o
 _OBJ += Eva.o HubState.o FirstLevelState.o ProceduralFirstRooms.o EvaClass.o
 _OBJ += EvaBase.o EvaDecker.o EvaGunslinger.o EvaSamurai.o Bullet.o AttackClass.o
-_OBJ += Room.o
+_OBJ += Room.o HealthBar.o
 OBJ = $(patsubst %,$(BIN_PATH)/%,$(_OBJ))
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_PATH)/$*.Td

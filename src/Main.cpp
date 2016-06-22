@@ -18,7 +18,7 @@ int main(int argc, char **argv)
         ProceduralFirstRooms::GenerateRooms(variants, i);
 
     if (std::string(argv[1]) == "intro") {
-        Game *game = Game::GetInstance("Project M.K.Eva", SCREEN_W, SCREEN_H);
+        Game *game = Game::GetInstance("Project M.K.Eva", SCREEN_W + SCREEN_PADDING, SCREEN_H + SCREEN_PADDING);
         game->Push(new IntroState(Vec2(SCREEN_W / 2, SCREEN_H / 2)));
         game->Run();
         delete game;

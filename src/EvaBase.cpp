@@ -22,7 +22,7 @@ EvaBase::EvaBase(void) : EvaClass(BASE_ANIMATIONS)
     isAttacking = atkReady = false;
 }
 
-void EvaBase::Update(float dt)
+void EvaBase::Update(float dt, float hp)
 {
     // TODO: update possible timers
     animations.Update(dt);

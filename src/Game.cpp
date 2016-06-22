@@ -3,6 +3,8 @@
 #include "Game.h"
 #include "Resources.h"
 #include "InputManager.h"
+#include "Camera.h"
+#include "Config.h"
 
 #include <iostream>
 #include <string>
@@ -67,6 +69,7 @@ void Game::Run(void)
     stateStack.emplace(storedState);
     storedState = nullptr;
 
+    Camera::pos = Vec2(-SCREEN_PADDING/2, -SCREEN_PADDING/2);
     frameStart = SDL_GetTicks();
     while (!stateStack.empty()) {
         currentTime = SDL_GetTicks();

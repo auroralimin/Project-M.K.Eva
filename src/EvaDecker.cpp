@@ -9,7 +9,9 @@
 
 EvaDecker::EvaDecker()
     : EvaClass(DECKER_ANIMATIONS), atkTimer(), atkCooldown(), atkStarted(false),
-      atkPos(0, 0)
+      atkPos(0, 0),
+      healthBar("sprites/hud/healthbar/DECKER/HUD-EVA-DECKER.png",
+                "sprites/hud/healthbar/DECKER/HUD-EVA-DECKER-OVERLAY.png")
 {
     std::string tFiles[DECKER_ANIMATIONS] = {
         "sprites/eva/movement/EVA-DECKER-IDLE.png",
@@ -33,9 +35,10 @@ EvaDecker::EvaDecker()
     atkReady = true;
 }
 
-void EvaDecker::Update(float dt)
+void EvaDecker::Update(float dt, float hp)
 {
     animations.Update(dt);
+    healthBar.Update(hp);
 
     // hardcoded numbers will be changed with final sprite
     if (isAttacking) {
@@ -70,7 +73,13 @@ void EvaDecker::Attack(Vec2 pos, int direction)
 void EvaDecker::Die(Vec2 pos)
 {
     Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-        pos, 0, "sprites/eva/death/EVA-DECKER-DEATH.png", 16, 0.08));
+                                                         pos, 0, "sprites/eva/death/EVA-DECKER-DEATH.png", 16, 0.08));
+}
+
+void EvaDecker::Render(float x, float y)
+{
+    animations.Render(x, y);
+    healthBar.Render();
 }
 
 void EvaDecker::Shockwave(Vec2 pos)

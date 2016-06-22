@@ -7,7 +7,7 @@ class EvaBase : public EvaClass
   public:
     EvaBase(void);
 
-    void Update(float dt);
+    void Update(float dt, float hp);
 
     void Attack(Vec2 pos, int direction);
 

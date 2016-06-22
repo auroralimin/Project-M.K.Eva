@@ -6,7 +6,9 @@
 
 #define GUN_ANIMATIONS 9
 
-EvaGunslinger::EvaGunslinger() : EvaClass(GUN_ANIMATIONS)
+EvaGunslinger::EvaGunslinger() : EvaClass(GUN_ANIMATIONS),
+    healthBar("sprites/hud/healthbar/GUN/HUD-EVA-GUN.png",
+              "sprites/hud/healthbar/GUN/HUD-EVA-GUN-OVERLAY.png")
 {
     std::string tFiles[GUN_ANIMATIONS] = {
         "sprites/eva/movement/EVA-GUN-IDLE.png",
@@ -35,9 +37,11 @@ EvaGunslinger::EvaGunslinger() : EvaClass(GUN_ANIMATIONS)
     atkReady = true;
 }
 
-void EvaGunslinger::Update(float dt)
+void EvaGunslinger::Update(float dt, float hp)
 {
     animations.Update(dt);
+    healthBar.Update(hp);
+
     if (isAttacking) {
         atkTimer.Update(dt);
         if (atkTimer.Get() >=
@@ -75,6 +79,12 @@ void EvaGunslinger::Attack(Vec2 pos, int direction)
 void EvaGunslinger::Die(Vec2 pos)
 {
     Game::GetInstance()->GetCurrentState().AddObject(
-        new Animation(pos, 0, "sprites/eva/death/EVA-GUN-DEATH.png", 16, 0.08));
+                new Animation(pos, 0, "sprites/eva/death/EVA-GUN-DEATH.png", 16, 0.08));
+}
+
+void EvaGunslinger::Render(float x, float y)
+{
+    animations.Render(x, y);
+    healthBar.Render();
 }
 

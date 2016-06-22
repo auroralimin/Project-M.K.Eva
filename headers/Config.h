@@ -5,6 +5,7 @@
 #define M_PI 3.14159265359
 #endif
 
+#define SCREEN_PADDING 40
 #define SCREEN_W 1280
 #define SCREEN_H 704
 
