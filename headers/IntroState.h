@@ -4,6 +4,7 @@
 #include "LevelMap.h"
 #include "GameObject.h"
 #include "Vec2.h"
+#include "Music.h"
 
 /***************************************************************************/ /**
   * Intro level managment state.
@@ -15,6 +16,11 @@ class IntroState : public State
      * Initialises a Intro State loading intro map and Eva character.
      */
     IntroState(Vec2 evaPos);
+
+    /**
+     * Class destructor. Currently stops the song playing.
+     */
+    ~IntroState();
 
     /**
      * Sets room based on Eva position on the map.
@@ -52,6 +58,7 @@ class IntroState : public State
 
   private:
     LevelMap map;
+    Music music;
 
     void UpdateEva(int i);
 };

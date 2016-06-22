@@ -9,7 +9,7 @@
 #include "Config.h"
 #include "Game.h"
 
-FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), isEvaDead(false)
+FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), isEvaDead(false), music("music/introMusic.ogg")
 {
     seed = std::time(0);
     if (Config::DEBUG)
@@ -21,6 +21,7 @@ FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), isEvaDead(false)
     map.InitMiniroom();
     Camera::pos = Vec2(0.0, 0.0);
     AddObject(new Eva(evaPos));
+    music.Play(-1);
 }
 
 void FirstLevelState::Update(float dt)

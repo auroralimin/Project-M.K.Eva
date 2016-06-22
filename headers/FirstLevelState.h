@@ -4,6 +4,7 @@
 #include "LevelMap.h"
 #include "GameObject.h"
 #include "Vec2.h"
+#include "Music.h"
 
 /***************************************************************************/ /**
   * FirstLevel level managment state.
@@ -54,6 +55,7 @@ class FirstLevelState : public State
     unsigned int seed;
     LevelMap map;
     bool isEvaDead;
+    Music music;
 
     void UpdateEva(int i);
 };

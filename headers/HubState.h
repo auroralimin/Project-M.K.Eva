@@ -3,6 +3,7 @@
 #include "State.h"
 #include "GameObject.h"
 #include "LevelMap.h"
+#include "Music.h"
 
 /***************************************************************************/ /**
   * Hub level managment state.
@@ -14,6 +15,11 @@ class HubState : public State
      * Initialises a Hub Menu State and Eva character.
      */
     HubState(void);
+
+    /**
+     * Class destructor. Currently stops the song playing.
+     */
+    ~HubState(void);
 
     /**
      * Checks if Eva went to another room and change state based on that room
@@ -51,6 +57,7 @@ class HubState : public State
 
   private:
     LevelMap map;
+    Music music;
 
     void UpdateEva(int i);
 };

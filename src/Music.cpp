@@ -17,7 +17,7 @@ void Music::Play(int times)
 
 void Music::Stop(void)
 {
-    Mix_FadeOutMusic(0);
+    Mix_FadeOutMusic(10);
 }
 
 void Music::Open(std::string file)

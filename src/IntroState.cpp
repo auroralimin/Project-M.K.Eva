@@ -12,31 +12,36 @@
 #include "Collision.h"
 #include "Timer.h"
 
-IntroState::IntroState(Vec2 evaPos) : map()
+IntroState::IntroState(Vec2 evaPos) : map(), music("music/introMusic.ogg")
 {
     Camera::pos = Vec2(0.0, 0.0);
     Eva *eva = new Eva(evaPos);
     AddObject(eva);
     //	AddObject(new Turret(Vec2(Game::GetInstance()->GetWinWidth()/2 + 100,
     //                    Game::GetInstance()->GetWinHeight()/2 + 100), eva));
-    	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 + 100,
-                        Game::GetInstance()->GetWinHeight()/2 + 100), eva));
-    	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 - 100,
-                        Game::GetInstance()->GetWinHeight()/2 - 100), eva));
+    //	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 + 100,
+    //                    Game::GetInstance()->GetWinHeight()/2 + 100), eva));
+    //	AddObject(new MekaBug(Vec2(Game::GetInstance()->GetWinWidth()/2 - 100,
+    //                    Game::GetInstance()->GetWinHeight()/2 - 100), eva));
     //	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2 - 200,
     //                    Game::GetInstance()->GetWinHeight()/2 - 200), eva));
     //	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/3,
     //                    Game::GetInstance()->GetWinHeight()/2), eva));
     //	AddObject(new TurretMob(Vec2(Game::GetInstance()->GetWinWidth()/2,
     //                    Game::GetInstance()->GetWinHeight()/3), eva));
-    //MonsterBallManager *ballManager = new MonsterBallManager(eva);
-    //AddObject(ballManager);
-    //for (int i = 0; i < 3; ++i)
-    //    AddObject(*(ballManager->AddBall()));
+    MonsterBallManager *ballManager = new MonsterBallManager(eva);
+    AddObject(ballManager);
+    for (int i = 0; i < 3; ++i)
+        AddObject(*(ballManager->AddBall()));
 
     map.Load("map/intro.txt");
     map.InitMiniroom();
     map.SetFocus(eva);
+    music.Play(-1);
+}
+IntroState::~IntroState()
+{
+    music.Stop();
 }
 
 void IntroState::Update(float dt)
