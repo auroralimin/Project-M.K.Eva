@@ -64,7 +64,7 @@ class Config
      */
     static const bool HITBOX_MODE = true;
 
-    static const bool ATTACK_HITBOX_MODE = true;
+    static const bool ATTACK_HITBOX_MODE = false;
 
     static int Rand(int fMin, int fMax)
     {
