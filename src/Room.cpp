@@ -71,8 +71,6 @@ void Room::SetDoors(std::string file)
     int start = file.rfind(delim);
     int end = file.find('.', start);
     int fileId = atoi(file.substr(start + 1, end - 1).c_str());
-    std::cout << file << std::endl;
-    std::cout << fileId << std::endl << std::endl;
 
     for (int i = 4; i > 0; --i)
         if (fileId >= pow(10, i)) {

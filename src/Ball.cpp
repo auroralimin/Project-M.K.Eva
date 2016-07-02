@@ -30,15 +30,12 @@ Ball::Ball(Vec2 pos) : animations(BALL_ANIMATIONS), previousPos(pos)
 
 void Ball::Render()
 {
-    int color[4] = COLOR_HITBOX;
-    if (Config::HITBOX_MODE)
-        hitbox.RenderFilledRect(color);
+    animations.Render(box.pos.x, box.pos.y);
 
     int attackColor[4] = COLOR_ATTACK_HITBOX;
     if (Config::ATTACK_HITBOX_MODE)
         attackHitbox.RenderFilledRect(attackColor);
 
-    animations.Render(box.pos.x, box.pos.y);
 }
 
 bool Ball::IsDead()
@@ -61,7 +58,7 @@ void Ball::NotifyCollision(GameObject &other, bool movement)
 {
     UNUSED_VAR movement;
 
-    if (other.Is("Bullet")) {
+    if (other.Is("Bullet") || other.Is("Attack")) {
         Bullet &bullet = (Bullet &)other;
         if (!bullet.targetsPlayer) {
             TakeDamage(10);

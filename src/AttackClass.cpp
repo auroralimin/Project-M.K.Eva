@@ -26,10 +26,6 @@ AttackClass::AttackClass(Vec2 pos, Vec2 hitboxOffset, Vec2 hitboxDim, float dmg,
 
 void AttackClass::Render()
 {
-    int color[4] = COLOR_HITBOX;
-    if (Config::HITBOX_MODE)
-        hitbox.RenderFilledRect(color);
-
     int attackColor[4] = COLOR_ATTACK_HITBOX;
     if (Config::ATTACK_HITBOX_MODE)
         attackHitbox.RenderFilledRect(attackColor);

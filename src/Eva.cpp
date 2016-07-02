@@ -37,13 +37,13 @@ Eva::Eva(Vec2 pos) : spawnDelayTimer()
 
 void Eva::Render()
 {
-    int color[4] = COLOR_HITBOX;
-    if (Config::HITBOX_MODE)
-        hitbox.RenderFilledRect(color);
-
     int attackColor[4] = COLOR_ATTACK_HITBOX;
     if (Config::ATTACK_HITBOX_MODE)
         attackHitbox.RenderFilledRect(attackColor);
+
+    int color[4] = COLOR_HITBOX;
+    if (Config::HITBOX_MODE)
+        hitbox.RenderFilledRect(color);
 
     evaClasses[currentClass]->Render(box.pos.x - Camera::pos.x,
                                      box.pos.y - Camera::pos.y);

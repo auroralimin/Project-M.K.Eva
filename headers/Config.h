@@ -28,7 +28,7 @@
     {                                                                          \
         255, 0, 0, 150                                                         \
     }
-#define COLOR_ATTACK_HITBOX                                                           \
+#define COLOR_ATTACK_HITBOX                                                    \
     {                                                                          \
         0, 255, 0, 150                                                         \
     }
@@ -57,14 +57,14 @@ class Config
     /*
      * Attribute to set if the game is on debug mode.
      */
-    static const bool DEBUG = true;
+    static const bool DEBUG = false;
 
     /*
      * Attribute to set if the game is on hitbox mode.
      */
     static const bool HITBOX_MODE = true;
 
-    static const bool ATTACK_HITBOX_MODE = false;
+    static const bool ATTACK_HITBOX_MODE = true;
 
     static int Rand(int fMin, int fMax)
     {
