@@ -110,7 +110,6 @@ class LevelMap
     int mapWidth, mapHeight, index;
     Vec2 currentRoom;
     std::unordered_map<int, Room *> rooms;
-    std::vector<int> mapMatrix;
     Rect miniRoom, miniRoom2;
 };
 

@@ -10,7 +10,7 @@
 
 Room::Room(std::string file, TileSet *tileSet, GameObject *focus, int type) :
     tileMap(file, tileSet), focus(focus), type(type), nMonsters(0),
-    currentState(roomState::INACTIVE)
+    currentState(roomState::INACTIVE), isNeighbour(false)
 {
     SetDoors(file);
     LoadWallRects();
@@ -166,5 +166,20 @@ void Room::ActivateRoom(void)
 void Room::DecreaseNMonsters(void)
 {
     nMonsters--;
+}
+
+bool Room::WasVisited(void)
+{
+   return (currentState == roomState::DISABLED);
+}
+
+void Room::SetIsNeighbour(bool isNeighbour)
+{
+    this->isNeighbour = isNeighbour;
+}
+
+bool Room::GetIsNeighbour(void)
+{
+    return isNeighbour;
 }
 

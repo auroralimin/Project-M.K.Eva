@@ -44,6 +44,10 @@
     {                                                                          \
         0, 200, 200, 230                                                       \
     }
+#define COLOR_T_GREY_4                                                         \
+    {                                                                          \
+      200, 200, 200, 100                                                       \
+    }
 
 /***************************************************************************/ /**
   * The game config file.
@@ -57,14 +61,14 @@ class Config
     /*
      * Attribute to set if the game is on debug mode.
      */
-    static const bool DEBUG = false;
+    static const bool DEBUG = true;
 
     /*
      * Attribute to set if the game is on hitbox mode.
      */
-    static const bool HITBOX_MODE = true;
+    static const bool HITBOX_MODE = false;
 
-    static const bool ATTACK_HITBOX_MODE = true;
+    static const bool ATTACK_HITBOX_MODE = false;
 
     static int Rand(int fMin, int fMax)
     {

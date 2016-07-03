@@ -43,15 +43,16 @@ void LevelMap::Load(std::string file)
     fscanf(fp, "%d,%d,", &mapWidth, &mapHeight);
     fscanf(fp, "%f,%f,", &currentRoom.x, &currentRoom.y);
 
-    int r;
+    int r, n = 0;
     while (fscanf(fp, "%d,", &r) != EOF) {
-        if (r != -1 && rooms.find(r) == rooms.end())
+        if (r != -1)
             rooms.emplace(
-                r, new Room(roomsPath + std::to_string(r) + ".txt",
-                    tileSet, focus, Config::Rand(1, 5)));
-        mapMatrix.emplace_back(r);
+                n++, new Room(roomsPath + std::to_string(r) + ".txt",
+                    tileSet, focus, 0));
+        else
+            rooms.emplace(n++, nullptr);
     }
-    index = mapMatrix[currentRoom.x + (mapWidth * currentRoom.y)];
+    index = currentRoom.x + (mapWidth * currentRoom.y);
 
     fclose(fp);
 }
@@ -86,18 +87,27 @@ void LevelMap::Render(void)
 
     int color2[4] = COLOR_T_GREY_2;
     int color3[4] = COLOR_T_GREY_3;
+    int color4[4] = COLOR_T_GREY_4;
     for (int i = 0; i < mapWidth; i++) {
         for (int j = 0; j < mapHeight; j++) {
-            if (!IsOutOfLimits(Vec2(i, j)) &&
-                (mapMatrix[i + mapWidth * j] > -1)) {
+            int roomId = i + mapWidth * j;
+            if (!IsOutOfLimits(Vec2(i, j)) && rooms[roomId] != nullptr) {
                 miniRoom2.pos.x =
                     i * MINI_ROOM_SIZE_X + MINIMAP_X + MINI_ROOM_BORDER;
                 miniRoom2.pos.y =
                     j * MINI_ROOM_SIZE_Y + MINIMAP_Y + MINI_ROOM_BORDER;
-                if (!(currentRoom.x == i && currentRoom.y == j))
-                    miniRoom2.RenderFilledRect(color2);
-                else
+                if (currentRoom.x == i && currentRoom.y == j) {
                     miniRoom2.RenderFilledRect(color3);
+                } else if (rooms[roomId]->WasVisited()) {
+                    miniRoom2.RenderFilledRect(color2);
+               } else if (rooms[roomId]->GetIsNeighbour() ||
+                       (currentRoom.x == i && (currentRoom.y == j + 1
+                                               || currentRoom.y == j - 1)) ||
+                       (currentRoom.y == j && (currentRoom.x == i + 1
+                                               || currentRoom.x == i - 1))) {
+                    miniRoom2.RenderFilledRect(color4);
+                    rooms[roomId]->SetIsNeighbour(true);
+               }
             }
         }
     }
@@ -107,7 +117,7 @@ void LevelMap::SetCurrentRoom(Vec2 room)
 {
     if (!IsOutOfLimits(room)) {
         currentRoom = room;
-        index = mapMatrix[currentRoom.x + (mapWidth * currentRoom.y)];
+        index = currentRoom.x + (mapWidth * currentRoom.y);
     } else
         std::cout << "Reached map out of limits" << std::endl;
 }
@@ -117,7 +127,7 @@ bool LevelMap::IsOutOfLimits(Vec2 room)
     if (room.x < 0 || room.y < 0)
         return true;
 
-    int newIndex = mapMatrix[room.x + (mapWidth * room.y)];
+    int newIndex = room.x + (mapWidth * room.y);
     return ((room.x >= mapWidth) || (room.y >= mapHeight) || newIndex == -1);
 }
 

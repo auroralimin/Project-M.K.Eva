@@ -13,6 +13,9 @@ class Room
     void Render(int cameraX = 0, int cameraY = 0);
     std::vector<Rect> GetWallRect(void);
     void DecreaseNMonsters(void);
+    bool WasVisited(void);
+    void SetIsNeighbour(bool isNeighbour);
+    bool GetIsNeighbour(void);
 
   private:
     enum roomState {INACTIVE, ACTIVE, DISABLED};
@@ -20,6 +23,7 @@ class Room
     GameObject *focus;
     int type, nMonsters;
     roomState currentState;
+    bool isNeighbour;
     bool hasDoors[4] = {false, false, false, false};
     std::vector<Rect> wallRect;
 

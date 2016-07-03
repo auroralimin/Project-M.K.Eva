@@ -34,6 +34,7 @@ FirstLevelState::~FirstLevelState()
 
 void FirstLevelState::Update(float dt)
 {
+    map.Update(dt);
     InputManager input = InputManager::GetInstance();
     quitRequested = (input.IsKeyDown(ESCAPE_KEY) || input.IsQuitRequested());
     UpdateArray(dt);
