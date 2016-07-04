@@ -56,6 +56,19 @@ void Eva::Update(float dt)
         TakeDamage(8000);
 
     previousPos = box.pos;
+
+    //Check for attack input
+    for (int i = 0; i < 4; i++) {
+        if (manager.IsKeyDown(keys[i]) &&
+                evaClasses[currentClass]->AttackReady()) {
+            if (currentClass == DECKER)
+                evaClasses[currentClass]->Attack(box.pos, 1);
+            else
+                evaClasses[currentClass]->Attack(box.pos, i);
+        }
+    }
+
+    //Check for class change input
     if (!evaClasses[currentClass]->IsAttacking()) {
         if (manager.KeyPress(Q_KEY)) {
             if (currentClass == 0)
@@ -69,8 +82,10 @@ void Eva::Update(float dt)
                 currentClass = 1;
         }
     }
+
+    //Check for movement input
     if (!evaClasses[currentClass]->IsAttacking() ||
-        currentClass == GUNSLINGER) {
+            currentClass == GUNSLINGER) {
         if (manager.IsKeyDown(D_KEY))
             speed.x += 1;
         if (manager.IsKeyDown(A_KEY))
@@ -80,43 +95,36 @@ void Eva::Update(float dt)
         if (manager.IsKeyDown(W_KEY))
             speed.y -= 1;
 
+        //Update eva position
         speed = speed.Normalize();
         if (!evaClasses[currentClass]->IsAttacking() ||
-            currentClass == GUNSLINGER)
+                currentClass == GUNSLINGER)
             box.pos += speed * evaClasses[currentClass]->movSpeed * dt;
 
         if (speed.y > 0 &&
-            !(evaClasses[currentClass]->IsAttacking() &&
-              currentClass == GUNSLINGER))
+                !(evaClasses[currentClass]->IsAttacking() &&
+                  currentClass == GUNSLINGER))
             evaClasses[currentClass]->SetCurrentState(MOVING_DOWN);
         if (speed.y < 0 &&
-            !(evaClasses[currentClass]->IsAttacking() &&
-              currentClass == GUNSLINGER))
+                !(evaClasses[currentClass]->IsAttacking() &&
+                  currentClass == GUNSLINGER))
             evaClasses[currentClass]->SetCurrentState(MOVING_UP);
         if (speed.x > 0 && speed.y == 0 &&
-            !(evaClasses[currentClass]->IsAttacking() &&
-              currentClass == GUNSLINGER))
+                !(evaClasses[currentClass]->IsAttacking() &&
+                  currentClass == GUNSLINGER))
             evaClasses[currentClass]->SetCurrentState(MOVING_RIGHT);
         if (speed.x < 0 && speed.y == 0 &&
-            !(evaClasses[currentClass]->IsAttacking() &&
-              currentClass == GUNSLINGER))
+                !(evaClasses[currentClass]->IsAttacking() &&
+                  currentClass == GUNSLINGER))
             evaClasses[currentClass]->SetCurrentState(MOVING_LEFT);
         if (speed.GetModule() == 0 &&
-            !(evaClasses[currentClass]->IsAttacking() &&
-              currentClass == GUNSLINGER))
+                !(evaClasses[currentClass]->IsAttacking() &&
+                  currentClass == GUNSLINGER))
             evaClasses[currentClass]->SetCurrentState(IDLE);
 
-        for (int i = 0; i < 4; i++) {
-            if (manager.IsKeyDown(keys[i]) &&
-                evaClasses[currentClass]->AttackReady()) {
-                if (currentClass == DECKER)
-                    evaClasses[currentClass]->Attack(box.pos, 1);
-                else
-                    evaClasses[currentClass]->Attack(box.pos, i);
-            }
-        }
     }
 
+    //Update hitboxes positions
     hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
     if (Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
         box.pos.y = previousPos.y;
@@ -126,8 +134,14 @@ void Eva::Update(float dt)
         box.pos.x = previousPos.x;
 
     hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
-    evaClasses[currentClass]->Update(dt, hp);
+
     attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y);
+
+    //Update classes to make sure all cooldowns countdown
+    for(int i = 0; i < evaClasses.size(); i++) {
+        evaClasses[i]->Update(dt, hp);
+    }
+
 }
 
 bool Eva::IsDead()
@@ -164,7 +178,7 @@ void Eva::TakeDamage(float dmg)
         std::cout << "[Eva] hp: " << hp << std::endl;
     if (IsDead()) {
         evaDeath = std::string("Animation:sprites/eva/death/EVA-") +
-                   classes[currentClass] + std::string("-DEATH.png");
+                classes[currentClass] + std::string("-DEATH.png");
         evaClasses[currentClass]->Die(box.GetCenter());
     }
 }

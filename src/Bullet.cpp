@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "Game.h"
 #include "Config.h"
+#include "Camera.h"
 
 Bullet::Bullet(Vec2 pos, float angle, float speed, float maxDistance,
                std::string sprite, Vec2 hitboxOffset, Vec2 hitboxDim,
@@ -44,8 +45,6 @@ void Bullet::Update(float dt)
 
 void Bullet::Render()
 {
-    sp.Render(box.pos.x - box.dim.x / 2, box.pos.y - box.dim.y / 2,
-              rotation * 180 / M_PI);
 
     int color[4] = COLOR_HITBOX;
     if (Config::HITBOX_MODE)
@@ -54,6 +53,10 @@ void Bullet::Render()
     int attackColor[4] = COLOR_ATTACK_HITBOX;
     if (Config::ATTACK_HITBOX_MODE)
         attackHitbox.RenderFilledRect(attackColor);
+
+    sp.Render(box.pos.x - box.dim.x / 2 - Camera::pos.x,
+              box.pos.y - box.dim.y / 2 - Camera::pos.y,
+              rotation * 180 / M_PI);
 }
 
 bool Bullet::IsDead()

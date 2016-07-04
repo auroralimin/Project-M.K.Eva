@@ -5,6 +5,8 @@
 #include "Config.h"
 
 #define GUN_ANIMATIONS 9
+#define GUN_MOVEMENT 4
+#define ANIMATION_OFFSET 60
 
 EvaGunslinger::EvaGunslinger() : EvaClass(GUN_ANIMATIONS),
     healthBar("sprites/hud/healthbar/GUN/HUD-EVA-GUN.png",
@@ -16,10 +18,10 @@ EvaGunslinger::EvaGunslinger() : EvaClass(GUN_ANIMATIONS),
         "sprites/eva/movement/EVA-GUN-LEFT.png",
         "sprites/eva/movement/EVA-GUN-DOWN.png",
         "sprites/eva/movement/EVA-GUN-RIGHT.png",
-        "sprites/eva/movement/EVA-GUN-UP.png",
-        "sprites/eva/movement/EVA-GUN-LEFT.png",
-        "sprites/eva/movement/EVA-GUN-DOWN.png",
-        "sprites/eva/movement/EVA-GUN-RIGHT.png"};
+        "sprites/eva/attack/EVA-GUN-ATTACK-UP.png",
+        "sprites/eva/attack/EVA-GUN-ATTACK-LEFT.png",
+        "sprites/eva/attack/EVA-GUN-ATTACK-DOWN.png",
+        "sprites/eva/attack/EVA-GUN-ATTACK-RIGHT.png"};
     files = tFiles;
     frameCounts = new int[GUN_ANIMATIONS]{6, 6, 6, 6, 6, 6, 6, 6, 6};
     frameTimes = new float[GUN_ANIMATIONS]{0.08, 0.08, 0.08, 0.08, 0.08,
@@ -67,8 +69,9 @@ void EvaGunslinger::Attack(Vec2 pos, int direction)
         SetCurrentState(direction + 5);
         isAttacking = true;
         atkReady = false;
+        atkTimer.Restart();
 
-        Vec2 offsets[4] = {{62, 0}, {10, 28}, {62, 46}, {110, 28}};
+        Vec2 offsets[4] = {{62, 0}, {10, 28}, {65, 102}, {110, 28}};
         Game::GetInstance()->GetCurrentState().AddObject(new Bullet(
             pos + offsets[direction], 3 * (M_PI / 2) - (M_PI / 2) * direction,
             500, 400, "sprites/eva/attack/GUN-SPELLEFFECT.png", Vec2(-10, -10),
@@ -79,12 +82,16 @@ void EvaGunslinger::Attack(Vec2 pos, int direction)
 void EvaGunslinger::Die(Vec2 pos)
 {
     Game::GetInstance()->GetCurrentState().AddObject(
-                new Animation(pos, 0, "sprites/eva/death/EVA-GUN-DEATH.png", 16, 0.08));
+                new Animation(pos, 0, "sprites/eva/death/EVA-GUN-DEATH.png",
+                              16, 0.08));
 }
 
 void EvaGunslinger::Render(float x, float y)
 {
-    animations.Render(x, y);
+    if (animations.GetCurrentState() > GUN_MOVEMENT)
+        animations.Render(x - ANIMATION_OFFSET, y - ANIMATION_OFFSET);
+    else
+        animations.Render(x, y);
     healthBar.Render();
 }
 

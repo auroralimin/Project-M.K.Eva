@@ -46,7 +46,7 @@ void EvaDecker::Update(float dt, float hp)
     if (isAttacking) {
         atkTimer.Update(dt);
         if (atkTimer.Get() >= 13 * frameTimes[DECKER_ATTACKING] && atkStarted)
-            Shockwave(atkPos);
+           // Shockwave(atkPos);
         if (atkTimer.Get() >= 18 * frameTimes[DECKER_ATTACKING]) {
             isAttacking = false;
             atkTimer.Restart();
