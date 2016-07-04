@@ -10,7 +10,6 @@
 
 ProceduralState::ProceduralState(void)
 {
-    Camera::pos = Vec2(0.0, 0.0);
     seed = 1464152697;
     std::cout << "seed: " << seed << std::endl;
     std::srand(seed);

@@ -18,5 +18,5 @@ void HealthBar::Update(float hp)
 {
     if (hp < 0)
         hp = 0;
-    bar.SetScaleX(hp/100);
+    bar.SetClip(0, 0, bar.GetWidth()*hp/100, bar.GetHeight());
 }

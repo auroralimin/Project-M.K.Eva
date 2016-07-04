@@ -36,6 +36,22 @@ void Room::Update(float dt)
 
 void Room::Render(int cameraX, int cameraY)
 {
+    int bgColor[4] = COLOR_BLACK;
+    Rect padding[4];
+
+    padding[0] = Rect(Vec2(-SCREEN_PADDING/2, -SCREEN_PADDING/2),
+                      Vec2(SCREEN_W + SCREEN_PADDING, SCREEN_PADDING/2));
+    padding[1] = Rect(Vec2(-SCREEN_PADDING/2, SCREEN_H),
+                      Vec2(SCREEN_W + SCREEN_PADDING, SCREEN_PADDING/2));
+    padding[2] = Rect(Vec2(-SCREEN_PADDING/2, -SCREEN_PADDING/2),
+                     Vec2(SCREEN_PADDING/2, SCREEN_H + SCREEN_PADDING));
+    padding[3] = Rect(Vec2(SCREEN_W, -SCREEN_PADDING/2),
+                      Vec2(SCREEN_PADDING/2, SCREEN_H + SCREEN_PADDING));
+
+    for (int i = 0; i < 4; i++) {
+        padding[i].RenderFilledRect(bgColor);
+    }
+
     tileMap.Render(cameraX, cameraY);
 
     int color[4] = COLOR_HITBOX;
