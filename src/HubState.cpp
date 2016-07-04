@@ -10,7 +10,6 @@
 HubState::HubState(void) : map(), music("music/hubMusic.ogg")
 {
     map.Load("map/hub.txt");
-    Camera::pos = Vec2(0.0, 0.0);
     AddObject(new Eva(Vec2(Game::GetInstance()->GetWinWidth() / 2,
                            Game::GetInstance()->GetWinHeight() / 2)));
 

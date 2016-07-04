@@ -57,7 +57,7 @@ class AnimationFSM
      * @param frameTime duration of each frame
      */
     void SetAnimation(int index, std::string file, int frameCount,
-                      float frameTime);
+                      float frameTime, int rows = 1);
 
     /**
      * Returns the width of a frame.

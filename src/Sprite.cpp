@@ -9,13 +9,15 @@ Sprite::Sprite(void) : texture(nullptr)
     this->frameTime = 1.0;
     timeElapsed = 0.0;
     scaleX = scaleY = 1.0;
+    rows = 1;
 }
 
-Sprite::Sprite(std::string file, int frameCount, float frameTime)
+Sprite::Sprite(std::string file, int frameCount, float frameTime, int rows)
 {
     this->frameCount = frameCount;
     currentFrame = 0;
     this->frameTime = frameTime;
+    this->rows = rows;
     timeElapsed = 0.0;
     scaleX = scaleY = 1.0;
     texture = nullptr;
@@ -26,8 +28,9 @@ void Sprite::Open(std::string file)
 {
     texture = Resources::GetImage(file);
     SDL_QueryTexture(texture.get(), nullptr, nullptr, &width, &height);
-    SetClip(0, 0, width / frameCount, height);
-    width = width / frameCount;
+    SetClip(0, 0, width / (frameCount / rows), height / rows);
+    width = width / (frameCount / rows);
+    height = height / rows;
 }
 
 void Sprite::Update(float dt)
@@ -42,7 +45,7 @@ void Sprite::Update(float dt)
 void Sprite::SetFrame(int frame)
 {
     currentFrame = frame;
-    SetClip(frame * width, 0.0, width, height);
+    SetClip((frame % (frameCount/rows)) * width, (frame / (frameCount/rows)) * height, width, height);
     timeElapsed = 0.0;
 }
 
@@ -54,6 +57,11 @@ void Sprite::SetFrameCount(int frameCount)
 void Sprite::SetFrameTime(float frameTime)
 {
     this->frameTime = frameTime;
+}
+
+void Sprite::SetRows(int rows)
+{
+    this->rows = rows;
 }
 
 void Sprite::SetClip(int x, int y, int w, int h)

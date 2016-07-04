@@ -12,7 +12,6 @@ AttackClass::AttackClass(Vec2 pos, Vec2 hitboxOffset, Vec2 hitboxDim,
     hitbox.dim = Vec2(box.dim.x / 2, box.dim.y);
     hitbox.pos = Vec2(box.pos.x, box.pos.y);
 
-    std::cout << orientation << std::endl;
     rotation = (90 * orientation);
     hitbox.dim = hitboxDim;
     hitbox.pos = pos + hitboxOffset;

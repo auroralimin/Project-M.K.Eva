@@ -49,10 +49,11 @@ void AnimationFSM::SetNAnimations(int nAnimations)
 }
 
 void AnimationFSM::SetAnimation(int index, std::string file, int frameCount,
-                                float frameTime)
+                                float frameTime, int rows)
 {
     animationsArray[index].get()->SetFrameCount(frameCount);
     animationsArray[index].get()->SetFrameTime(frameTime);
+    animationsArray[index].get()->SetRows(rows);
     animationsArray[index].get()->Open(file);
 }
 

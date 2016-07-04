@@ -6,6 +6,7 @@
 
 #define DECKER_ANIMATIONS 6
 #define DECKER_ATTACKING 5
+#define ATTACK_RENDER_OFFSET 60
 
 EvaDecker::EvaDecker()
     : EvaClass(DECKER_ANIMATIONS), atkTimer(), atkCooldown(), atkStarted(false),
@@ -19,13 +20,14 @@ EvaDecker::EvaDecker()
         "sprites/eva/movement/EVA-DECKER-LEFT.png",
         "sprites/eva/movement/EVA-DECKER-DOWN.png",
         "sprites/eva/movement/EVA-DECKER-RIGHT.png",
-        "sprites/eva/movement/EVA-DECKER-DOWN.png"};
+        "sprites/eva/attack/EVA-DECKER-ATTACK.png"};
     files = tFiles;
-    frameCounts = new int[DECKER_ANIMATIONS]{6, 6, 6, 6, 6, 6};
+    frameCounts = new int[DECKER_ANIMATIONS]{6, 6, 6, 6, 6, 18};
     frameTimes =
         new float[DECKER_ANIMATIONS]{0.08, 0.08, 0.08, 0.08, 0.08, 0.08};
+    int spriteRows[DECKER_ANIMATIONS]{1, 1, 1, 1, 1, 3};
     for (int i = 0; i < DECKER_ANIMATIONS; i++)
-        animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
+        animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i], spriteRows[i]);
 
     movSpeed = 200;
     atk = 1;
@@ -78,7 +80,10 @@ void EvaDecker::Die(Vec2 pos)
 
 void EvaDecker::Render(float x, float y)
 {
-    animations.Render(x, y);
+    if (animations.GetCurrentState() == DECKER_ATTACKING)
+        animations.Render(x - ATTACK_RENDER_OFFSET, y - ATTACK_RENDER_OFFSET);
+    else
+        animations.Render(x, y);
     healthBar.Render();
 }
 

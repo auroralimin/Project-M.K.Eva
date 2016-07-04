@@ -24,7 +24,7 @@ class Sprite
      * @param frameTime a int argument containing how long will a frame be
      * displayed
      */
-    Sprite(std::string file, int frameCount = 1, float frameTime = 1.0);
+    Sprite(std::string file, int frameCount = 1, float frameTime = 1.0, int rows = 1);
 
     /**
      * Loads a sprite from a given file.
@@ -55,6 +55,12 @@ class Sprite
      * @param frame a int argument containing the sprite frameTime
      */
     void SetFrameTime(float frameTime);
+
+    /**
+     * Sets the sprite's number of rows
+     * @param rows the ammount of rows to be set
+     */
+    void SetRows(int rows);
 
     /**
      * Sets the sprite clip.
@@ -104,7 +110,7 @@ class Sprite
     void SetScaleY(float y);
 
   private:
-    int width, height, frameCount, currentFrame;
+    int width, height, frameCount, currentFrame, rows;
     float frameTime, timeElapsed, scaleX, scaleY;
     std::shared_ptr<SDL_Texture> texture;
     SDL_Rect clipRect;
