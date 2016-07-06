@@ -28,5 +28,6 @@ class BallsManager : public GameObject
 
     void SetCurrentState(int state);
     void RandTeleport();
+    void ClearDeadBalls();
 };
 

@@ -78,6 +78,9 @@ void FirstLevelState::UpdateArray(float dt)
                 game->Push(new HubState());
             }
 
+            if (objectArray[i]->Is("BallMonster"))
+                objectArray[i] = nullptr;
+
             objectArray.erase(objectArray.begin() + i);
         } else {
             if (objectArray[i]->Is("Eva"))
@@ -113,8 +116,8 @@ void FirstLevelState::CheckMovementCollisions()
         for (size_t j = i + 1; j < objectArray.size(); j++) {
             if (!(objectArray[i]->Is("Bullet") ||
                   objectArray[j]->Is("Bullet") || 
-                  objectArray[i]->Is("Ball")   ||
-                  objectArray[j]->Is("Ball"))) {
+                  objectArray[i]->Is("BallMonster")   ||
+                  objectArray[j]->Is("BallMonster"))) {
                 if (Collision::IsColliding(
                         objectArray[i]->hitbox, objectArray[j]->hitbox,
                         objectArray[i]->rotation, objectArray[j]->rotation)) {

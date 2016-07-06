@@ -73,6 +73,8 @@ void BallsManager::Update(float dt)
             SetCurrentState(RESTING);
         }
     }
+        
+    ClearDeadBalls();
 }
 
 void BallsManager::NotifyCollision(GameObject &other, bool movement)
@@ -105,6 +107,15 @@ void BallsManager::RandTeleport()
         float y = Config::Rand(146, 466);
         ballArray[i]->box.pos = Vec2(x, y);
         ballArray[i]->attackHitbox.pos = Vec2(box.pos.x + 43, box.pos.y + 110);
+    }
+}
+
+void BallsManager::ClearDeadBalls()
+{
+    for (unsigned int i = 0; i < ballArray.size(); i ++) {
+        if (ballArray[i]->IsDead()) {
+            ballArray.erase(ballArray.begin() + i);
+        }
     }
 }
 

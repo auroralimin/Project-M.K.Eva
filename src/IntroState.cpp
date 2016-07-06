@@ -66,13 +66,17 @@ void IntroState::UpdateArray(float dt)
             else if (objectArray[i]->Is("Turret") ||
                     objectArray[i]->Is("TurretMob") ||
                     objectArray[i]->Is("Mekabug") ||
-                    objectArray[i]->Is("Ball"))
+                    objectArray[i]->Is("BallMonster"))
                 map.NotifyDeadMonster();
             else if (objectArray[i]->Is(evaDeath)){
                 popRequested = quitRequested = true;
                 Game *game = Game::GetInstance();
                 game->Push(new HubState());
             }
+
+            if (objectArray[i]->Is("BallMonster"))
+                objectArray[i] = nullptr;
+
             objectArray.erase(objectArray.begin() + i);
         } else {
             if (objectArray[i]->Is("Eva"))
@@ -88,8 +92,8 @@ void IntroState::CheckMovementCollisions()
         for (size_t j = i + 1; j < objectArray.size(); j++) {
             if (!(objectArray[i]->Is("Bullet") ||
                   objectArray[j]->Is("Bullet") || 
-                  objectArray[i]->Is("Ball")   ||
-                  objectArray[j]->Is("Ball"))) {
+                  objectArray[i]->Is("BallMonster")   ||
+                  objectArray[j]->Is("BallMonster"))) {
                 if (Collision::IsColliding(
                         objectArray[i]->hitbox, objectArray[j]->hitbox,
                         objectArray[i]->rotation, objectArray[j]->rotation)) {
