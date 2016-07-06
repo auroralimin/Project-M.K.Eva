@@ -165,14 +165,8 @@ void Eva::NotifyCollision(GameObject &other, bool movement)
         Bullet &bullet = (Bullet &)other;
         if (bullet.targetsPlayer)
             TakeDamage(3);
-    } else if (other.Is("Ball")) {
-        TakeDamage(0);
-    } else if (other.Is("MonsterBallManager")) {
-        TakeDamage(0.1);
-    } else if (movement && (!other.Is("Ball"))) {
+    } else if (movement && (!other.Is("BallMonster"))) {
         box.pos = previousPos;
-        if (other.Is("MekaBug"))
-            TakeDamage(3);
     }
 }
 

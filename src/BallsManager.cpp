@@ -15,7 +15,7 @@
 BallsManager::BallsManager(Room *room, GameObject *focus)
     : room(room), focus(focus), currentState(BallsState::RESTING)
 {
-    hitbox.dim = Vec2(0, 0);
+    attackHitbox.dim = Vec2(0, 0);
 }
 
 BallMonster **BallsManager::AddBall(void)
@@ -28,9 +28,7 @@ BallMonster **BallsManager::AddBall(void)
 
 void BallsManager::Render()
 {
-    int color[4] = COLOR_HITBOX;
-    if (Config::HITBOX_MODE)
-        hitbox.RenderFilledRect(color);
+
 }
 
 bool BallsManager::IsDead()
@@ -42,9 +40,9 @@ void BallsManager::Update(float dt)
 {
     timer.Update(dt);
 
-    hitbox.pos.x = focus->box.pos.x - 45;
-    hitbox.pos.y = focus->box.pos.y - 70;
-    hitbox.dim = Vec2(0, 0);
+    attackHitbox.pos.x = focus->box.pos.x - 45;
+    attackHitbox.pos.y = focus->box.pos.y - 70;
+    attackHitbox.dim = Vec2(0, 0);
     if (currentState == BallsState::RESTING && timer.Get() >= REST_TIME) {
         currentState = BallsState::WARNING;
         timer.Restart();
@@ -55,7 +53,7 @@ void BallsManager::Update(float dt)
         timer.Restart();
         SetCurrentState(ATTACKING);
     } else if (currentState == BallsState::ATTACKING) {
-        hitbox.dim = Vec2(220, 180);
+        attackHitbox.dim = Vec2(220, 180);
         for (size_t i = 0; i < ballArray.size(); i++) {
             float angle = 2 * M_PI * (i + 1) / ballArray.size();
             Vec2 pos = Vec2(BALL_EVA_DISTANCE, 0);
@@ -67,7 +65,7 @@ void BallsManager::Update(float dt)
             evaPos.y -= focus->box.dim.y / 2;
             ballArray[i]->box.pos += evaPos;
         }
-
+        focus->TakeDamage(0.1);
         if (timer.Get() >= ATTACK_TIME) {
             currentState = BallsState::RESTING;
             RandTeleport();
@@ -106,7 +104,7 @@ void BallsManager::RandTeleport()
         float x = Config::Rand(85, 1109);
         float y = Config::Rand(146, 466);
         ballArray[i]->box.pos = Vec2(x, y);
-        ballArray[i]->hitbox.pos = Vec2(box.pos.x + 43, box.pos.y + 110);
+        ballArray[i]->attackHitbox.pos = Vec2(box.pos.x + 43, box.pos.y + 110);
     }
 }
 

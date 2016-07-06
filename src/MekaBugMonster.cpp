@@ -72,8 +72,9 @@ void MekaBugMonster::TakeDamage(float dmg)
 
 void MekaBugMonster::MovementAndAttack(float dt)
 {
-    static Timer restTimer = Timer(), stuckTimer = Timer();
+    static Timer restTimer = Timer(), stuckTimer = Timer(), attackTimer = Timer();
     Vec2 speed = Vec2(0, 0);
+    attackTimer.Update(dt);
 
     if (movState == MekaBugMonsterMovement::RESTING) {
         restTimer.Update(dt);
@@ -89,6 +90,10 @@ void MekaBugMonster::MovementAndAttack(float dt)
             movState = MekaBugMonsterMovement::RESTING;
             animations.SetCurrentState(MekaBugMonsterState::AGRESSIVE);
             restTimer.Restart();
+            if ((attackTimer.Get() >= 1)) {
+                focus->TakeDamage(10);
+                attackTimer.Restart();
+            }
         } else {
             speed = (evaPos - box.pos).Norm() * 100 * dt;
             previousPos = box.pos;

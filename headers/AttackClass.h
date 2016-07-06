@@ -28,5 +28,6 @@ class AttackClass : public GameObject
     Sprite sp;
     Timer timeElapsed;
     float duration;
+    float attackDamage;
 };
 

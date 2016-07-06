@@ -49,6 +49,10 @@ void AttackClass::NotifyCollision(GameObject &other, bool movements)
     UNUSED_VAR other;
     UNUSED_VAR movements;
     // TODO: make it only hit enemies once
+    
+    if (!(other.Is("Bullet") || other.Is("Eva")))
+        other.TakeDamage(attackDamage);
+    
 }
 
 bool AttackClass::Is(std::string className)

@@ -70,7 +70,7 @@ void Bullet::NotifyCollision(GameObject &other, bool movement)
 
     if (targetsPlayer && other.Is("Eva")) {
         distanceLeft = 0;
-    } else if ((!targetsPlayer) && (!other.Is("Eva"))) {
+    } else if ((!targetsPlayer) && (!other.Is("Eva")) && (!other.Is("Bullet"))) {
         distanceLeft = 0;
     }
 }

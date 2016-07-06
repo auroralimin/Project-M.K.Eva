@@ -7,6 +7,7 @@
 #define DECKER_ANIMATIONS 6
 #define DECKER_ATTACKING 5
 #define ATTACK_RENDER_OFFSET 60
+#define DECKER_ATTACK_DAMAGE 4
 
 EvaDecker::EvaDecker()
     : EvaClass(), atkTimer(), atkCooldown(), atkStarted(false), atkPos(0, 0),
