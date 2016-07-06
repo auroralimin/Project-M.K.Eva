@@ -9,6 +9,7 @@
 #include "Config.h"
 #include "Game.h"
 #include "HubState.h"
+#include "Collision.h"
 
 FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), isEvaDead(false), music("music/introMusic.ogg")
 {
@@ -38,6 +39,7 @@ void FirstLevelState::Update(float dt)
     InputManager input = InputManager::GetInstance();
     quitRequested = (input.IsKeyDown(ESCAPE_KEY) || input.IsQuitRequested());
     UpdateArray(dt);
+    CheckMovementCollisions();
 }
 
 void FirstLevelState::Render(void)
@@ -107,5 +109,33 @@ void FirstLevelState::UpdateEva(int i)
 
 void FirstLevelState::CheckMovementCollisions()
 {
+    for (size_t i = 0; i < objectArray.size(); i++) {
+        for (size_t j = i + 1; j < objectArray.size(); j++) {
+            if (!(objectArray[i]->Is("Bullet") ||
+                  objectArray[j]->Is("Bullet") || 
+                  objectArray[i]->Is("Ball")   ||
+                  objectArray[j]->Is("Ball"))) {
+                if (Collision::IsColliding(
+                        objectArray[i]->hitbox, objectArray[j]->hitbox,
+                        objectArray[i]->rotation, objectArray[j]->rotation)) {
+
+                    objectArray[i]->NotifyCollision(*objectArray[j].get(),
+                                                    true);
+                    objectArray[j]->NotifyCollision(*objectArray[i].get(),
+                                                    true);
+                }
+            } else {
+                if (Collision::IsColliding(
+                        objectArray[i]->attackHitbox, objectArray[j]->attackHitbox,
+                        objectArray[i]->rotation, objectArray[j]->rotation)) {
+
+                    objectArray[i]->NotifyCollision(*objectArray[j].get(),
+                                                    true);
+                    objectArray[j]->NotifyCollision(*objectArray[i].get(),
+                                                    true);
+                }
+            }
+        }
+    }
 }
 

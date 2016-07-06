@@ -15,7 +15,7 @@ BallMonster::BallMonster(Room *room, Vec2 pos) : previousPos(pos)
         "sprites/monsters/ball/BOLOTA_WARNING.png",
         "sprites/monsters/ball/BOLOTA_ATTACK.png"};
     int frameCounts[BALL_ANIMATIONS] = {6, 10, 6};
-    float frameTimes[BALL_ANIMATIONS] = {0.3, 0.1, 0.3};
+    float frameTimes[BALL_ANIMATIONS] = {0.15, 0.07, 0.3};
     animations = AnimationFSM(BALL_ANIMATIONS, files, frameCounts, frameTimes);
 
     box.pos = pos;
