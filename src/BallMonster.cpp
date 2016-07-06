@@ -1,4 +1,4 @@
-#include "Ball.h"
+#include "BallMonster.h"
 #include "Config.h"
 #include "Game.h"
 #include "InputManager.h"
@@ -7,17 +7,16 @@
 
 #define BALL_ANIMATIONS 3
 
-Ball::Ball(Vec2 pos) : animations(BALL_ANIMATIONS), previousPos(pos)
+BallMonster::BallMonster(Room *room, Vec2 pos) : previousPos(pos)
 {
+    this->room = room;
     std::string files[BALL_ANIMATIONS] = {
         "sprites/monsters/ball/BOLOTA_IDLE.png",
         "sprites/monsters/ball/BOLOTA_WARNING.png",
         "sprites/monsters/ball/BOLOTA_ATTACK.png"};
     int frameCounts[BALL_ANIMATIONS] = {6, 10, 6};
     float frameTimes[BALL_ANIMATIONS] = {0.3, 0.1, 0.3};
-    for (int i = 0; i < BALL_ANIMATIONS; ++i) {
-        animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
-    }
+    animations = AnimationFSM(BALL_ANIMATIONS, files, frameCounts, frameTimes);
 
     box.pos = pos;
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
@@ -28,22 +27,7 @@ Ball::Ball(Vec2 pos) : animations(BALL_ANIMATIONS), previousPos(pos)
     rotation = 0;
 }
 
-void Ball::Render()
-{
-    animations.Render(box.pos.x, box.pos.y);
-
-    int attackColor[4] = COLOR_ATTACK_HITBOX;
-    if (Config::ATTACK_HITBOX_MODE)
-        attackHitbox.RenderFilledRect(attackColor);
-
-}
-
-bool Ball::IsDead()
-{
-    return (hp <= 0);
-}
-
-void Ball::Update(float dt)
+void BallMonster::Update(float dt)
 {
     InputManager &manager = InputManager::GetInstance();
 
@@ -54,7 +38,7 @@ void Ball::Update(float dt)
     attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y + box.dim.y/2);
 }
 
-void Ball::NotifyCollision(GameObject &other, bool movement)
+void BallMonster::NotifyCollision(GameObject &other, bool movement)
 {
     UNUSED_VAR movement;
 
@@ -66,12 +50,12 @@ void Ball::NotifyCollision(GameObject &other, bool movement)
     }
 }
 
-bool Ball::Is(std::string className)
+bool BallMonster::Is(std::string className)
 {
-    return ("Ball" == className);
+    return ("BallMonster" == className);
 }
 
-void Ball::TakeDamage(float dmg)
+void BallMonster::TakeDamage(float dmg)
 {
     hp -= dmg;
     if (IsDead()) {
@@ -81,7 +65,7 @@ void Ball::TakeDamage(float dmg)
     }
 }
 
-bool Ball::IsInsideWall()
+bool BallMonster::IsInsideWall()
 {
     if (Game::GetInstance() != nullptr) {
         return Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this);
@@ -90,7 +74,7 @@ bool Ball::IsInsideWall()
     return false;
 }
 
-void Ball::SetCurrentState(int state)
+void BallMonster::SetCurrentState(int state)
 {
     animations.SetCurrentState(state);
 }

@@ -25,13 +25,14 @@ else
 	FINAL_EXEC = Project-M.K.Eva.exe
 endif
 
-_OBJ  = Main.o Game.o Camera.o State.o Sprite.o Vec2.o Rect.o TileSet.o TileMap.o
-_OBJ += Resources.o InputManager.o Timer.o Animation.o Music.o Sound.o Text.o
-_OBJ += LevelMap.o IntroState.o ProceduralMap.o ProceduralState.o AnimationFSM.o
-_OBJ += Eva.o Turret.o Bullet.o MekaBug.o TurretMob.o Ball.o MonsterBallManager.o
-_OBJ += Eva.o HubState.o FirstLevelState.o ProceduralFirstRooms.o EvaClass.o
-_OBJ += EvaBase.o EvaDecker.o EvaGunslinger.o EvaSamurai.o Bullet.o AttackClass.o
-_OBJ += Room.o HealthBar.o TitleState.o
+_OBJ  = Main.o Game.o Camera.o State.o Sprite.o Vec2.o Rect.o TileSet.o
+_OBJ += TileMap.o Resources.o InputManager.o Timer.o Animation.o Music.o Sound.o
+_OBJ += Text.o LevelMap.o IntroState.o ProceduralMap.o ProceduralState.o
+_OBJ += AnimationFSM.o Eva.o TurretMonster.o Bullet.o MekaBugMonster.o
+_OBJ += TurretMobMonster.o BallMonster.o BallsManager.o Eva.o HubState.o
+_OBJ += FirstLevelState.o ProceduralFirstRooms.o EvaClass.o EvaBase.o 
+_OBJ += EvaDecker.o EvaGunslinger.o EvaSamurai.o Bullet.o AttackClass.o Room.o
+_OBJ += HealthBar.o TitleState.o Monster.o
 OBJ = $(patsubst %,$(BIN_PATH)/%,$(_OBJ))
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_PATH)/$*.Td

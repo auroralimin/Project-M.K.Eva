@@ -8,7 +8,7 @@
 #define GUN_MOVEMENT 4
 #define ANIMATION_OFFSET 60
 
-EvaGunslinger::EvaGunslinger() : EvaClass(GUN_ANIMATIONS),
+EvaGunslinger::EvaGunslinger() : EvaClass(),
     healthBar("sprites/hud/healthbar/GUN/HUD-EVA-GUN.png",
               "sprites/hud/healthbar/GUN/HUD-EVA-GUN-OVERLAY.png")
 {

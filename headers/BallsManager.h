@@ -2,14 +2,14 @@
 
 #include <vector>
 
-#include "Ball.h"
+#include "BallMonster.h"
 #include "Timer.h"
 
-class MonsterBallManager : public GameObject
+class BallsManager : public GameObject
 {
   public:
-    MonsterBallManager(GameObject *focus);
-    Ball **AddBall(void);
+    BallsManager(Room *room, GameObject *focus);
+    BallMonster **AddBall(void);
     void Render();
     bool IsDead();
     void Update(float dt);
@@ -20,9 +20,10 @@ class MonsterBallManager : public GameObject
   private:
     enum BallsState { RESTING, WARNING, ATTACKING };
 
+    Room *room;
     GameObject *focus;
     unsigned int currentState;
-    std::vector<Ball *> ballArray;
+    std::vector<BallMonster *> ballArray;
     Timer timer;
 
     void SetCurrentState(int state);

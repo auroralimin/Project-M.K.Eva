@@ -7,7 +7,7 @@
 class EvaClass
 {
   public:
-    EvaClass(int nAnimations);
+    EvaClass(void);
 
     virtual ~EvaClass(void)
     {

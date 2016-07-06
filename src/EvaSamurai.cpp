@@ -6,7 +6,7 @@
 #include "Config.h"
 
 #define SAMURAI_ANIMATIONS 9
-EvaSamurai::EvaSamurai() : EvaClass(SAMURAI_ANIMATIONS),
+EvaSamurai::EvaSamurai() : EvaClass(),
   healthBar("sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI.png",
             "sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI-OVERLAY.png")
 {

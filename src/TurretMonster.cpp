@@ -1,4 +1,4 @@
-#include "Turret.h"
+#include "TurretMonster.h"
 #include "Eva.h"
 #include "Bullet.h"
 #include "Game.h"
@@ -9,16 +9,15 @@
 
 #define TURRET_ANIMATIONS 1
 
-Turret::Turret(Vec2 pos, GameObject *focus)
-    : focus(focus), animations(TURRET_ANIMATIONS)
+TurretMonster::TurretMonster(Room *room, Vec2 pos, GameObject *focus) :
+    focus(focus)
 {
+    this->room = room;
     std::string files[TURRET_ANIMATIONS] = {
         "sprites/monsters/turret/SpriteSheetStationaryTurret.png"};
     int frameCounts[TURRET_ANIMATIONS] = {20};
     float frameTimes[TURRET_ANIMATIONS] = {0.1};
-    for (int i = 0; i < TURRET_ANIMATIONS; i++) {
-        animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
-    }
+    animations = AnimationFSM(TURRET_ANIMATIONS, files, frameCounts, frameTimes);
 
     box.pos = pos;
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
@@ -30,24 +29,7 @@ Turret::Turret(Vec2 pos, GameObject *focus)
     rotation = 0;
 }
 
-void Turret::Render(void)
-{
-    animations.Render(box.pos.x, box.pos.y);
-
-    int attackColor[4] = COLOR_ATTACK_HITBOX;
-    if (Config::ATTACK_HITBOX_MODE)
-        attackHitbox.RenderFilledRect(attackColor);
-}
-
-bool Turret::IsDead(void)
-{
-    if (hp <= 0)
-        return true;
-
-    return false;
-}
-
-void Turret::Update(float dt)
+void TurretMonster::Update(float dt)
 {
     static Timer timer = Timer();
     InputManager &manager = InputManager::GetInstance();
@@ -65,7 +47,7 @@ void Turret::Update(float dt)
     timer.Update(dt);
 }
 
-void Turret::NotifyCollision(GameObject &other, bool movement)
+void TurretMonster::NotifyCollision(GameObject &other, bool movement)
 {
     UNUSED_VAR movement;
 
@@ -77,12 +59,12 @@ void Turret::NotifyCollision(GameObject &other, bool movement)
     }
 }
 
-bool Turret::Is(std::string className)
+bool TurretMonster::Is(std::string className)
 {
-    return ("Turret" == className);
+    return ("TurretMonster" == className);
 }
 
-void Turret::TakeDamage(float dmg)
+void TurretMonster::TakeDamage(float dmg)
 {
     hp -= dmg;
     if (IsDead()) {
@@ -93,7 +75,7 @@ void Turret::TakeDamage(float dmg)
     }
 }
 
-void Turret::ShootPattern1(void)
+void TurretMonster::ShootPattern1(void)
 {
     const int nBullets = 3;
     Vec2 evaPos = focus->box.GetCenter();
@@ -110,7 +92,7 @@ void Turret::ShootPattern1(void)
                        Vec2(-10, -10), Vec2(20, 20), 8, 0.3, true));
 }
 
-void Turret::ShootPattern2(void)
+void TurretMonster::ShootPattern2(void)
 {
     for (int i = 0; i < 15; i++) {
         Bullet *b =

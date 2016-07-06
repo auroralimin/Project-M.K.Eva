@@ -3,10 +3,10 @@
 #include "Room.h"
 #include "Game.h"
 #include "Config.h"
-#include "Turret.h"
-#include "MekaBug.h"
-#include "TurretMob.h"
-#include "MonsterBallManager.h"
+#include "TurretMonster.h"
+#include "MekaBugMonster.h"
+#include "TurretMobMonster.h"
+#include "BallsManager.h"
 
 Room::Room(std::string file, TileSet *tileSet, GameObject *focus, int type) :
     tileMap(file, tileSet), focus(focus), type(type), nMonsters(0),
@@ -22,7 +22,7 @@ void Room::Update(float dt)
 
     if ((currentState == roomState::INACTIVE) &&
             (focus->box.pos.x < SCREEN_W - (TILE_SIZE + focus->box.dim.x)) &&
-            (focus->box.pos.y < SCREEN_H - (TILE_SIZE + focus->box.dim.y)) && 
+            (focus->box.pos.y < SCREEN_H - (TILE_SIZE + focus->box.dim.y)) &&
             (focus->box.pos.x > TILE_SIZE) &&
             (focus->box.pos.y > (TILE_SIZE*3)))
     {
@@ -110,19 +110,21 @@ void Room::ActivateRoom(void)
     {
         case 1:
             {
-            Game::GetInstance()->GetCurrentState().AddObject(new Turret(
-                        Vec2(Game::GetInstance()->GetWinWidth()/2 + 50,
+            Game::GetInstance()->GetCurrentState().AddObject(new TurretMonster(
+                        this, Vec2(Game::GetInstance()->GetWinWidth()/2 + 50,
                             Game::GetInstance()->GetWinHeight()/2), focus));
             nMonsters++;
             break;
             }
         case 2:
             {
-            Game::GetInstance()->GetCurrentState().AddObject(new MekaBug(
+            Game::GetInstance()->GetCurrentState().AddObject(
+                    new MekaBugMonster(this,
                         Vec2(Game::GetInstance()->GetWinWidth()/2 + 100,
                             Game::GetInstance()->GetWinHeight()/2 + 100),
                         focus));
-            Game::GetInstance()->GetCurrentState().AddObject(new MekaBug(
+            Game::GetInstance()->GetCurrentState().AddObject(
+                    new MekaBugMonster(this,
                         Vec2(Game::GetInstance()->GetWinWidth()/2 - 100,
                             Game::GetInstance()->GetWinHeight()/2 - 100),
                         focus));
@@ -131,7 +133,7 @@ void Room::ActivateRoom(void)
             }
         case 3:
             {
-            MonsterBallManager *ballManager = new MonsterBallManager(focus);
+            BallsManager *ballManager = new BallsManager(this, focus);
             Game::GetInstance()->GetCurrentState().AddObject(ballManager);
             for (int i = 0; i < 5; ++i) {
                 Game::GetInstance()->GetCurrentState().AddObject(
@@ -142,14 +144,17 @@ void Room::ActivateRoom(void)
             }
         case 4:
             {
-            Game::GetInstance()->GetCurrentState().AddObject(new TurretMob(
+            Game::GetInstance()->GetCurrentState().AddObject(
+                    new TurretMobMonster(this,
                         Vec2(Game::GetInstance()->GetWinWidth()/2 - 200,
                             Game::GetInstance()->GetWinHeight()/2 - 200),
                         focus));
-            Game::GetInstance()->GetCurrentState().AddObject(new TurretMob(
+            Game::GetInstance()->GetCurrentState().AddObject(
+                    new TurretMobMonster(this,
                         Vec2(Game::GetInstance()->GetWinWidth()/3,
                             Game::GetInstance()->GetWinHeight()/2), focus));
-            Game::GetInstance()->GetCurrentState().AddObject(new TurretMob(
+            Game::GetInstance()->GetCurrentState().AddObject(
+                    new TurretMobMonster(this,
                         Vec2(Game::GetInstance()->GetWinWidth()/2,
                             Game::GetInstance()->GetWinHeight()/3), focus));
             nMonsters += 3;

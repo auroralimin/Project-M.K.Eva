@@ -1,10 +1,8 @@
 #include "AnimationFSM.h"
 
-AnimationFSM::AnimationFSM(int nAnimations)
+AnimationFSM::AnimationFSM(void)
 {
-    this->nAnimations = nAnimations;
-    for (int i = 0; i < nAnimations; ++i)
-        animationsArray.emplace_back(new Sprite());
+    this->nAnimations = 0;
     currentState = 0;
 }
 
@@ -53,9 +51,14 @@ int AnimationFSM::GetCurrentFrame()
     return animationsArray[currentState]->GetCurrentFrame();
 }
 
-void AnimationFSM::SetAnimation(int index, std::string file, int frameCount,
-                                float frameTime, int rows)
+void AnimationFSM::SetAnimation(unsigned long index, std::string file,
+        int frameCount, float frameTime, int rows)
 {
+    if (index >= animationsArray.size()) {
+        nAnimations = index;
+        animationsArray.emplace(animationsArray.begin() + index, new Sprite());
+    }
+
     animationsArray[index].get()->SetFrameCount(frameCount);
     animationsArray[index].get()->SetFrameTime(frameTime);
     animationsArray[index].get()->SetRows(rows);

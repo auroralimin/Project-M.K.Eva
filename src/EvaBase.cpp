@@ -3,7 +3,7 @@
 
 #define BASE_ANIMATIONS 5
 
-EvaBase::EvaBase(void) : EvaClass(BASE_ANIMATIONS)
+EvaBase::EvaBase(void) : EvaClass()
 {
     std::string tFiles[BASE_ANIMATIONS] = {
         "sprites/eva/movement/EVA-BASE-IDLE.png",
@@ -24,6 +24,7 @@ EvaBase::EvaBase(void) : EvaClass(BASE_ANIMATIONS)
 
 void EvaBase::Update(float dt, float hp)
 {
+    UNUSED_VAR hp;
     // TODO: update possible timers
     animations.Update(dt);
 }

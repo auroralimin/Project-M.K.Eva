@@ -9,8 +9,7 @@
 #define ATTACK_RENDER_OFFSET 60
 
 EvaDecker::EvaDecker()
-    : EvaClass(DECKER_ANIMATIONS), atkTimer(), atkCooldown(), atkStarted(false),
-      atkPos(0, 0),
+    : EvaClass(), atkTimer(), atkCooldown(), atkStarted(false), atkPos(0, 0),
       healthBar("sprites/hud/healthbar/DECKER/HUD-EVA-DECKER.png",
                 "sprites/hud/healthbar/DECKER/HUD-EVA-DECKER-OVERLAY.png")
 {

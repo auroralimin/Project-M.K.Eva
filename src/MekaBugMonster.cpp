@@ -1,4 +1,4 @@
-#include "MekaBug.h"
+#include "MekaBugMonster.h"
 #include "Eva.h"
 #include "Config.h"
 #include "Game.h"
@@ -9,18 +9,18 @@
 
 #define MEKABUG_ANIMATIONS 2
 
-MekaBug::MekaBug(Vec2 pos, GameObject *focus)
-    : focus(focus), animations(MEKABUG_ANIMATIONS),
-      movState(MekaBugMovement::RESTING), previousPos(pos), stuck(false)
+MekaBugMonster::MekaBugMonster(Room *room, Vec2 pos, GameObject *focus)
+    : focus(focus), movState(MekaBugMonsterMovement::RESTING), previousPos(pos),
+    stuck(false)
 {
+    this->room = room;
     std::string files[MEKABUG_ANIMATIONS] = {
         "sprites/monsters/mekabug/MEKABUG_SPRITESHEET.png",
         "sprites/monsters/mekabug/MEKABUG_ATTACK_SPRITESHEET.png"};
     int frameCounts[MEKABUG_ANIMATIONS] = {6, 5};
     float frameTimes[MEKABUG_ANIMATIONS] = {0.3, 0.3};
-    for (int i = 0; i < MEKABUG_ANIMATIONS; i++) {
-        animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
-    }
+    animations =
+        AnimationFSM(MEKABUG_ANIMATIONS, files, frameCounts, frameTimes);
 
     box.pos = pos;
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
@@ -33,21 +33,7 @@ MekaBug::MekaBug(Vec2 pos, GameObject *focus)
     rotation = 0;
 }
 
-void MekaBug::Render()
-{
-    animations.Render(box.pos.x, box.pos.y);
-
-    int attackColor[4] = COLOR_ATTACK_HITBOX;
-    if (Config::ATTACK_HITBOX_MODE)
-        attackHitbox.RenderFilledRect(attackColor);
-}
-
-bool MekaBug::IsDead()
-{
-    return (hp <= 0);
-}
-
-void MekaBug::Update(float dt)
+void MekaBugMonster::Update(float dt)
 {
     // temporary suicide button
     if (InputManager::GetInstance().KeyPress(J_KEY))
@@ -57,7 +43,7 @@ void MekaBug::Update(float dt)
     animations.Update(dt);
 }
 
-void MekaBug::NotifyCollision(GameObject &other, bool movement)
+void MekaBugMonster::NotifyCollision(GameObject &other, bool movement)
 {
     if (other.Is("Bullet") || other.Is("Attack")) {
         Bullet &bullet = (Bullet &)other;
@@ -65,17 +51,17 @@ void MekaBug::NotifyCollision(GameObject &other, bool movement)
             TakeDamage(10);
     } else if (movement && (!other.Is("Ball"))) {
         box.pos = previousPos;
-        if (other.Is("MekaBug"))
+        if (other.Is("MekaBugMonster"))
             stuck = true;
     }
 }
 
-bool MekaBug::Is(std::string className)
+bool MekaBugMonster::Is(std::string className)
 {
-    return ("MekaBug" == className);
+    return ("MekaBugMonster" == className);
 }
 
-void MekaBug::TakeDamage(float dmg)
+void MekaBugMonster::TakeDamage(float dmg)
 {
     hp -= dmg;
     if (IsDead())
@@ -84,24 +70,24 @@ void MekaBug::TakeDamage(float dmg)
             0.5, true));
 }
 
-void MekaBug::MovementAndAttack(float dt)
+void MekaBugMonster::MovementAndAttack(float dt)
 {
     static Timer restTimer = Timer(), stuckTimer = Timer();
     Vec2 speed = Vec2(0, 0);
 
-    if (movState == MekaBugMovement::RESTING) {
+    if (movState == MekaBugMonsterMovement::RESTING) {
         restTimer.Update(dt);
 
         if (restTimer.Get() >= Config::Rand(10, 25) / 10.0f) {
-            movState = MekaBugMovement::MOVING;
-            animations.SetCurrentState(MekaBugState::PASSIVE);
+            movState = MekaBugMonsterMovement::MOVING;
+            animations.SetCurrentState(MekaBugMonsterState::PASSIVE);
         }
-    } else if (movState == MekaBugMovement::MOVING) {
+    } else if (movState == MekaBugMonsterMovement::MOVING) {
         Vec2 evaPos = focus->box.GetCenter();
         if (Collision::IsColliding(focus->hitbox, hitbox, focus->rotation,
                                    rotation)) {
-            movState = MekaBugMovement::RESTING;
-            animations.SetCurrentState(MekaBugState::AGRESSIVE);
+            movState = MekaBugMonsterMovement::RESTING;
+            animations.SetCurrentState(MekaBugMonsterState::AGRESSIVE);
             restTimer.Restart();
         } else {
             speed = (evaPos - box.pos).Norm() * 100 * dt;
@@ -121,7 +107,7 @@ void MekaBug::MovementAndAttack(float dt)
 
         if (Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this)) {
             box.pos = previousPos;
-            movState = MekaBugMovement::RESTING;
+            movState = MekaBugMonsterMovement::RESTING;
             restTimer.Restart();
         }
     }

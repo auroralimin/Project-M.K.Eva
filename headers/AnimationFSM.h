@@ -13,7 +13,7 @@ class AnimationFSM
     /**
      * Initializes a FSM instance setting the values to default.
      */
-    AnimationFSM(int nAnimations);
+    AnimationFSM(void);
 
     /**
      * Initializes a FSM instance given the arguments.
@@ -56,7 +56,7 @@ class AnimationFSM
      * @param frameCount number of frames
      * @param frameTime duration of each frame
      */
-    void SetAnimation(int index, std::string file, int frameCount,
+    void SetAnimation(unsigned long index, std::string file, int frameCount,
                       float frameTime, int rows = 1);
 
     /**

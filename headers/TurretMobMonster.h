@@ -1,27 +1,23 @@
 #pragma once
 
-#include "GameObject.h"
-#include "AnimationFSM.h"
+#include "Monster.h"
 #include "Timer.h"
 
-class TurretMob : public GameObject
+class TurretMobMonster : public Monster
 {
   public:
-    TurretMob(Vec2 pos, GameObject *focus);
-    void Render(void);
-    bool IsDead(void);
+    TurretMobMonster(Room *room, Vec2 pos, GameObject *focus);
     void Update(float dt);
     void NotifyCollision(GameObject &other, bool movement);
     bool Is(std::string className);
     void TakeDamage(float dmg = 1);
 
   private:
-    enum TurretMobMovement { RESTING, MOVING, TRAPED };
-    enum TurretMobState { IDLE, FRONT, FRONT_MIRROR, BACK, BACK_MIRROR };
+    enum TurretMobMonsterMovement { RESTING, MOVING, TRAPED };
+    enum TurretMobMonsterState { IDLE, FRONT, FRONT_MIRROR, BACK, BACK_MIRROR };
 
     GameObject *focus;
-    AnimationFSM animations;
-    TurretMobMovement movementMode;
+    TurretMobMonsterMovement movementMode;
     Vec2 previousPos, destination;
     Timer restTimer;
 

@@ -1,4 +1,4 @@
-#include "MonsterBallManager.h"
+#include "BallsManager.h"
 #include "Game.h"
 #include "Config.h"
 #include "Eva.h"
@@ -12,33 +12,33 @@
 #define ATTACK_TIME 1.8
 #define BALL_EVA_DISTANCE 50
 
-MonsterBallManager::MonsterBallManager(GameObject *focus)
-    : focus(focus), currentState(BallsState::RESTING)
+BallsManager::BallsManager(Room *room, GameObject *focus)
+    : room(room), focus(focus), currentState(BallsState::RESTING)
 {
     hitbox.dim = Vec2(0, 0);
 }
 
-Ball **MonsterBallManager::AddBall(void)
+BallMonster **BallsManager::AddBall(void)
 {
     float x = Config::Rand(ARENA_WIDTH_INIT, ARENA_WIDTH_END);
     float y = Config::Rand(ARENA_HEIGHT_INIT, ARENA_HEIGHT_END);
-    ballArray.emplace_back(new Ball(Vec2(x - 43, y - 110)));
+    ballArray.emplace_back(new BallMonster(room, Vec2(x - 43, y - 110)));
     return &ballArray[ballArray.size() - 1];
 }
 
-void MonsterBallManager::Render()
+void BallsManager::Render()
 {
     int color[4] = COLOR_HITBOX;
     if (Config::HITBOX_MODE)
         hitbox.RenderFilledRect(color);
 }
 
-bool MonsterBallManager::IsDead()
+bool BallsManager::IsDead()
 {
     return ballArray.empty();
 }
 
-void MonsterBallManager::Update(float dt)
+void BallsManager::Update(float dt)
 {
     timer.Update(dt);
 
@@ -77,30 +77,30 @@ void MonsterBallManager::Update(float dt)
     }
 }
 
-void MonsterBallManager::NotifyCollision(GameObject &other, bool movement)
+void BallsManager::NotifyCollision(GameObject &other, bool movement)
 {
     UNUSED_VAR other;
     UNUSED_VAR movement;
 }
 
-bool MonsterBallManager::Is(std::string className)
+bool BallsManager::Is(std::string className)
 {
-    return (className == std::string("MonsterBallManager"));
+    return (className == std::string("BallsManager"));
 }
 
-void MonsterBallManager::TakeDamage(float dmg)
+void BallsManager::TakeDamage(float dmg)
 {
     UNUSED_VAR dmg;
 }
 
-void MonsterBallManager::SetCurrentState(int currentState)
+void BallsManager::SetCurrentState(int currentState)
 {
     for (size_t i = 0; i < ballArray.size(); i++) {
         ballArray[i]->SetCurrentState(currentState);
     }
 }
 
-void MonsterBallManager::RandTeleport()
+void BallsManager::RandTeleport()
 {
     for (size_t i = 0; i < ballArray.size(); i++) {
         float x = Config::Rand(85, 1109);
