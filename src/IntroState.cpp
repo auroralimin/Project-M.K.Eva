@@ -90,10 +90,12 @@ void IntroState::CheckMovementCollisions()
 {
     for (size_t i = 0; i < objectArray.size(); i++) {
         for (size_t j = i + 1; j < objectArray.size(); j++) {
-            if (!(objectArray[i]->Is("Bullet") ||
-                  objectArray[j]->Is("Bullet") || 
+            if (!(objectArray[i]->Is("Bullet")        ||
+                  objectArray[j]->Is("Bullet")        || 
                   objectArray[i]->Is("BallMonster")   ||
-                  objectArray[j]->Is("BallMonster"))) {
+                  objectArray[j]->Is("BallMonster")   ||
+                  objectArray[i]->Is("Attack")        ||
+                  objectArray[j]->Is("Attack"))) {
                 if (Collision::IsColliding(
                         objectArray[i]->hitbox, objectArray[j]->hitbox,
                         objectArray[i]->rotation, objectArray[j]->rotation)) {
