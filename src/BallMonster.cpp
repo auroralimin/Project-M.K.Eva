@@ -64,7 +64,7 @@ void BallMonster::TakeDamage(float dmg)
     hp -= dmg;
     if (IsDead()) {
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-            box.GetCenter(), 0, "sprites/monsters/ball/BOLOTA_DEATH.png", 7,
+            box.pos, 0, "sprites/monsters/ball/BOLOTA_DEATH.png", 7,
             0.2, true));
     }
 }

@@ -188,8 +188,8 @@ void Eva::TakeDamage(float dmg)
         std::cout << "[Eva] hp: " << hp << std::endl;
     if (IsDead()) {
         evaDeath = std::string("Animation:sprites/eva/death/EVA-") +
-                classes[currentClass] + std::string("-DEATH.png");
-        evaClasses[currentClass]->Die(box.GetCenter());
+                   classes[currentClass] + std::string("-DEATH.png");
+        evaClasses[currentClass]->Die(box.pos);
     }
 }
 

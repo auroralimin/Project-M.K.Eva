@@ -70,7 +70,7 @@ void MekaBugMonster::TakeDamage(float dmg)
     hp -= dmg;
     if (IsDead())
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-            box.GetCenter(), 0, "sprites/monsters/mekabug/MEKABUG_DEATH.png", 3,
+            box.pos, 0, "sprites/monsters/mekabug/MEKABUG_DEATH.png", 3,
             0.5, true));
 }
 

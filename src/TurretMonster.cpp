@@ -78,7 +78,7 @@ void TurretMonster::TakeDamage(float dmg)
     std::cout << "turret: " << hp << std::endl;
     if (IsDead()) {
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-            box.GetCenter(), 0, "sprites/monsters/turret/penguindeath.png", 5,
+            box.pos, 0, "sprites/monsters/turret/penguindeath.png", 5,
             0.3, true));
         //ShootPattern2();
     }

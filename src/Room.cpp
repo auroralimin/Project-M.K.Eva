@@ -8,9 +8,11 @@
 #include "TurretMobMonster.h"
 #include "BallsManager.h"
 
-Room::Room(std::string file, TileSet *tileSet, GameObject *focus, int type) :
-    tileMap(file, tileSet), focus(focus), type(type), nMonsters(0),
-    currentState(roomState::INACTIVE), isNeighbour(false)
+Room::Room(std::string level, std::string file, TileSet *tileSet,
+        GameObject *focus, int type) :
+    level(level), tileMap(file, tileSet), focus(focus), type(type),
+    nMonsters(0), currentState(roomState::INACTIVE), isNeighbour(false),
+    isFirst(false)
 {
     SetDoors(file);
     LoadWallRects();
@@ -27,11 +29,26 @@ void Room::Update(float dt)
             (focus->box.pos.y > (TILE_SIZE*3)))
     {
         currentState = roomState::ACTIVE;
+        for (int i = 0; i < 4; ++i)
+            if (doors[i].GetCurrentState() == Door::DoorState::OPENED) {
+                if (level == "procedural_generated_1" && i == 1 && isFirst)
+                    doors[1].SetCurrentState(Door::DoorState::WALL);
+                else if (level == "intro" && i == 3 && isFirst)
+                    doors[3].SetCurrentState(Door::DoorState::WALL);
+                else
+                    doors[i].SetCurrentState(Door::DoorState::CLOSED);
+            }
         ActivateRoom();
     } else if ((currentState == roomState::ACTIVE) && nMonsters <= 0) {
         currentState = roomState::DISABLED;
+        for (int i = 0; i < 4; ++i)
+            if (doors[i].GetCurrentState() == Door::DoorState::CLOSED)
+                doors[i].SetCurrentState(Door::DoorState::OPENED);
     }
 
+    LoadWallRects();
+    for (int i = 0; i < 4; ++i)
+        doors[i].Update(dt);
 }
 
 void Room::Render(int cameraX, int cameraY)
@@ -58,6 +75,9 @@ void Room::Render(int cameraX, int cameraY)
     if (Config::HITBOX_MODE)
         for (auto hitbox : wallRect)
             hitbox.RenderFilledRect(color);
+
+    for (int i = 0; i < 4; ++i)
+        doors[i].Render();
 }
 
 std::vector<Rect> Room::GetWallRect(void)
@@ -72,15 +92,20 @@ void Room::SetDoors(std::string file)
     int end = file.find('.', start);
     int fileId = atoi(file.substr(start + 1, end - 1).c_str());
 
+    std::string directionStr[4] = {"up/", "left/", "down/", "right/"};
     for (int i = 4; i > 0; --i)
         if (fileId >= pow(10, i)) {
-            hasDoors[4 - i] = true;
+            std::string direction = directionStr[4 - i];
+            doors[4 - i].Load(4 - i, Door::DoorState::OPENED,
+                    "sprites/door/" + level + "/" + direction); 
             fileId -= pow(10, i);
         }
 }
 
 void Room::LoadWallRects(void)
 {
+    wallRect.clear();
+
     // clang-format off
     static int posWidth1[4]  = {             0, -TILE_SIZE * 2,                    0, SCREEN_W - TILE_SIZE},
                posHeight1[4] = {-TILE_SIZE * 2,  TILE_SIZE * 3, SCREEN_H - TILE_SIZE,        TILE_SIZE * 3},
@@ -93,7 +118,7 @@ void Room::LoadWallRects(void)
     // clang-format on
 
     for (int i = 0; i < 4; ++i)
-        if (hasDoors[i]) {
+        if (doors[i].GetCurrentState() == Door::DoorState::OPENED) {
             wallRect.emplace_back(Vec2(posWidth1[i], posHeight1[i]),
                                   Vec2(dimWidth1[i], dimHeight1[i]));
             wallRect.emplace_back(Vec2(posWidth2[i], posHeight2[i]),
@@ -176,6 +201,11 @@ void Room::DecreaseNMonsters(void)
 bool Room::WasVisited(void)
 {
    return (currentState == roomState::DISABLED);
+}
+
+void Room::SetIsFirst(bool isFirst)
+{
+    this->isFirst = isFirst;
 }
 
 void Room::SetIsNeighbour(bool isNeighbour)

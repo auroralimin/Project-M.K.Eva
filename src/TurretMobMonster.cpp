@@ -81,7 +81,7 @@ void TurretMobMonster::TakeDamage(float dmg)
     hp -= dmg;
     if (IsDead())
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-            box.GetCenter(), 0, "sprites/monsters/turretmob/TurretMobDeath.png",
+            box.pos, 0, "sprites/monsters/turretmob/TurretMobDeath.png",
             7, 0.2, true));
 }
 

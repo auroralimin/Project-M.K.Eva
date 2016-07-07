@@ -74,7 +74,7 @@ class Animation : public GameObject
 
   private:
     Sprite sp;
-    bool oneTimeOnly;
+    bool oneTimeOnly, isDead;
     std::string is;
 };
 

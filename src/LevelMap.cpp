@@ -17,14 +17,16 @@ LevelMap::LevelMap(void)
 {
 }
 
-LevelMap::LevelMap(std::string file, GameObject *focus) : focus(focus)
+LevelMap::LevelMap(std::string name, std::string file, GameObject *focus) :
+    focus(focus)
 {
-    Load(file);
+    Load(name, file);
     InitMiniroom();
 }
 
-void LevelMap::Load(std::string file)
+void LevelMap::Load(std::string name, std::string file)
 {
+    this->name = name;
     FILE *fp = fopen(file.c_str(), "r");
 
     if (!fp) {
@@ -47,12 +49,13 @@ void LevelMap::Load(std::string file)
     while (fscanf(fp, "%d,", &r) != EOF) {
         if (r != -1)
             rooms.emplace(
-                n++, new Room(roomsPath + std::to_string(r) + ".txt",
+                n++, new Room(name, roomsPath + std::to_string(r) + ".txt",
                     tileSet, focus, Config::Rand(1, 4)));
         else
             rooms.emplace(n++, nullptr);
     }
     index = currentRoom.x + (mapWidth * currentRoom.y);
+    rooms[index]->SetIsFirst(true);
 
     fclose(fp);
 }

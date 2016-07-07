@@ -4,14 +4,13 @@
 #include "Game.h"
 #include "Eva.h"
 
-#define EVA_SPAWN_POSITION_X 192
-#define EVA_SPAWN_POSITION_Y 103
-
+#define EVA_SPAWN_POSITION_X 127
+#define EVA_SPAWN_POSITION_Y 100
 
 Animation::Animation(Vec2 pos, float rotation, std::string sprite,
                      int frameCount, float frameTime, bool ends, int rows)
-    : sp(sprite, frameCount, frameTime, rows), oneTimeOnly(ends),
-      is("Animation:" + sprite)
+    : sp(sprite, frameCount, frameTime, rows), oneTimeOnly(ends), isDead(false),
+    is("Animation:" + sprite)
 {
     animationImg = "";
     box.pos = pos;
@@ -22,20 +21,24 @@ Animation::Animation(Vec2 pos, float rotation, std::string sprite,
 
 void Animation::Update(float dt)
 {
+    int oldFrame = sp.GetCurrentFrame();
     sp.Update(dt);    
+    if (oldFrame > 0 && sp.GetCurrentFrame() == 0 && oneTimeOnly)
+        isDead = true;
 }
 
 void Animation::Render(void)
 {
-    sp.Render(box.pos.x - Camera::pos.x - box.dim.x / 2,
-              box.pos.y - Camera::pos.y - box.dim.y / 2, rotation);
+    if (!isDead)
+        sp.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y,
+                rotation);
 }
 
 bool Animation::IsDead(void)
 {
-    bool isDead = (oneTimeOnly && (sp.GetCurrentFrame() == sp.GetFrameCount() - 1));
     if (isDead && Is("Animation:sprites/eva/drawer/DRAWER-EVA.png"))
-        Game::GetInstance()->GetCurrentState().AddObject(new Eva(Vec2(EVA_SPAWN_POSITION_X, EVA_SPAWN_POSITION_Y)));
+        Game::GetInstance()->GetCurrentState().AddObject(
+                new Eva(Vec2(EVA_SPAWN_POSITION_X, EVA_SPAWN_POSITION_Y)));
 
     return isDead;
 }

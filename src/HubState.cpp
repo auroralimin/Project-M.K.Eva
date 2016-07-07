@@ -8,16 +8,15 @@
 #include "FirstLevelState.h"
 #include "Animation.h"
 
-#define EVA_DRAWER_POSITION_X 252
-#define EVA_DRAWER_POSITION_Y 160
+#define EVA_DRAWER_POSITION_X 130
+#define EVA_DRAWER_POSITION_Y 100
 
 HubState::HubState(void) : map(), music("music/hubMusic.ogg")
 {
-    map.Load("map/hub.txt");
+    map.Load("hub", "map/hub.txt");
     AddObject(new Animation(Vec2(EVA_DRAWER_POSITION_X, EVA_DRAWER_POSITION_Y),
                             0, "sprites/eva/drawer/DRAWER-EVA.png",
                             48, 0.08, true, 3));
-
     music.Play(-1);
 }
 
