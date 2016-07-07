@@ -7,21 +7,23 @@
 #include "Config.h"
 #include "Collision.h"
 
-#define MINI_ROOM_SIZE_X 30
+#define VISITED_PATH "img/default_map/"
+#define IMG1 "img/unvisited_map.png"
+#define IMG2 "img/current_map.png"
+#define MINI_ROOM_SIZE_X 40
 #define MINI_ROOM_SIZE_Y 22
-#define MINI_ROOM_BORDER 3
+#define MINI_ROOM_BORDER 2
 #define MINIMAP_X 1000
-#define MINIMAP_Y 0
+#define MINIMAP_Y 10
 
-LevelMap::LevelMap(void)
+LevelMap::LevelMap(void) : drawMiniroom(false)
 {
 }
 
 LevelMap::LevelMap(std::string name, std::string file, GameObject *focus) :
-    focus(focus)
+    focus(focus), drawMiniroom(false)
 {
     Load(name, file);
-    InitMiniroom();
 }
 
 void LevelMap::Load(std::string name, std::string file)
@@ -49,8 +51,8 @@ void LevelMap::Load(std::string name, std::string file)
     while (fscanf(fp, "%d,", &r) != EOF) {
         if (r != -1)
             rooms.emplace(
-                n++, new Room(name, roomsPath + std::to_string(r) + ".txt",
-                    tileSet, focus, Config::Rand(1, 4)));
+                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
+                    tileSet, focus, 0));
         else
             rooms.emplace(n++, nullptr);
     }
@@ -58,17 +60,6 @@ void LevelMap::Load(std::string name, std::string file)
     rooms[index]->SetIsFirst(true);
 
     fclose(fp);
-}
-
-void LevelMap::InitMiniroom(void)
-{
-    miniRoom.dim.x = MINI_ROOM_SIZE_X * mapWidth + MINI_ROOM_BORDER * 2;
-    miniRoom.dim.y = MINI_ROOM_SIZE_Y * mapHeight + MINI_ROOM_BORDER * 2;
-    miniRoom.pos.x = MINIMAP_X - MINI_ROOM_BORDER;
-    miniRoom.pos.y = MINIMAP_Y - MINI_ROOM_BORDER;
-
-    miniRoom2.dim.x = MINI_ROOM_SIZE_X - MINI_ROOM_BORDER * 2;
-    miniRoom2.dim.y = MINI_ROOM_SIZE_Y - MINI_ROOM_BORDER * 2;
 }
 
 void LevelMap::SetFocus(GameObject *focus)
@@ -85,32 +76,35 @@ void LevelMap::Render(void)
 {
     rooms[index]->Render(Camera::pos.x, Camera::pos.y);
 
+    if (!drawMiniroom)
+        return;
+
     int color1[4] = COLOR_T_GREY_1;
     miniRoom.RenderFilledRect(color1);
 
-    int color2[4] = COLOR_T_GREY_2;
-    int color3[4] = COLOR_T_GREY_3;
-    int color4[4] = COLOR_T_GREY_4;
     for (int i = 0; i < mapWidth; i++) {
         for (int j = 0; j < mapHeight; j++) {
             int roomId = i + mapWidth * j;
             if (!IsOutOfLimits(Vec2(i, j)) && rooms[roomId] != nullptr) {
-                miniRoom2.pos.x =
-                    i * MINI_ROOM_SIZE_X + MINIMAP_X + MINI_ROOM_BORDER;
-                miniRoom2.pos.y =
-                    j * MINI_ROOM_SIZE_Y + MINIMAP_Y + MINI_ROOM_BORDER;
+                int x = i * MINI_ROOM_SIZE_X + MINIMAP_X - MINI_ROOM_BORDER * i;
+                int y = j * MINI_ROOM_SIZE_Y + MINIMAP_Y - MINI_ROOM_BORDER * j;
                 if (currentRoom.x == i && currentRoom.y == j) {
-                    miniRoom2.RenderFilledRect(color3);
+                    Sprite(VISITED_PATH + std::to_string(rooms[roomId]->GetId())
+                            + ".png").Render(x, y);
+                    Sprite(IMG2).Render(x, y);
                 } else if (rooms[roomId]->WasVisited()) {
-                    miniRoom2.RenderFilledRect(color2);
-               } else if (rooms[roomId]->GetIsNeighbour() ||
-                       (currentRoom.x == i && (currentRoom.y == j + 1
-                                               || currentRoom.y == j - 1)) ||
-                       (currentRoom.y == j && (currentRoom.x == i + 1
-                                               || currentRoom.x == i - 1))) {
-                    miniRoom2.RenderFilledRect(color4);
+                    Sprite(VISITED_PATH + std::to_string(rooms[roomId]->GetId())
+                            + ".png").Render(x, y);
+                } else if (rooms[roomId]->GetIsNeighbour() ||
+                        (currentRoom.x == i && (currentRoom.y == j + 1
+                                                || currentRoom.y == j - 1)) ||
+                        (currentRoom.y == j && (currentRoom.x == i + 1
+                                                || currentRoom.x == i - 1))) {
+                    Sprite(VISITED_PATH + std::to_string(rooms[roomId]->GetId())
+                            + ".png").Render(x, y);
+                    Sprite(IMG1).Render(x, y);
                     rooms[roomId]->SetIsNeighbour(true);
-               }
+                }
             }
         }
     }
@@ -186,5 +180,10 @@ bool LevelMap::IsCollidingWithWall(GameObject *obj)
 void LevelMap::NotifyDeadMonster(void)
 {
     rooms[index]->DecreaseNMonsters();
+}
+
+void LevelMap::SetDrawMiniroom(bool drawMiniroom)
+{
+    this->drawMiniroom = drawMiniroom;
 }
 

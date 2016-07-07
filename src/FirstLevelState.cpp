@@ -23,8 +23,8 @@ FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), isEvaDead(false), music("
     Eva *eva = new Eva(evaPos);
     AddObject(eva);
     map.SetFocus(eva);
+    map.SetDrawMiniroom(true);
     map.Load("procedural_generated_1", mapString);
-    map.InitMiniroom();
     music.Play(-1);
 }
 

@@ -96,6 +96,15 @@ void Game::Run(void)
             storedState = nullptr;
         }
 
+        SDL_Rect rect;
+        rect.x = Camera::pos.x;
+        rect.y = Camera::pos.y;
+        rect.w = winWidth;
+        rect.h = winHeight;
+        SDL_Renderer *renderer = Game::GetInstance()->GetRenderer();
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+        SDL_RenderFillRect(renderer, &rect);
+
         if (dt < FRAME_TIME)
             SDL_Delay(FRAME_TIME - dt);
         frameStart = currentTime;
@@ -130,12 +139,12 @@ Game::Game(std::string title, int w, int h)
 
     if (Mix_Init(MIX_INIT_OGG) < 0) {
         std::cerr << "Unable to init Mix_Music: " << Mix_GetError()
-                  << std::endl;
+            << std::endl;
         exit(EXIT_SUCCESS);
     }
 
     if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-                      MIX_DEFAULT_CHANNELS, 1024) == -1) {
+                MIX_DEFAULT_CHANNELS, 1024) == -1) {
         std::cerr << "Unable to open audio: " << Mix_GetError() << std::endl;
         exit(EXIT_SUCCESS);
     }
@@ -147,22 +156,22 @@ Game::Game(std::string title, int w, int h)
 
     if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF) == 0) {
         std::cerr << "Unable to init SDL_Image: " << SDL_GetError()
-                  << std::endl;
+            << std::endl;
         exit(EXIT_SUCCESS);
     }
 
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, w, h, 0);
+            SDL_WINDOWPOS_CENTERED, w, h, 0);
     if (!window) {
         std::cerr << "Failed to create a window: " << SDL_GetError()
-                  << std::endl;
+            << std::endl;
         exit(EXIT_SUCCESS);
     }
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer) {
         std::cerr << "Failed to create a renderer: " << SDL_GetError()
-                  << std::endl;
+            << std::endl;
         exit(EXIT_SUCCESS);
     }
 

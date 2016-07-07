@@ -32,11 +32,6 @@ class LevelMap
      */
     void Load(std::string name, std::string file);
 
-    /**
-     * Initialise miniroom values.
-     */
-    void InitMiniroom(void);
-
     void SetFocus(GameObject *focus);
 
     void Update(float dt);
@@ -105,8 +100,11 @@ class LevelMap
 
     void NotifyDeadMonster(void);
 
+    void SetDrawMiniroom(bool drawMiniroom);
+
   private:
     GameObject *focus;
+    bool drawMiniroom;
     std::string name; 
     int mapWidth, mapHeight, index;
     Vec2 currentRoom;

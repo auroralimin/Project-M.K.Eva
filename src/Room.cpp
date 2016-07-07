@@ -8,13 +8,13 @@
 #include "TurretMobMonster.h"
 #include "BallsManager.h"
 
-Room::Room(std::string level, std::string file, TileSet *tileSet,
+Room::Room(std::string level, int id, std::string file, TileSet *tileSet,
         GameObject *focus, int type) :
-    level(level), tileMap(file, tileSet), focus(focus), type(type),
+    level(level), tileMap(file, tileSet), focus(focus), id(id), type(type),
     nMonsters(0), currentState(roomState::INACTIVE), isNeighbour(false),
     isFirst(false)
 {
-    SetDoors(file);
+    SetDoors();
     LoadWallRects();
 }
 
@@ -85,14 +85,11 @@ std::vector<Rect> Room::GetWallRect(void)
     return wallRect;
 }
 
-void Room::SetDoors(std::string file)
+void Room::SetDoors(void)
 {
-    std::string delim = "/";
-    int start = file.rfind(delim);
-    int end = file.find('.', start);
-    int fileId = atoi(file.substr(start + 1, end - 1).c_str());
-
+    int fileId = id;
     std::string directionStr[4] = {"up/", "left/", "down/", "right/"};
+   
     for (int i = 4; i > 0; --i)
         if (fileId >= pow(10, i)) {
             std::string direction = directionStr[4 - i];
@@ -216,5 +213,10 @@ void Room::SetIsNeighbour(bool isNeighbour)
 bool Room::GetIsNeighbour(void)
 {
     return isNeighbour;
+}
+
+int Room::GetId(void)
+{
+    return id;
 }
 

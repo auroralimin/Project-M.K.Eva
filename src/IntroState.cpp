@@ -14,8 +14,8 @@ IntroState::IntroState(Vec2 evaPos) : map(), music("music/introMusic.ogg")
     Eva *eva = new Eva(evaPos);
     AddObject(eva);
     map.SetFocus(eva);
+    map.SetDrawMiniroom(true);
     map.Load("intro", "map/intro.txt");
-    map.InitMiniroom();
     map.SetFocus(eva);
     music.Play(-1);
 }
