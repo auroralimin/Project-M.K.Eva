@@ -29,4 +29,3 @@ bool Music::IsOpen(void)
 {
     return (music != nullptr);
 }
-

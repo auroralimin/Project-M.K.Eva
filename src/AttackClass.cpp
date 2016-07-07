@@ -4,9 +4,10 @@
 AttackClass::AttackClass(Vec2 pos, Vec2 hitboxOffset, Vec2 hitboxDim,
                          int orientation, std::string sprite, int frameCount,
                          float frameTime)
-    : sp(sprite, frameCount, frameTime), timeElapsed(),
+    : timeElapsed(),
       duration(frameCount * frameTime)
 {
+    sp = Sprite(sprite, frameCount, frameTime);
     box.pos = pos;
     box.dim = Vec2(sp.GetWidth(), sp.GetHeight());
     hitbox.dim = Vec2(box.dim.x / 2, box.dim.y);

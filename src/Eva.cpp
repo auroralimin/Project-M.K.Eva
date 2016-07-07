@@ -12,7 +12,9 @@
 
 #include <iostream>
 
-Eva::Eva(Vec2 pos)
+#define EVA_SPAWN_DELAY 0.5
+
+Eva::Eva(Vec2 pos) : spawnDelayTimer()
 {
     currentClass = BASE;
 
@@ -29,6 +31,8 @@ Eva::Eva(Vec2 pos)
     attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y);
     rotation = 0;
     hp = 100;
+    spawnDelayTimer.Restart();
+    doneSpawning = false;
 }
 
 void Eva::Render()
@@ -51,95 +55,101 @@ void Eva::Update(float dt)
                          RIGHT_ARROW_KEY};
     Vec2 speed = Vec2(0, 0);
     InputManager &manager = InputManager::GetInstance();
+    if (spawnDelayTimer.Get() < EVA_SPAWN_DELAY)
+        spawnDelayTimer.Update(dt);
+    else
+        doneSpawning = true;
 
     if (manager.KeyPress(SPACEBAR)) // temporary suicide button
         TakeDamage(8000);
 
-    previousPos = box.pos;
+    if (doneSpawning){
+        previousPos = box.pos;
 
-    //Check for attack input
-    for (int i = 0; i < 4; i++) {
-        if (manager.IsKeyDown(keys[i]) &&
-                evaClasses[currentClass]->AttackReady()) {
-            if (currentClass == DECKER)
-                evaClasses[currentClass]->Attack(box.pos, 1);
-            else
-                evaClasses[currentClass]->Attack(box.pos, i);
+        //Check for attack input
+        for (int i = 0; i < 4; i++) {
+            if (manager.IsKeyDown(keys[i]) &&
+                    evaClasses[currentClass]->AttackReady()) {
+                if (currentClass == DECKER)
+                    evaClasses[currentClass]->Attack(box.pos, 1);
+                else
+                    evaClasses[currentClass]->Attack(box.pos, i);
+            }
         }
-    }
 
-    //Check for class change input
-    if (!evaClasses[currentClass]->IsAttacking()) {
-        if (manager.KeyPress(Q_KEY)) {
-            if (currentClass == 0)
-                currentClass = evaClasses.size() - 1;
-            currentClass -= 1;
-            if (currentClass < 1)
-                currentClass = evaClasses.size() - 1;
-        } else if (manager.KeyPress(E_KEY)) {
-            currentClass += 1;
-            if (currentClass > evaClasses.size() - 1)
-                currentClass = 1;
+        //Check for class change input
+        if (!evaClasses[currentClass]->IsAttacking()) {
+            if (manager.KeyPress(Q_KEY)) {
+                if (currentClass == 0)
+                    currentClass = evaClasses.size() - 1;
+                currentClass -= 1;
+                if (currentClass < 1)
+                    currentClass = evaClasses.size() - 1;
+            } else if (manager.KeyPress(E_KEY)) {
+                currentClass += 1;
+                if (currentClass > evaClasses.size() - 1)
+                    currentClass = 1;
+            }
         }
-    }
 
-    //Check for movement input
-    if (!evaClasses[currentClass]->IsAttacking() ||
-            currentClass == GUNSLINGER) {
-        if (manager.IsKeyDown(D_KEY))
-            speed.x += 1;
-        if (manager.IsKeyDown(A_KEY))
-            speed.x -= 1;
-        if (manager.IsKeyDown(S_KEY))
-            speed.y += 1;
-        if (manager.IsKeyDown(W_KEY))
-            speed.y -= 1;
-
-        //Update eva position
-        speed = speed.Normalize();
+        //Check for movement input
         if (!evaClasses[currentClass]->IsAttacking() ||
-                currentClass == GUNSLINGER)
-            box.pos += speed * evaClasses[currentClass]->movSpeed * dt;
+                currentClass == GUNSLINGER) {
+            if (manager.IsKeyDown(D_KEY))
+                speed.x += 1;
+            if (manager.IsKeyDown(A_KEY))
+                speed.x -= 1;
+            if (manager.IsKeyDown(S_KEY))
+                speed.y += 1;
+            if (manager.IsKeyDown(W_KEY))
+                speed.y -= 1;
 
-        if (speed.y > 0 &&
-                !(evaClasses[currentClass]->IsAttacking() &&
-                  currentClass == GUNSLINGER))
-            evaClasses[currentClass]->SetCurrentState(MOVING_DOWN);
-        if (speed.y < 0 &&
-                !(evaClasses[currentClass]->IsAttacking() &&
-                  currentClass == GUNSLINGER))
-            evaClasses[currentClass]->SetCurrentState(MOVING_UP);
-        if (speed.x > 0 && speed.y == 0 &&
-                !(evaClasses[currentClass]->IsAttacking() &&
-                  currentClass == GUNSLINGER))
-            evaClasses[currentClass]->SetCurrentState(MOVING_RIGHT);
-        if (speed.x < 0 && speed.y == 0 &&
-                !(evaClasses[currentClass]->IsAttacking() &&
-                  currentClass == GUNSLINGER))
-            evaClasses[currentClass]->SetCurrentState(MOVING_LEFT);
-        if (speed.GetModule() == 0 &&
-                !(evaClasses[currentClass]->IsAttacking() &&
-                  currentClass == GUNSLINGER))
-            evaClasses[currentClass]->SetCurrentState(IDLE);
+            //Update eva position
+            speed = speed.Normalize();
+            if (!evaClasses[currentClass]->IsAttacking() ||
+                    currentClass == GUNSLINGER)
+                box.pos += speed * evaClasses[currentClass]->movSpeed * dt;
 
-    }
+            if (speed.y > 0 &&
+                    !(evaClasses[currentClass]->IsAttacking() &&
+                      currentClass == GUNSLINGER))
+                evaClasses[currentClass]->SetCurrentState(MOVING_DOWN);
+            if (speed.y < 0 &&
+                    !(evaClasses[currentClass]->IsAttacking() &&
+                      currentClass == GUNSLINGER))
+                evaClasses[currentClass]->SetCurrentState(MOVING_UP);
+            if (speed.x > 0 && speed.y == 0 &&
+                    !(evaClasses[currentClass]->IsAttacking() &&
+                      currentClass == GUNSLINGER))
+                evaClasses[currentClass]->SetCurrentState(MOVING_RIGHT);
+            if (speed.x < 0 && speed.y == 0 &&
+                    !(evaClasses[currentClass]->IsAttacking() &&
+                      currentClass == GUNSLINGER))
+                evaClasses[currentClass]->SetCurrentState(MOVING_LEFT);
+            if (speed.GetModule() == 0 &&
+                    !(evaClasses[currentClass]->IsAttacking() &&
+                      currentClass == GUNSLINGER))
+                evaClasses[currentClass]->SetCurrentState(IDLE);
 
-    //Update hitboxes positions
-    hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
-    if (Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
-        box.pos.y = previousPos.y;
+        }
 
-    hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
-    if (Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
-        box.pos.x = previousPos.x;
+        //Update hitboxes positions
+        hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
+        if (Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
+            box.pos.y = previousPos.y;
 
-    hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
+        hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
+        if (Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
+            box.pos.x = previousPos.x;
 
-    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y);
+        hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
 
-    //Update classes to make sure all cooldowns countdown
-    for(int i = 0; i < evaClasses.size(); i++) {
-        evaClasses[i]->Update(dt, hp);
+        attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y);
+
+        //Update classes to make sure all cooldowns countdown
+        for(uint i = 0; i < evaClasses.size(); i++) {
+            evaClasses[i]->Update(dt, hp);
+        }
     }
 
 }
@@ -173,7 +183,8 @@ bool Eva::Is(std::string className)
 
 void Eva::TakeDamage(float dmg)
 {
-    hp -= (dmg - (float)dmg * evaClasses[currentClass]->def / 100);
+    if(!(evaClasses[currentClass]->IsAttacking() && currentClass == DECKER))
+        hp -= (dmg - (float)dmg * evaClasses[currentClass]->def / 100);
     if (Config::DEBUG)
         std::cout << "[Eva] hp: " << hp << std::endl;
     if (IsDead()) {

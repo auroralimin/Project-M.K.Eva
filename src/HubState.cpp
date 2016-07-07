@@ -6,12 +6,17 @@
 #include "InputManager.h"
 #include "IntroState.h"
 #include "FirstLevelState.h"
+#include "Animation.h"
+
+#define EVA_DRAWER_POSITION_X 252
+#define EVA_DRAWER_POSITION_Y 160
 
 HubState::HubState(void) : map(), music("music/hubMusic.ogg")
 {
     map.Load("map/hub.txt");
-    AddObject(new Eva(Vec2(Game::GetInstance()->GetWinWidth() / 2,
-                           Game::GetInstance()->GetWinHeight() / 2)));
+    AddObject(new Animation(Vec2(EVA_DRAWER_POSITION_X, EVA_DRAWER_POSITION_Y),
+                            0, "sprites/eva/drawer/DRAWER-EVA.png",
+                            48, 0.08, true, 3));
 
     music.Play(-1);
 }
@@ -41,7 +46,14 @@ void HubState::Pause(void)
 
 void HubState::Resume(void)
 {
-    // do nothing
+    //    music.Play(-1);
+    //    AddObject(new Animation(Vec2(EVA_DRAWER_POSITION_X, EVA_DRAWER_POSITION_Y),
+    //                            0, "sprites/eva/drawer/DRAWER-EVA.png",
+    //                            48, 0.08, true, 3));
+    //    for (unsigned int i = 0; i < objectArray.size(); i++) {
+    //        if (objectArray[i]->Is("Eva"))
+    //            objectArray.erase(objectArray.begin() + i);
+    //
 }
 
 bool HubState::IsCollidingWithWall(GameObject *o)
@@ -70,12 +82,14 @@ void HubState::UpdateEva(int i)
     if (objectArray[i]->box.pos.x + objectArray[i]->box.dim.x < 0) {
         Game *game = Game::GetInstance();
         game->Push(new IntroState(Vec2(roomWidth, objectArray[i]->box.pos.y)));
+        popRequested = quitRequested = true;
         objectArray[i]->box.pos.x = Game::GetInstance()->GetWinWidth() / 2;
         objectArray[i]->box.pos.y = Game::GetInstance()->GetWinHeight() / 2;
     } else if (objectArray[i]->box.pos.x > roomWidth) {
         Game *game = Game::GetInstance();
         game->Push(new FirstLevelState(
             Vec2(-objectArray[i]->box.dim.x, objectArray[i]->box.pos.y)));
+        popRequested = quitRequested = true;
         objectArray[i]->box.pos.x = Game::GetInstance()->GetWinWidth() / 2;
         objectArray[i]->box.pos.y = Game::GetInstance()->GetWinHeight() / 2;
     } else if (objectArray[i]->box.pos.y + objectArray[i]->box.dim.y < 0) {

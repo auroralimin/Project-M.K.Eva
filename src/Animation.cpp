@@ -1,10 +1,16 @@
 #include "Animation.h"
 #include "Camera.h"
 #include "Config.h"
+#include "Game.h"
+#include "Eva.h"
+
+#define EVA_SPAWN_POSITION_X 192
+#define EVA_SPAWN_POSITION_Y 103
+
 
 Animation::Animation(Vec2 pos, float rotation, std::string sprite,
-                     int frameCount, float frameTime, bool ends)
-    : sp(sprite, frameCount, frameTime), endTimer(), oneTimeOnly(ends),
+                     int frameCount, float frameTime, bool ends, int rows)
+    : sp(sprite, frameCount, frameTime, rows), oneTimeOnly(ends),
       is("Animation:" + sprite)
 {
     animationImg = "";
@@ -12,13 +18,11 @@ Animation::Animation(Vec2 pos, float rotation, std::string sprite,
     this->rotation = rotation;
     box.dim.x = sp.GetWidth();
     box.dim.y = sp.GetHeight();
-    timeLimit = frameCount * frameTime;
 }
 
 void Animation::Update(float dt)
 {
-    sp.Update(dt);
-    endTimer.Update(dt);
+    sp.Update(dt);    
 }
 
 void Animation::Render(void)
@@ -29,7 +33,11 @@ void Animation::Render(void)
 
 bool Animation::IsDead(void)
 {
-    return (oneTimeOnly && endTimer.Get() >= timeLimit);
+    bool isDead = (oneTimeOnly && (sp.GetCurrentFrame() == sp.GetFrameCount() - 1));
+    if (isDead && Is("Animation:sprites/eva/drawer/DRAWER-EVA.png"))
+        Game::GetInstance()->GetCurrentState().AddObject(new Eva(Vec2(EVA_SPAWN_POSITION_X, EVA_SPAWN_POSITION_Y)));
+
+    return isDead;
 }
 
 void Animation::NotifyCollision(GameObject &other, bool movement)

@@ -23,9 +23,10 @@ class Animation : public GameObject
      * @param frameTime a float argument with the frames time
      * @param end a bool argument to check if the animation is played once or
      * repeatedly
+     * @param rows number of rows present in the spritesheet
      */
     Animation(Vec2 pos, float rotation, std::string sprite, int frameCount = 1,
-              float frameTime = 0.1, bool ends = true);
+              float frameTime = 0.1, bool ends = true, int rows = 1);
 
     /**
      * Given a delta time, updates the current animation frame.
@@ -73,8 +74,6 @@ class Animation : public GameObject
 
   private:
     Sprite sp;
-    Timer endTimer;
-    float timeLimit;
     bool oneTimeOnly;
     std::string is;
 };

@@ -17,6 +17,8 @@ class FirstLevelState : public State
      */
     FirstLevelState(Vec2 evaPos);
 
+    ~FirstLevelState();
+
     /**
      * Sets room based on Eva position on the map.
      * @param dt time elapsed between th current and the last frame

@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "EvaBase.h"
 #include "EvaClass.h"
+#include "Timer.h"
 
 #include <memory>
 
@@ -87,6 +88,8 @@ class Eva : public GameObject
     std::string evaDeath;
     std::vector<std::unique_ptr<EvaClass>> evaClasses;
     unsigned int currentClass;
+    Timer spawnDelayTimer;
+    bool doneSpawning;
 
     void SetClass(Classes c);
 };

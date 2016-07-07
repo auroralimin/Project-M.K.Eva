@@ -8,6 +8,7 @@
 #include "Eva.h"
 #include "Config.h"
 #include "Game.h"
+#include "HubState.h"
 
 FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), isEvaDead(false), music("music/introMusic.ogg")
 {
@@ -24,6 +25,11 @@ FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), isEvaDead(false), music("
     map.Load(mapString);
     map.InitMiniroom();
     music.Play(-1);
+}
+
+FirstLevelState::~FirstLevelState()
+{
+    music.Stop();
 }
 
 void FirstLevelState::Update(float dt)
@@ -63,8 +69,11 @@ void FirstLevelState::UpdateArray(float dt)
                 evaDeath = ((Eva *)(objectArray[i].get()))->GetEvaDeath();
                 isEvaDead = true;
             }
-            if (isEvaDead && objectArray[i]->Is(evaDeath))
+            if (isEvaDead && objectArray[i]->Is(evaDeath)){
                 popRequested = quitRequested = true;
+                Game *game = Game::GetInstance();
+                game->Push(new HubState());
+            }
 
             objectArray.erase(objectArray.begin() + i);
         } else {

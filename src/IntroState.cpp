@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "Collision.h"
 #include "Timer.h"
+#include "HubState.h"
 
 IntroState::IntroState(Vec2 evaPos) : map(), music("music/introMusic.ogg")
 {
@@ -56,6 +57,7 @@ bool IntroState::IsCollidingWithWall(GameObject *o)
 
 void IntroState::UpdateArray(float dt)
 {
+
     static std::string evaDeath = "";
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i]->IsDead()) {
@@ -66,8 +68,11 @@ void IntroState::UpdateArray(float dt)
                     objectArray[i]->Is("Mekabug") ||
                     objectArray[i]->Is("Ball"))
                 map.NotifyDeadMonster();
-            else if (objectArray[i]->Is(evaDeath))
+            else if (objectArray[i]->Is(evaDeath)){
                 popRequested = quitRequested = true;
+                Game *game = Game::GetInstance();
+                game->Push(new HubState());
+            }
             objectArray.erase(objectArray.begin() + i);
         } else {
             if (objectArray[i]->Is("Eva"))

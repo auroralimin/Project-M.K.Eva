@@ -109,6 +109,18 @@ class Sprite
      */
     void SetScaleY(float y);
 
+    /**
+     * Gets the current frame
+     * @return Returns the current frame of the sprite
+     */
+    int GetCurrentFrame(void);
+
+    /**
+     * Returns the sprite's frame count
+     * @return Returns the frame count
+     */
+    int GetFrameCount(void);
+
   private:
     int width, height, frameCount, currentFrame, rows;
     float frameTime, timeElapsed, scaleX, scaleY;

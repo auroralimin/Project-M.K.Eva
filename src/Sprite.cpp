@@ -110,3 +110,13 @@ void Sprite::SetScaleY(float y)
     scaleY = y;
 }
 
+int Sprite::GetCurrentFrame()
+{
+    return currentFrame;
+}
+
+int Sprite::GetFrameCount()
+{
+    return frameCount;
+}
+
