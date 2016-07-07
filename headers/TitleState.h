@@ -2,6 +2,7 @@
 #include "Sprite.h"
 #include "Text.h"
 #include "Timer.h"
+#include "Cutscene.h"
 
 class TitleState : public State
 {
@@ -15,6 +16,7 @@ class TitleState : public State
         void CheckMovementCollisions(void);
 
 	private:
+        Cutscene cutscene, titleFadeIn;
 		Sprite title, msg;
 		Timer timer;
 };
