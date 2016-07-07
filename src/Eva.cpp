@@ -170,7 +170,13 @@ void Eva::NotifyCollision(GameObject &other, bool movement)
         Bullet &bullet = (Bullet &)other;
         if (bullet.targetsPlayer)
             TakeDamage(3);
-    } else if (movement && (!other.Is("BallMonster"))) {
+    } else if (other.Is("Ball")) {
+        TakeDamage(0);
+    } else if (other.Is("MonsterBallManager")) {
+        TakeDamage(0.1);
+    } else if (other.Is("LifeItem")) { 
+        hp += 20; 
+    } else if (movement && (!other.Is("Ball"))) {
         box.pos = previousPos;
     }
 }
@@ -188,7 +194,7 @@ void Eva::TakeDamage(float dmg)
         std::cout << "[Eva] hp: " << hp << std::endl;
     if (IsDead()) {
         evaDeath = std::string("Animation:sprites/eva/death/EVA-") +
-                   classes[currentClass] + std::string("-DEATH.png");
+            classes[currentClass] + std::string("-DEATH.png");
         evaClasses[currentClass]->Die(box.pos);
     }
 }

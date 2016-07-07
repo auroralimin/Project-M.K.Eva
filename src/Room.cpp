@@ -2,6 +2,7 @@
 
 #include "Room.h"
 #include "Game.h"
+#include "Item.h"
 #include "Config.h"
 #include "TurretMonster.h"
 #include "MekaBugMonster.h"
@@ -40,6 +41,8 @@ void Room::Update(float dt)
             }
         ActivateRoom();
     } else if ((currentState == roomState::ACTIVE) && nMonsters <= 0) {
+        Game::GetInstance()->GetCurrentState().AddObject(new Item("LifeItem",
+                    Vec2(SCREEN_W/2, SCREEN_H/2 + SCREEN_PADDING)));
         currentState = roomState::DISABLED;
         for (int i = 0; i < 4; ++i)
             if (doors[i].GetCurrentState() == Door::DoorState::CLOSED)
