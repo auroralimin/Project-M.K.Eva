@@ -13,6 +13,12 @@
 #include <iostream>
 
 #define EVA_SPAWN_DELAY 0.5
+#define HITBOX_DIM_OFFSET_X 2
+#define HITBOX_DIM_OFFSET_Y 4
+#define HITBOX_POS_OFFSET_X box.dim.x/4
+#define HITBOX_POS_OFFSET_Y 3*box.dim.y/4
+#define AH_DIM_OFFSET_X 3
+#define AH_POS_OFFSET_X box.dim.x/3
 
 Eva::Eva(Vec2 pos) : spawnDelayTimer()
 {
@@ -25,10 +31,10 @@ Eva::Eva(Vec2 pos) : spawnDelayTimer()
     box.pos = pos;
     box.dim = Vec2(evaClasses[currentClass]->animations.GetCurrentWidth(),
                    evaClasses[currentClass]->animations.GetCurrentHeight());
-    hitbox.dim = Vec2(box.dim.x / 2, box.dim.y / 4);
-    hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
-    attackHitbox.dim = Vec2(box.dim.x/3, box.dim.y);
-    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y);
+    hitbox.dim = Vec2(box.dim.x/HITBOX_DIM_OFFSET_X, box.dim.y/HITBOX_DIM_OFFSET_Y);
+    hitbox.pos = Vec2(box.pos.x + HITBOX_POS_OFFSET_X, box.pos.y + HITBOX_POS_OFFSET_Y);
+    attackHitbox.dim = Vec2(box.dim.x/AH_DIM_OFFSET_X, box.dim.y);
+    attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y);
     rotation = 0;
     hp = 100;
     spawnDelayTimer.Restart();
@@ -151,7 +157,6 @@ void Eva::Update(float dt)
             evaClasses[i]->Update(dt, hp);
         }
     }
-
 }
 
 bool Eva::IsDead()

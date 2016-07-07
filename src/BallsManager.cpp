@@ -40,38 +40,44 @@ void BallsManager::Update(float dt)
 {
     timer.Update(dt);
 
-    attackHitbox.pos.x = focus->box.pos.x - 45;
-    attackHitbox.pos.y = focus->box.pos.y - 70;
-    attackHitbox.dim = Vec2(0, 0);
-    if (currentState == BallsState::RESTING && timer.Get() >= REST_TIME) {
-        currentState = BallsState::WARNING;
-        timer.Restart();
-        SetCurrentState(WARNING);
-    } else if (currentState == BallsState::WARNING &&
-               timer.Get() >= WARN_TIME) {
-        currentState = BallsState::ATTACKING;
-        timer.Restart();
-        SetCurrentState(ATTACKING);
-    } else if (currentState == BallsState::ATTACKING) {
-        attackHitbox.dim = Vec2(220, 180);
-        for (size_t i = 0; i < ballArray.size(); i++) {
-            float angle = 2 * M_PI * (i + 1) / ballArray.size();
-            Vec2 pos = Vec2(BALL_EVA_DISTANCE, 0);
-            ballArray[i]->box.pos =
-                Vec2(pos.x * cos(angle) - pos.y * sin(angle),
-                     pos.y * cos(angle) + pos.x * sin(angle));
-
-            Vec2 evaPos = focus->box.pos;
-            evaPos.y -= focus->box.dim.y / 2;
-            ballArray[i]->box.pos += evaPos;
-        }
-        focus->TakeDamage(0.1);
-        if (timer.Get() >= ATTACK_TIME) {
-            currentState = BallsState::RESTING;
-            RandTeleport();
+    if (focus != nullptr) {
+        attackHitbox.pos.x = focus->box.pos.x - 45;
+        attackHitbox.pos.y = focus->box.pos.y - 70;
+        attackHitbox.dim = Vec2(0, 0);
+        if (currentState == BallsState::RESTING && timer.Get() >= REST_TIME) {
+            currentState = BallsState::WARNING;
             timer.Restart();
-            SetCurrentState(RESTING);
+            SetCurrentState(WARNING);
+        } else if (currentState == BallsState::WARNING &&
+                   timer.Get() >= WARN_TIME) {
+            currentState = BallsState::ATTACKING;
+            timer.Restart();
+            SetCurrentState(ATTACKING);
+        } else if (currentState == BallsState::ATTACKING) {
+            attackHitbox.dim = Vec2(220, 180);
+            for (size_t i = 0; (i < ballArray.size()) && (focus != nullptr); i++) {
+                float angle = 2 * M_PI * (i + 1) / ballArray.size();
+                Vec2 pos = Vec2(BALL_EVA_DISTANCE, 0);
+                ballArray[i]->box.pos =
+                    Vec2(pos.x * cos(angle) - pos.y * sin(angle),
+                         pos.y * cos(angle) + pos.x * sin(angle));
+
+                Vec2 evaPos = focus->box.pos;
+                evaPos.y -= focus->box.dim.y / 2;
+                ballArray[i]->box.pos += evaPos;
+
+                focus->TakeDamage(0.02);
+            }
+            if (timer.Get() >= ATTACK_TIME) {
+                currentState = BallsState::RESTING;
+                RandTeleport();
+                timer.Restart();
+                SetCurrentState(RESTING);
+            }
         }
+    } else {
+        currentState = BallsState::RESTING;
+        SetCurrentState(RESTING);
     }
         
     ClearDeadBalls();

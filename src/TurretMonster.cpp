@@ -8,6 +8,14 @@
 #include "InputManager.h"
 
 #define TURRET_ANIMATIONS 1
+#define HITBOX_DIM_OFFSET_X 2
+#define HITBOX_DIM_OFFSET_Y 4
+#define HITBOX_POS_OFFSET_X box.dim.x/4
+#define HITBOX_POS_OFFSET_Y box.dim.y/1.5
+#define AH_DIM_OFFSET_X 2
+#define AH_DIM_OFFSET_Y 1.5
+#define AH_POS_OFFSET_X box.dim.x/4
+#define AH_POS_OFFSET_Y box.dim.y/4
 
 TurretMonster::TurretMonster(Room *room, Vec2 pos, GameObject *focus) :
     focus(focus)
@@ -21,10 +29,10 @@ TurretMonster::TurretMonster(Room *room, Vec2 pos, GameObject *focus) :
 
     box.pos = pos;
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
-    hitbox.dim = Vec2(box.dim.x/2, box.dim.y/4);
-    hitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + box.dim.y/1.5);
-    attackHitbox.dim = Vec2(box.dim.x/2, box.dim.y/1.5);
-    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/4, box.pos.y + box.dim.y/4);
+    hitbox.dim = Vec2(box.dim.x/HITBOX_DIM_OFFSET_X, box.dim.y/HITBOX_DIM_OFFSET_Y);
+    hitbox.pos = Vec2(box.pos.x + HITBOX_POS_OFFSET_X, box.pos.y + HITBOX_POS_OFFSET_Y);
+    attackHitbox.dim = Vec2(box.dim.x/AH_DIM_OFFSET_X, box.dim.y/AH_DIM_OFFSET_Y);
+    attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
     hp = 100;
     rotation = 0;
 }
@@ -38,7 +46,7 @@ void TurretMonster::Update(float dt)
         TakeDamage(8000);
     }
 
-    if (timer.Get() >= 2.5f) {
+    if ((timer.Get() >= 2.5f) && (focus != nullptr)) {
         ShootPattern1();
         timer.Restart();
     }

@@ -6,6 +6,10 @@
 #include "Bullet.h"
 
 #define BALL_ANIMATIONS 3
+#define AH_DIM_OFFSET_X 3
+#define AH_DIM_OFFSET_Y 3
+#define AH_POS_OFFSET_X box.dim.x/3
+#define AH_POS_OFFSET_Y box.dim.y/2
 
 BallMonster::BallMonster(Room *room, Vec2 pos) : previousPos(pos)
 {
@@ -20,8 +24,8 @@ BallMonster::BallMonster(Room *room, Vec2 pos) : previousPos(pos)
 
     box.pos = pos;
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
-    attackHitbox.dim = Vec2(box.dim.x/3, box.dim.y/3);
-    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y + box.dim.y/2);
+    attackHitbox.dim = Vec2(box.dim.x/AH_DIM_OFFSET_X, box.dim.y/AH_DIM_OFFSET_Y);
+    attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
 
     hp = 100;
     rotation = 0;
@@ -35,7 +39,7 @@ void BallMonster::Update(float dt)
         TakeDamage(8000);
     }
     animations.Update(dt);
-    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y + box.dim.y/2);
+    attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
 }
 
 void BallMonster::NotifyCollision(GameObject &other, bool movement)

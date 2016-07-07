@@ -9,6 +9,14 @@
 #include "Animation.h"
 
 #define TURRET_MOB_ANIMATIONS 5
+#define HITBOX_DIM_OFFSET_X 2
+#define HITBOX_DIM_OFFSET_Y 4
+#define HITBOX_POS_OFFSET_X 35
+#define HITBOX_POS_OFFSET_Y 80
+#define AH_DIM_OFFSET_X 3
+#define AH_DIM_OFFSET_Y 1.5
+#define AH_POS_OFFSET_X box.dim.x/3
+#define AH_POS_OFFSET_Y box.dim.y/4
 
 TurretMobMonster::TurretMobMonster(Room *room, Vec2 pos, GameObject *focus)
     : focus(focus), movementMode(TurretMobMonsterMovement::RESTING), previousPos(0, 0),
@@ -28,10 +36,10 @@ TurretMobMonster::TurretMobMonster(Room *room, Vec2 pos, GameObject *focus)
 
     box.pos = pos;
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
-    hitbox.dim = Vec2(box.dim.x / 2, box.dim.y / 4);
-    hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 80);
-    attackHitbox.dim = Vec2(box.dim.x/3, box.dim.y/1.5);
-    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y + box.dim.y/4);
+    hitbox.dim = Vec2(box.dim.x/HITBOX_DIM_OFFSET_X , box.dim.y/HITBOX_DIM_OFFSET_Y);
+    hitbox.pos = Vec2(box.pos.x + HITBOX_POS_OFFSET_X, box.pos.y + HITBOX_POS_OFFSET_Y);
+    attackHitbox.dim = Vec2(box.dim.x/AH_DIM_OFFSET_X, box.dim.y/AH_DIM_OFFSET_Y);
+    attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
 
     hp = 100;
     rotation = 0;
@@ -43,9 +51,11 @@ void TurretMobMonster::Update(float dt)
     if (InputManager::GetInstance().KeyPress(J_KEY))
         TakeDamage(8000);
 
-    LookAtFocus();
-    Movement(dt);
-    Attack(dt);
+    if (focus != nullptr) {
+        LookAtFocus();
+        Movement(dt);
+        Attack(dt);
+    }
     animations.Update(dt);
 }
 
@@ -130,8 +140,8 @@ void TurretMobMonster::Movement(float dt)
         movementMode = TurretMobMonsterMovement::MOVING;
     }
 
-    hitbox.pos = Vec2(box.pos.x + 35, box.pos.y + 80);
-    attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y + box.dim.y/4);
+    hitbox.pos = Vec2(box.pos.x + HITBOX_POS_OFFSET_X, box.pos.y + HITBOX_POS_OFFSET_Y);
+    attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
 }
 
 void TurretMobMonster::Attack(float dt)
