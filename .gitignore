@@ -35,3 +35,6 @@ json2txt.py
 #no temporary files
 *~
 
+#no coredump files
+core*
+
