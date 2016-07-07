@@ -98,7 +98,7 @@ void TurretMonster::ShootPattern1(void)
         Game::GetInstance()->GetCurrentState().AddObject(
             new Bullet(box.GetCenter(), angle + anglesOffsets[i], 200, 1000,
                        "sprites/monsters/projectiles/BlueBombSpritesheet.png",
-                       Vec2(-10, -10), Vec2(20, 20), 8, 0.3, true));
+                       Vec2(-2.5f, -2.5f), Vec2(5, 5), 8, 0.3, true));
 }
 
 void TurretMonster::ShootPattern2(void)
@@ -107,7 +107,7 @@ void TurretMonster::ShootPattern2(void)
         Bullet *b =
             new Bullet(box.GetCenter(), 2 * M_PI * (i + 1) / 15, 200, 1000,
                        "sprites/monsters/projectiles/GreatEnergyBallSpriteSheet.png",
-                       Vec2(-35, -35), Vec2(70, 70), 4, 0.3, true);
+                       Vec2(-25, -25), Vec2(50, 50), 4, 0.3, true);
 
         Game::GetInstance()->GetCurrentState().AddObject(b);
     }

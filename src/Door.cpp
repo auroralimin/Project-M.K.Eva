@@ -33,13 +33,25 @@ void Door::Update(float dt)
 
 void Door::Render(void)
 {
+    int color[4] = COLOR_HITBOX;
     if (!isTransitioning) {
-        if (state == DoorState::CLOSED)
+        if (state == DoorState::CLOSED) {
             sps[state].Render(spritePos[direction].x - Camera::pos.x,
                     spritePos[direction].y - Camera::pos.y);
-        else if (state == DoorState::WALL)
+            if (Config::HITBOX_MODE) {
+                Vec2 dim = Vec2(sps[state].GetWidth(), sps[state].GetHeight());
+                Rect hitbox = Rect(spritePos[direction], dim); 
+                hitbox.RenderFilledRect(color);
+            }
+        } else if (state == DoorState::WALL) {
             sps[state].Render(spritePos[direction].x - Camera::pos.x,
                     spritePos[direction].y - Camera::pos.y - TILE_SIZE);
+            if (Config::HITBOX_MODE) {
+                Vec2 dim = Vec2(sps[state].GetWidth(), sps[state].GetHeight());
+                Rect hitbox = Rect(spritePos[direction] - Vec2(0, 64), dim); 
+                hitbox.RenderFilledRect(color);
+            }
+        }
     }
 }
 

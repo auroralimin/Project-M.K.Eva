@@ -160,7 +160,7 @@ void TurretMobMonster::Attack(float dt)
         angle = atan2(evaPos.y, evaPos.x);
         Bullet *b = new Bullet(boxVector, angle, 200, 1000,
                                "sprites/monsters/projectiles/BlueBombSpritesheet.png",
-                               Vec2(-10, -10), Vec2(20, 20), 8, 0.3, true);
+                               Vec2(-2.5f, -2.5f), Vec2(5, 5), 8, 0.3, true);
 
         Game::GetInstance()->GetCurrentState().AddObject(b);
 
