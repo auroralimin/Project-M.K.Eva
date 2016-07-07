@@ -1,21 +1,27 @@
 #include "AttackClass.h"
 #include "Config.h"
+#include "Camera.h"
 
-AttackClass::AttackClass(Vec2 pos, Vec2 hitboxOffset, Vec2 hitboxDim,
-                         int orientation, std::string sprite, int frameCount,
+AttackClass::AttackClass(Vec2 pos, Vec2 hitboxOffset, Vec2 hitboxDim, float dmg,
+                         std::string sprite, int frameCount,
                          float frameTime)
     : timeElapsed(),
       duration(frameCount * frameTime)
 {
-    sp = Sprite(sprite, frameCount, frameTime);
+    damage = dmg;
+    if (sprite == ""){
+        sp = Sprite();
+        box.dim = hitboxDim;
+    }
+    else{
+        sp = Sprite(sprite, frameCount, frameTime);
+        box.dim = Vec2(sp.GetWidth(), sp.GetHeight());
+    }
     box.pos = pos;
-    box.dim = Vec2(sp.GetWidth(), sp.GetHeight());
-    hitbox.dim = Vec2(box.dim.x / 2, box.dim.y);
-    hitbox.pos = Vec2(box.pos.x, box.pos.y);
 
-    rotation = (90 * orientation);
-    hitbox.dim = hitboxDim;
-    hitbox.pos = pos + hitboxOffset;
+    rotation = 0;
+    attackHitbox.dim = hitboxDim;
+    attackHitbox.pos = pos + hitboxOffset;
 }
 
 void AttackClass::Render()
@@ -24,7 +30,11 @@ void AttackClass::Render()
     if (Config::HITBOX_MODE)
         hitbox.RenderFilledRect(color);
 
-    sp.Render(box.pos.x, box.pos.y, rotation);
+    int attackColor[4] = COLOR_ATTACK_HITBOX;
+    if (Config::ATTACK_HITBOX_MODE)
+        attackHitbox.RenderFilledRect(attackColor);
+
+    sp.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y, rotation);
 }
 
 bool AttackClass::IsDead()

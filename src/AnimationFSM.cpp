@@ -48,6 +48,11 @@ void AnimationFSM::SetNAnimations(int nAnimations)
     this->nAnimations = nAnimations;
 }
 
+int AnimationFSM::GetCurrentFrame()
+{
+    return animationsArray[currentState]->GetCurrentFrame();
+}
+
 void AnimationFSM::SetAnimation(int index, std::string file, int frameCount,
                                 float frameTime, int rows)
 {

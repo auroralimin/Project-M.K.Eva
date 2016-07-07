@@ -24,7 +24,7 @@ EvaDecker::EvaDecker()
     files = tFiles;
     frameCounts = new int[DECKER_ANIMATIONS]{6, 6, 6, 6, 6, 18};
     frameTimes =
-        new float[DECKER_ANIMATIONS]{0.08, 0.08, 0.08, 0.08, 0.08, 0.08};
+            new float[DECKER_ANIMATIONS]{0.08, 0.08, 0.08, 0.08, 0.08, 0.08};
     int spriteRows[DECKER_ANIMATIONS]{1, 1, 1, 1, 1, 3};
     for (int i = 0; i < DECKER_ANIMATIONS; i++)
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i], spriteRows[i]);
@@ -44,17 +44,15 @@ void EvaDecker::Update(float dt, float hp)
 
     // hardcoded numbers will be changed with final sprite
     if (isAttacking) {
-        atkTimer.Update(dt);
-        if (atkTimer.Get() >= 13 * frameTimes[DECKER_ATTACKING] && atkStarted)
-           // Shockwave(atkPos);
-        if (atkTimer.Get() >= 18 * frameTimes[DECKER_ATTACKING]) {
+        if (animations.GetCurrentFrame() == 13 && atkStarted)
+            Shockwave(atkPos);
+        if (animations.GetCurrentFrame() ==  17) {
             isAttacking = false;
-            atkTimer.Restart();
         }
     }
     if (!atkReady) {
         atkCooldown.Update(dt);
-        if (atkCooldown.Get() >= 18 * frameTimes[DECKER_ATTACKING] / atkSpeed) {
+        if (atkCooldown.Get() >= 17 * frameTimes[DECKER_ATTACKING] / atkSpeed) {
             atkReady = true;
             atkCooldown.Restart();
         }
@@ -91,11 +89,14 @@ void EvaDecker::Shockwave(Vec2 pos)
 {
     atkStarted = false;
 
-    int signalsX[4] = {1, -1, -1, 1};
-    int signalsY[4] = {1, 1, -1, -1};
-    for (int i = 0; i < 4; ++i)
-        Game::GetInstance()->GetCurrentState().AddObject(new AttackClass(
-            pos + Vec2(60 * signalsX[i], 60 * signalsY[i]), Vec2(0, 0),
-            Vec2(130, 130), 0, "sprites/eva/attack/aliendeath.png", 4, 0.08f));
+    Vec2 offset(-70, -60);
+    Vec2 hitboxOffset(0, 0);
+    Vec2 hitboxDim(260, 260);
+
+    Game::GetInstance()->GetCurrentState().AddObject(new AttackClass(
+                                                         pos + offset,
+                                                         hitboxOffset,
+                                                         hitboxDim,
+                                                         atk, "", 5, 0.08));
 }
 

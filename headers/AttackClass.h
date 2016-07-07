@@ -7,8 +7,8 @@
 class AttackClass : public GameObject
 {
   public:
-    AttackClass(Vec2 pos, Vec2 hitboxOffset, Vec2 hitboxDim, int orientation,
-                std::string sprite, int frameCount = 1, float frameTime = 1);
+    AttackClass(Vec2 pos, Vec2 hitboxOffset, Vec2 hitboxDim, float dmg,
+                std::string sprite = "", int frameCount = 1, float frameTime = 1);
 
     void Render();
 
@@ -21,6 +21,8 @@ class AttackClass : public GameObject
     bool Is(std::string className);
 
     void TakeDamage(float dmg = 1);
+
+    float damage;
 
   private:
     Sprite sp;

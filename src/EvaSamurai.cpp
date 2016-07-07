@@ -28,7 +28,7 @@ EvaSamurai::EvaSamurai() : EvaClass(SAMURAI_ANIMATIONS),
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
 
     movSpeed = 100;
-    atk = 1;
+    atk = 100;
     def = 40;
     atkSpeed = 0.8;
     isAttacking = false;
@@ -72,12 +72,12 @@ void EvaSamurai::Attack(Vec2 pos, int direction)
             "sprites/eva/attack/EVA-SAMURAI-ATTACK-DOWN-SpellEffect.png",
             "sprites/eva/attack/EVA-SAMURAI-ATTACK-RIGHT-SpellEffect.png"};
 
-        Vec2 offsets[4] = {{20, -25}, {-85, 20}, {10, 100}, {-35, 20}};
-        Vec2 hitboxOffsets[4] = {{10, 5}, {80, -70}, {5, -30}, {85, -70}};
-        Vec2 hitboxDim[4] = {{75, 100}, {75, 150}, {75, 100}, {75, 150}};
+        Vec2 offsets[4] = {{0, -85}, {-100, 0}, {0, 65}, {35, 0}};
+        Vec2 hitboxOffsets[4] = {{0, 0}, {0, 0}, {0, 0}, {0, 0}};
+        Vec2 hitboxDim[4] = {{120, 184}, {184, 120}, {120, 184}, {184, 120}};
         Game::GetInstance()->GetCurrentState().AddObject(new AttackClass(
             pos + offsets[direction], hitboxOffsets[direction],
-            hitboxDim[direction], 4, sprites[direction], 4, 0.08f));
+            hitboxDim[direction], atk, sprites[direction], 4, 0.08f));
     }
 }
 

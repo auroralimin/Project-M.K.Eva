@@ -73,6 +73,8 @@ class AnimationFSM
 
     void SetNAnimations(int nAnimations);
 
+    int GetCurrentFrame();
+
   private:
     int nAnimations;
     int currentState;
