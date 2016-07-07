@@ -57,7 +57,6 @@ bool IntroState::IsCollidingWithWall(GameObject *o)
 
 void IntroState::UpdateArray(float dt)
 {
-
     static std::string evaDeath = "";
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i]->IsDead()) {

@@ -153,7 +153,7 @@ void Eva::Update(float dt)
         attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y);
 
         //Update classes to make sure all cooldowns countdown
-        for(uint i = 0; i < evaClasses.size(); i++) {
+        for(unsigned long i = 0; i < evaClasses.size(); i++) {
             evaClasses[i]->Update(dt, hp);
         }
     }

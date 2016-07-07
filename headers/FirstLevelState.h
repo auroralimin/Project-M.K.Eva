@@ -56,7 +56,6 @@ class FirstLevelState : public State
   private:
     unsigned int seed;
     LevelMap map;
-    bool isEvaDead;
     Music music;
 
     void UpdateEva(int i);

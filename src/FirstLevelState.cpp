@@ -11,7 +11,8 @@
 #include "HubState.h"
 #include "Collision.h"
 
-FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), isEvaDead(false), music("music/introMusic.ogg")
+FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), 
+    music("music/introMusic.ogg")
 {
     seed = std::time(0);
     if (Config::DEBUG)
@@ -68,11 +69,14 @@ void FirstLevelState::UpdateArray(float dt)
     static std::string evaDeath = "";
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i]->IsDead()) {
-            if (objectArray[i]->Is("Eva")) {
+            if (objectArray[i]->Is("Eva"))
                 evaDeath = ((Eva *)(objectArray[i].get()))->GetEvaDeath();
-                isEvaDead = true;
-            }
-            if (isEvaDead && objectArray[i]->Is(evaDeath)){
+            else if (objectArray[i]->Is("Turret") ||
+                    objectArray[i]->Is("TurretMob") ||
+                    objectArray[i]->Is("Mekabug") ||
+                    objectArray[i]->Is("BallMonster"))
+                map.NotifyDeadMonster();
+            else if (objectArray[i]->Is(evaDeath)){
                 popRequested = quitRequested = true;
                 Game *game = Game::GetInstance();
                 game->Push(new HubState());
@@ -114,10 +118,12 @@ void FirstLevelState::CheckMovementCollisions()
 {
     for (size_t i = 0; i < objectArray.size(); i++) {
         for (size_t j = i + 1; j < objectArray.size(); j++) {
-            if (!(objectArray[i]->Is("Bullet") ||
-                  objectArray[j]->Is("Bullet") || 
+            if (!(objectArray[i]->Is("Bullet")        ||
+                  objectArray[j]->Is("Bullet")        || 
                   objectArray[i]->Is("BallMonster")   ||
-                  objectArray[j]->Is("BallMonster"))) {
+                  objectArray[j]->Is("BallMonster")   ||
+                  objectArray[i]->Is("Attack")        ||
+                  objectArray[j]->Is("Attack"))) {
                 if (Collision::IsColliding(
                         objectArray[i]->hitbox, objectArray[j]->hitbox,
                         objectArray[i]->rotation, objectArray[j]->rotation)) {
