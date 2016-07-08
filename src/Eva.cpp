@@ -205,7 +205,7 @@ bool Eva::Is(std::string className)
 
 void Eva::TakeDamage(float dmg)
 {
-    if(!(evaClasses[currentClass]->IsAttacking() && currentClass == DECKER) &&
+    if (!(evaClasses[currentClass]->IsAttacking() && currentClass == DECKER) &&
             !wasHit){
         hp -= (dmg - (float)dmg * evaClasses[currentClass]->def / 100);
         wasHit = true;
@@ -215,6 +215,7 @@ void Eva::TakeDamage(float dmg)
     if (IsDead()) {
         evaDeath = std::string("Animation:sprites/eva/death/EVA-") +
             classes[currentClass] + std::string("-DEATH.png");
+        std::cout << evaDeath << std::endl;
         evaClasses[currentClass]->Die(box.pos);
     }
 }

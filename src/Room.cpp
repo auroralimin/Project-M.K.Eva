@@ -131,7 +131,6 @@ void Room::LoadWallRects(void)
 
 void Room::ActivateRoom(void)
 {
-    type = 1;
     switch (type)
     {
         case 1:

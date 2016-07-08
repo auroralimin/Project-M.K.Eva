@@ -86,7 +86,7 @@ class Eva : public GameObject
     };
 
   private:
-    const std::string classes[4] = {"BASE", "SAMURAI", "DECKER", "GUN"};
+    const std::string classes[4] = {"BASE", "SAMURAI", "GUN", "DECKER"};
     float *frameTimes;
     int *frameCounts;
     int moveSpeed;
