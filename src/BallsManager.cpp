@@ -22,9 +22,9 @@ BallsManager::BallsManager(Room *room, GameObject *focus)
 
 BallMonster **BallsManager::AddBall(void)
 {
-    float x = Config::Rand(ARENA_WIDTH_INIT, ARENA_WIDTH_END);
-    float y = Config::Rand(ARENA_HEIGHT_INIT, ARENA_HEIGHT_END);
-    ballArray.emplace_back(new BallMonster(room, Vec2(x - 43, y - 110)));
+    ballArray.emplace_back(new BallMonster(room, Vec2(0, 0)));
+    if (currentState == BallsState::RESTING)
+        RandTeleport();
     return &ballArray[ballArray.size() - 1];
 }
 

@@ -134,30 +134,22 @@ void Room::ActivateRoom(void)
     switch (type)
     {
         case 1:
-            {
+        {
             Game::GetInstance()->GetCurrentState().AddObject(new TurretMonster(
-                        this, Vec2(Game::GetInstance()->GetWinWidth()/2 + 50,
-                            Game::GetInstance()->GetWinHeight()/2), focus));
+                        this, Vec2(9 * TILE_SIZE, + 5.4*TILE_SIZE), focus));
             nMonsters++;
             break;
-            }
+        }
         case 2:
-            {
+        {
             Game::GetInstance()->GetCurrentState().AddObject(
                     new MekaBugMonster(this,
-                        Vec2(Game::GetInstance()->GetWinWidth()/2 + 100,
-                            Game::GetInstance()->GetWinHeight()/2 + 100),
-                        focus));
-            Game::GetInstance()->GetCurrentState().AddObject(
-                    new MekaBugMonster(this,
-                        Vec2(Game::GetInstance()->GetWinWidth()/2 - 100,
-                            Game::GetInstance()->GetWinHeight()/2 - 100),
-                        focus));
-            nMonsters += 2;
+                        Vec2(9.5 * TILE_SIZE, + 6*TILE_SIZE), focus));
+            nMonsters++;
             break;
-            }
+        }
         case 3:
-            {
+        {
             BallsManager *ballManager = new BallsManager(this, focus);
             Game::GetInstance()->GetCurrentState().AddObject(ballManager);
             for (int i = 0; i < 5; ++i) {
@@ -166,9 +158,10 @@ void Room::ActivateRoom(void)
             }
             nMonsters += 5;
             break;
-            }
+        }
         case 4:
-            {
+        {
+            /*
             Game::GetInstance()->GetCurrentState().AddObject(
                     new TurretMobMonster(this,
                         Vec2(Game::GetInstance()->GetWinWidth()/2 - 200,
@@ -183,13 +176,14 @@ void Room::ActivateRoom(void)
                         Vec2(Game::GetInstance()->GetWinWidth()/2,
                             Game::GetInstance()->GetWinHeight()/3), focus));
             nMonsters += 3;
+            */
             break;
-            }
+        }
         default:
-            {
+        {
             //do nothing
             break;
-            }
+        }
     }
 }
 
