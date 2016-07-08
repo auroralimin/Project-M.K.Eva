@@ -13,7 +13,7 @@
 #include "Boss.h"
 
 FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), 
-    music("music/introMusic.ogg")
+    music("music/introMusic.ogg"), evaDead(false)
 {
     seed = std::time(0);
     if (Config::DEBUG)
@@ -72,47 +72,28 @@ void FirstLevelState::UpdateArray(float dt)
     static std::string evaDeath = "";
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i]->IsDead()) {
-            if (objectArray[i]->Is("Eva"))
+            if (objectArray[i]->Is("Eva")) {
                 evaDeath = ((Eva *)(objectArray[i].get()))->GetEvaDeath();
-            else if (objectArray[i]->Is("Turret") ||
+                evaDead = true;
+            } else if (objectArray[i]->Is("Turret") ||
                     objectArray[i]->Is("TurretMob") ||
-                    objectArray[i]->Is("Mekabug"))
+                    objectArray[i]->Is("Mekabug")) {
                 map.NotifyDeadMonster();
-            else if (objectArray[i]->Is(evaDeath)){
+            } else if (objectArray[i]->Is(evaDeath)) {
                 popRequested = quitRequested = true;
                 Game *game = Game::GetInstance();
                 game->Push(new HubState());
-            }
-
-            if (objectArray[i]->Is("BallMonster"))
+            } if (objectArray[i]->Is("BallMonster")) {
                 objectArray[i] = nullptr;
+            }
 
             objectArray.erase(objectArray.begin() + i);
         } else {
             if (objectArray[i]->Is("Eva"))
                 UpdateEva(i);
-            objectArray[i]->Update((float)(dt / 1000));
+            if (!(evaDead && objectArray[i]->Is("BallsManager")))
+                objectArray[i]->Update((float)(dt / 1000));
         }
-    }
-}
-
-void FirstLevelState::UpdateEva(int i)
-{
-    int roomWidth = Game::GetInstance()->GetWinWidth();
-    int roomHeight = Game::GetInstance()->GetWinHeight();
-
-    if (objectArray[i]->box.pos.x + objectArray[i]->box.dim.x < 0) {
-        map.RoomLeft();
-        objectArray[i]->box.pos.x = roomWidth;
-    } else if (objectArray[i]->box.pos.x > roomWidth) {
-        map.RoomRight();
-        objectArray[i]->box.pos.x = 0 - objectArray[i]->box.dim.x;
-    } else if (objectArray[i]->box.pos.y + objectArray[i]->box.dim.y < 0) {
-        map.RoomUp();
-        objectArray[i]->box.pos.y = roomHeight;
-    } else if (objectArray[i]->box.pos.y >= roomHeight) {
-        map.RoomDown();
-        objectArray[i]->box.pos.y = 0 - objectArray[i]->box.dim.y;
     }
 }
 
@@ -147,6 +128,26 @@ void FirstLevelState::CheckMovementCollisions()
                 }
             }
         }
+    }
+}
+
+void FirstLevelState::UpdateEva(int i)
+{
+    int roomWidth = Game::GetInstance()->GetWinWidth();
+    int roomHeight = Game::GetInstance()->GetWinHeight();
+
+    if (objectArray[i]->box.pos.x + objectArray[i]->box.dim.x < 0) {
+        map.RoomLeft();
+        objectArray[i]->box.pos.x = roomWidth;
+    } else if (objectArray[i]->box.pos.x > roomWidth) {
+        map.RoomRight();
+        objectArray[i]->box.pos.x = 0 - objectArray[i]->box.dim.x;
+    } else if (objectArray[i]->box.pos.y + objectArray[i]->box.dim.y < 0) {
+        map.RoomUp();
+        objectArray[i]->box.pos.y = roomHeight;
+    } else if (objectArray[i]->box.pos.y >= roomHeight) {
+        map.RoomDown();
+        objectArray[i]->box.pos.y = 0 - objectArray[i]->box.dim.y;
     }
 }
 

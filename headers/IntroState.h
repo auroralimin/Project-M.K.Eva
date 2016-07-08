@@ -59,6 +59,7 @@ class IntroState : public State
   private:
     LevelMap map;
     Music music;
+    bool evaDead;
 
     void UpdateEva(int i);
 };

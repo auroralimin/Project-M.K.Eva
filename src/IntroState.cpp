@@ -10,7 +10,8 @@
 #include "HubState.h"
 #include "Item.h"
 
-IntroState::IntroState(Vec2 evaPos) : map(), music("music/introMusic.ogg")
+IntroState::IntroState(Vec2 evaPos) : map(), music("music/introMusic.ogg"),
+    evaDead(false)
 {
     Eva *eva = new Eva(evaPos, false);
     AddObject(eva);
@@ -65,26 +66,27 @@ void IntroState::UpdateArray(float dt)
     static std::string evaDeath = "";
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i]->IsDead()) {
-            if (objectArray[i]->Is("Eva"))
+            if (objectArray[i]->Is("Eva")) {
                 evaDeath = ((Eva *)(objectArray[i].get()))->GetEvaDeath();
-            else if (objectArray[i]->Is("Turret") ||
+                evaDead = true;
+            } else if (objectArray[i]->Is("Turret") ||
                     objectArray[i]->Is("TurretMob") ||
-                    objectArray[i]->Is("Mekabug"))
+                    objectArray[i]->Is("Mekabug")) {
                 map.NotifyDeadMonster();
-            else if (objectArray[i]->Is(evaDeath)){
+            } else if (objectArray[i]->Is(evaDeath)) {
                 popRequested = quitRequested = true;
                 Game *game = Game::GetInstance();
                 game->Push(new HubState());
-            }
-
-            if (objectArray[i]->Is("BallMonster"))
+            } if (objectArray[i]->Is("BallMonster")) {
                 objectArray[i] = nullptr;
+            }
 
             objectArray.erase(objectArray.begin() + i);
         } else {
             if (objectArray[i]->Is("Eva"))
                 UpdateEva(i);
-            objectArray[i]->Update((float)(dt / 1000));
+            if (!(evaDead && objectArray[i]->Is("BallsManager")))
+                objectArray[i]->Update((float)(dt / 1000));
         }
     }
 }
