@@ -10,6 +10,8 @@
 
 #define EVA_DRAWER_POSITION_X 130
 #define EVA_DRAWER_POSITION_Y 100
+#define EVA_SPAWN_POSITION_X 127
+#define EVA_SPAWN_POSITION_Y 100
 
 HubState::HubState(void) : map(), music("music/hubMusic.ogg")
 {
@@ -64,6 +66,10 @@ void HubState::UpdateArray(float dt)
 {
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i]->IsDead()) {
+            if (objectArray[i]->Is(
+                        "Animation:sprites/eva/drawer/DRAWER-EVA.png"))
+                AddObject(new Eva(Vec2(EVA_SPAWN_POSITION_X,
+                                       EVA_SPAWN_POSITION_Y)));
             objectArray.erase(objectArray.begin() + i);
         } else {
             if (objectArray[i]->Is("Eva"))

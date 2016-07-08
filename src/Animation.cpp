@@ -4,9 +4,6 @@
 #include "Game.h"
 #include "Eva.h"
 
-#define EVA_SPAWN_POSITION_X 127
-#define EVA_SPAWN_POSITION_Y 100
-
 Animation::Animation(Vec2 pos, float rotation, std::string sprite,
                      int frameCount, float frameTime, bool ends, int rows)
     : sp(sprite, frameCount, frameTime, rows), oneTimeOnly(ends), isDead(false),
@@ -36,10 +33,6 @@ void Animation::Render(void)
 
 bool Animation::IsDead(void)
 {
-    if (isDead && Is("Animation:sprites/eva/drawer/DRAWER-EVA.png"))
-        Game::GetInstance()->GetCurrentState().AddObject(
-                new Eva(Vec2(EVA_SPAWN_POSITION_X, EVA_SPAWN_POSITION_Y)));
-
     return isDead;
 }
 
