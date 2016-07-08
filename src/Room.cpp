@@ -160,7 +160,7 @@ void Room::ActivateRoom(void)
             nMonsters += 5;
             break;
         }
-        case 4:
+        case 9:
         {
             
             Game::GetInstance()->GetCurrentState().AddObject(
@@ -252,7 +252,7 @@ void Room::ActivateRoom(void)
             nMonsters++;
             break;
         }
-        case 9:
+        case 4:
         {
             Game::GetInstance()->GetCurrentState().AddObject(new Boss(Vec2(600, 400)));
         }

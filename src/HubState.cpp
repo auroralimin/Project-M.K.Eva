@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Game.h"
 #include "Eva.h"
+#include "Boss.h"
 #include "InputManager.h"
 #include "IntroState.h"
 #include "FirstLevelState.h"
@@ -102,6 +103,9 @@ void HubState::UpdateEva(int i)
         map.RoomUp();
         objectArray[i]->box.pos.y = roomHeight;
     } else if (objectArray[i]->box.pos.y >= roomHeight) {
+        Game::GetInstance()->GetCurrentState().AddObject(new Boss(Vec2(600, 400)));
+        for (int j = 0; j < 3; ++j)
+            ((Eva*)objectArray[i].get())->IncreaseAvailableClasses();
         map.RoomDown();
         objectArray[i]->box.pos.y = 0 - objectArray[i]->box.dim.y;
     }

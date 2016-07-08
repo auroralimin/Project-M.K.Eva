@@ -29,7 +29,6 @@ FirstLevelState::FirstLevelState(Vec2 evaPos) : map(),
     map.SetFocus(eva);
     map.SetDrawMiniroom(true);
     map.Load("procedural_generated_1", mapString);
-    AddObject(new Boss(Vec2(600, 400)));
     music.Play(-1);
 }
 
