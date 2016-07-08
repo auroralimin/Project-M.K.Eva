@@ -40,6 +40,7 @@ bool BallsManager::IsDead()
 
 void BallsManager::Update(float dt)
 {
+    ClearDeadBalls();
     timer.Update(dt);
 
     if (focus != nullptr) {
@@ -87,8 +88,6 @@ void BallsManager::Update(float dt)
         currentState = BallsState::RESTING;
         SetCurrentState(RESTING);
     }
-        
-    ClearDeadBalls();
 }
 
 void BallsManager::NotifyCollision(GameObject &other, bool movement)

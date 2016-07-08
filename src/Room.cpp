@@ -8,6 +8,7 @@
 #include "MekaBugMonster.h"
 #include "TurretMobMonster.h"
 #include "BallsManager.h"
+#include "Boss.h"
 
 Room::Room(std::string level, int id, std::string file, TileSet *tileSet,
         GameObject *focus, int type) :
@@ -161,7 +162,7 @@ void Room::ActivateRoom(void)
         }
         case 4:
         {
-            /*
+            
             Game::GetInstance()->GetCurrentState().AddObject(
                     new TurretMobMonster(this,
                         Vec2(Game::GetInstance()->GetWinWidth()/2 - 200,
@@ -176,8 +177,84 @@ void Room::ActivateRoom(void)
                         Vec2(Game::GetInstance()->GetWinWidth()/2,
                             Game::GetInstance()->GetWinHeight()/3), focus));
             nMonsters += 3;
-            */
+            
             break;
+        }
+        case 5:
+        {
+            Game::GetInstance()->GetCurrentState().AddObject(new TurretMonster(
+                        this, Vec2(9 * TILE_SIZE, + 5.4*TILE_SIZE), focus));
+            nMonsters++;
+            Game::GetInstance()->GetCurrentState().AddObject(
+                    new MekaBugMonster(this,
+                        Vec2(5 * TILE_SIZE, + 3*TILE_SIZE), focus));
+            nMonsters++;
+            Game::GetInstance()->GetCurrentState().AddObject(
+                    new MekaBugMonster(this,
+                        Vec2(8 * TILE_SIZE, + 5*TILE_SIZE), focus));
+            nMonsters++;
+            break;
+        }
+        case 6:
+        {
+            Game::GetInstance()->GetCurrentState().AddObject(new TurretMonster(
+                        this, Vec2(9 * TILE_SIZE, + 5.4*TILE_SIZE), focus));
+            nMonsters++;
+
+            Game::GetInstance()->GetCurrentState().AddObject(
+                    new TurretMobMonster(this,
+                        Vec2(Game::GetInstance()->GetWinWidth()/2 - 250,
+                            Game::GetInstance()->GetWinHeight()/2 - 200),
+                        focus));
+            Game::GetInstance()->GetCurrentState().AddObject(
+                    new TurretMobMonster(this,
+                        Vec2(Game::GetInstance()->GetWinWidth()/3 - 100,
+                            Game::GetInstance()->GetWinHeight()/2 - 50), focus));
+            Game::GetInstance()->GetCurrentState().AddObject(
+                    new TurretMobMonster(this,
+                        Vec2(Game::GetInstance()->GetWinWidth()/2,
+                            Game::GetInstance()->GetWinHeight()/3 + 100), focus));
+            nMonsters += 3;
+            
+            break;
+        }
+        case 7:
+        {
+            BallsManager *ballManager = new BallsManager(this, focus);
+            Game::GetInstance()->GetCurrentState().AddObject(ballManager);
+            for (int i = 0; i < 5; ++i) {
+                Game::GetInstance()->GetCurrentState().AddObject(
+                        *(ballManager->AddBall()));
+            }
+            nMonsters += 5;
+            
+            Game::GetInstance()->GetCurrentState().AddObject(new TurretMonster(
+                        this, Vec2(9 * TILE_SIZE, + 5.4*TILE_SIZE), focus));
+            nMonsters++;
+            break;
+        }
+        case 8:
+        {
+            Game::GetInstance()->GetCurrentState().AddObject(new Boss(Vec2(600, 400)));
+            BallsManager *ballManager = new BallsManager(this, focus);
+            Game::GetInstance()->GetCurrentState().AddObject(ballManager);
+            for (int i = 0; i < 5; ++i) {
+                Game::GetInstance()->GetCurrentState().AddObject(
+                        *(ballManager->AddBall()));
+            }
+            Game::GetInstance()->GetCurrentState().AddObject(
+                    new MekaBugMonster(this,
+                        Vec2(5 * TILE_SIZE, + 3*TILE_SIZE), focus));
+            nMonsters++;
+            Game::GetInstance()->GetCurrentState().AddObject(
+                    new MekaBugMonster(this,
+                        Vec2(8 * TILE_SIZE, + 5*TILE_SIZE), focus));
+            nMonsters++;
+            break;
+        }
+        case 9:
+        {
+            Game::GetInstance()->GetCurrentState().AddObject(new Boss(Vec2(600, 400)));
         }
         default:
         {
