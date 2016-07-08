@@ -13,10 +13,10 @@
 #include <iostream>
 
 #define EVA_SPAWN_DELAY 0.5
-#define HITBOX_DIM_OFFSET_X 2
-#define HITBOX_DIM_OFFSET_Y 4
-#define HITBOX_POS_OFFSET_X box.dim.x/4
-#define HITBOX_POS_OFFSET_Y 3*box.dim.y/4
+#define HITBOX_DIM_OFFSET_X 3.0f
+#define HITBOX_DIM_OFFSET_Y 6
+#define HITBOX_POS_OFFSET_X 2*box.dim.x/6
+#define HITBOX_POS_OFFSET_Y 5*box.dim.y/6
 #define AH_DIM_OFFSET_X 3
 #define AH_POS_OFFSET_X box.dim.x/3
 
@@ -151,15 +151,15 @@ void Eva::Update(float dt)
         }
 
         //Update hitboxes positions
-        hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
+        hitbox.pos = Vec2(box.pos.x + HITBOX_POS_OFFSET_X, box.pos.y + HITBOX_POS_OFFSET_Y);
         if (Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
             box.pos.y = previousPos.y;
 
-        hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
+        hitbox.pos = Vec2(box.pos.x + HITBOX_POS_OFFSET_X, box.pos.y + HITBOX_POS_OFFSET_Y);
         if (Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this))
             box.pos.x = previousPos.x;
 
-        hitbox.pos = Vec2(box.pos.x + box.dim.x / 4, box.pos.y + 3 * box.dim.y / 4);
+        hitbox.pos = Vec2(box.pos.x + HITBOX_POS_OFFSET_X, box.pos.y + HITBOX_POS_OFFSET_Y);
 
         attackHitbox.pos = Vec2(box.pos.x + box.dim.x/3, box.pos.y);
 
