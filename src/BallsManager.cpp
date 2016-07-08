@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Config.h"
 #include "Eva.h"
+#include "Animation.h"
 
 #define ARENA_WIDTH_INIT 128
 #define ARENA_WIDTH_END 1152
@@ -53,6 +54,12 @@ void BallsManager::Update(float dt)
             currentState = BallsState::ATTACKING;
             timer.Restart();
             SetCurrentState(ATTACKING);
+            for (size_t i = 0; (i < ballArray.size()) && (focus != nullptr); i++) {
+                Game::GetInstance()->GetCurrentState().AddObject(new Animation(
+                        ballArray[i]->box.pos, 0, "sprites/monsters/ball/BOLOTA_BLINK.png", 6,
+                        0.02, true));
+            }
+
         } else if (currentState == BallsState::ATTACKING) {
             attackHitbox.dim = Vec2(220, 180);
             for (size_t i = 0; (i < ballArray.size()) && (focus != nullptr); i++) {
@@ -113,6 +120,9 @@ void BallsManager::RandTeleport()
         float y = Config::Rand(146, 466);
         ballArray[i]->box.pos = Vec2(x, y);
         ballArray[i]->attackHitbox.pos = Vec2(box.pos.x + 43, box.pos.y + 110);
+        Game::GetInstance()->GetCurrentState().AddObject(new Animation(
+            ballArray[i]->box.pos, 0, "sprites/monsters/ball/BOLOTA_BLINK.png", 6,
+            0.02, true));
     }
 }
 
