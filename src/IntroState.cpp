@@ -69,8 +69,7 @@ void IntroState::UpdateArray(float dt)
                 evaDeath = ((Eva *)(objectArray[i].get()))->GetEvaDeath();
             else if (objectArray[i]->Is("Turret") ||
                     objectArray[i]->Is("TurretMob") ||
-                    objectArray[i]->Is("Mekabug") ||
-                    objectArray[i]->Is("BallMonster"))
+                    objectArray[i]->Is("Mekabug"))
                 map.NotifyDeadMonster();
             else if (objectArray[i]->Is(evaDeath)){
                 popRequested = quitRequested = true;

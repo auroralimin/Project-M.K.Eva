@@ -192,7 +192,7 @@ void Eva::NotifyCollision(GameObject &other, bool movement)
         IncreaseAvailableClasses();
     } else if (other.Is("LifeItem")) {
         std::cout << "Life" << std::endl;
-        hp += 20; 
+        hp = (hp + 20 > 100) ? 100 : hp + 20;
     } else if (movement && (!other.Is("Ball"))) {
         box.pos = previousPos;
     }

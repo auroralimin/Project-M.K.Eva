@@ -4,8 +4,8 @@
 #include "Config.h"
 #include "InputManager.h"
 
-TitleState::TitleState(void) : cutscene(Vec2(0, 0), "begin", 25, 0.3),
-    titleFadeIn(Vec2(0, 0), "title", 14, 0.15),
+TitleState::TitleState(void) : cutscene(Vec2(0, 0), "begin", 70, 0.1),
+    titleFadeIn(Vec2(0, 0), "title", 14, 0.1),
     title("img/title.png"), msg("img/msg.png"), timer()
 {
     titleFadeIn.SetPos(Vec2((SCREEN_W - title.GetWidth()) / 2,

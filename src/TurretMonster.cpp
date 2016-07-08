@@ -87,6 +87,10 @@ void TurretMonster::TakeDamage(float dmg)
         wasHit = true;
         hp -= dmg;
     }
+
+    if (Config::DEBUG)
+        std::cout << "[Turret] HP: " << hp << std::endl;
+
     if (IsDead()) {
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
             box.pos, 0, "sprites/monsters/turret/StationaryTurretDeath.png", 4,
