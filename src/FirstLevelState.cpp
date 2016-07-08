@@ -25,6 +25,7 @@ FirstLevelState::FirstLevelState(Vec2 evaPos) : map(),
 
     Eva *eva = new Eva(evaPos, true);
     AddObject(eva);
+    map.SetType(3);
     map.SetFocus(eva);
     map.SetDrawMiniroom(true);
     map.Load("procedural_generated_1", mapString);
@@ -85,7 +86,7 @@ void FirstLevelState::UpdateArray(float dt)
                 Game *game = Game::GetInstance();
                 game->Push(new HubState());
             } if (objectArray[i]->Is("BallMonster")) {
-                for (int j = 0; j < objectArray.size(); j++)
+                for (unsigned long j = 0; j < objectArray.size(); j++)
                     if (objectArray[j]->Is("BallsManager"))
                         ((BallsManager *) objectArray[j].get())->ClearDeadBalls();
                 objectArray[i] = nullptr;

@@ -16,12 +16,12 @@
 #define MINIMAP_X 1000
 #define MINIMAP_Y 20
 
-LevelMap::LevelMap(void) : drawMiniroom(false)
+LevelMap::LevelMap(void) : drawMiniroom(false), type(0)
 {
 }
 
-LevelMap::LevelMap(std::string name, std::string file, GameObject *focus) :
-    focus(focus), drawMiniroom(false)
+LevelMap::LevelMap(std::string name, std::string file, GameObject *focus, int type) :
+    focus(focus), drawMiniroom(false), type(type)
 {
     Load(name, file);
 }
@@ -49,12 +49,52 @@ void LevelMap::Load(std::string name, std::string file)
 
     int r, n = 0;
     while (fscanf(fp, "%d,", &r) != EOF) {
-        if (r != -1)
-            rooms.emplace(
-                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
-                    tileSet, focus, Config::Rand(1, 3)));
-        else
+        if (r != -1) {
+            switch (type) {
+                case 1:
+                {
+                    if (r == 110) {
+                        rooms.emplace(
+                                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
+                                    tileSet, focus, 999));
+                    } else if (r == 11000) {
+                        rooms.emplace(
+                                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
+                                    tileSet, focus, 1));
+                    } else if (r == 1010) {
+                        rooms.emplace(
+                                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
+                                    tileSet, focus, 2));
+                    } else {
+                        rooms.emplace(
+                                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
+                                    tileSet, focus, 3));
+                    }
+                    break;
+                }
+                case 2:
+                {
+                    if (r == 10000) {
+                        rooms.emplace(
+                                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
+                                    tileSet, focus, 4));
+                    } else {
+                        rooms.emplace(
+                                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
+                                    tileSet, focus, 999));
+                    }
+                    break;
+                }
+                default :
+                {
+                    rooms.emplace(
+                            n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
+                                tileSet, focus, Config::Rand(5, 9)));
+                }
+            }
+        } else {
             rooms.emplace(n++, nullptr);
+        }
     }
     index = currentRoom.x + (mapWidth * currentRoom.y);
     rooms[index]->SetIsFirst(true);
@@ -187,5 +227,10 @@ void LevelMap::NotifyDeadMonster(void)
 void LevelMap::SetDrawMiniroom(bool drawMiniroom)
 {
     this->drawMiniroom = drawMiniroom;
+}
+
+void LevelMap::SetType(int type)
+{
+    this->type = type;
 }
 

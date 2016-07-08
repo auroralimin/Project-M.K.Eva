@@ -18,6 +18,7 @@ IntroState::IntroState(Vec2 evaPos) : map(), music("music/introMusic.ogg"),
     AddObject(eva);
     map.SetFocus(eva);
     map.SetDrawMiniroom(true);
+    map.SetType(1);
     map.Load("intro", "map/intro.txt");
     AddObject(new Item("SamuraiCard", Vec2(1000, 400)));
     AddObject(new Item("DeckerCard", Vec2(800, 400)));

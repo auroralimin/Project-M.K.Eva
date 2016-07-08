@@ -24,7 +24,7 @@ class LevelMap
      * file.
      * @param file a string with the map file path
      */
-    LevelMap(std::string name, std::string file, GameObject *focus);
+    LevelMap(std::string name, std::string file, GameObject *focus, int type);
 
     /**
      * Loads map attributes values from a giver map file.
@@ -107,11 +107,13 @@ class LevelMap
 
     void SetDrawMiniroom(bool drawMiniroom);
 
+    void SetType(int type);
+
   private:
     GameObject *focus;
     bool drawMiniroom;
     std::string name; 
-    int mapWidth, mapHeight, index;
+    int mapWidth, mapHeight, index, type;
     Vec2 currentRoom;
     std::unordered_map<int, Room *> rooms;
     Rect miniRoom, miniRoom2;

@@ -15,6 +15,7 @@
 
 HubState::HubState(void) : map(), music("music/hubMusic.ogg")
 {
+    map.SetType(2);
     map.Load("hub", "map/hub.txt");
     AddObject(new Animation(Vec2(EVA_DRAWER_POSITION_X, EVA_DRAWER_POSITION_Y),
                             0, "sprites/eva/drawer/DRAWER-EVA.png",
