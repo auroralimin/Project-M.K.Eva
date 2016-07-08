@@ -64,12 +64,12 @@ void BallsManager::Update(float dt)
             attackHitbox.dim = Vec2(220, 180);
             for (size_t i = 0; (i < ballArray.size()) && (focus != nullptr); i++) {
                 float angle = 2 * M_PI * (i + 1) / ballArray.size();
-                Vec2 pos = Vec2(BALL_EVA_DISTANCE, 0);
+                Vec2 pos = Vec2(BALL_EVA_DISTANCE, 60);
                 ballArray[i]->box.pos =
                     Vec2(pos.x * cos(angle) - pos.y * sin(angle),
                          pos.y * cos(angle) + pos.x * sin(angle));
 
-                Vec2 evaPos = focus->box.pos;
+                Vec2 evaPos = focus->box.pos + Vec2(0, 70);
                 evaPos.y -= focus->box.dim.y / 2;
                 ballArray[i]->box.pos += evaPos;
 

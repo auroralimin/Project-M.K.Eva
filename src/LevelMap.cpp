@@ -52,7 +52,7 @@ void LevelMap::Load(std::string name, std::string file)
         if (r != -1)
             rooms.emplace(
                 n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
-                    tileSet, focus, 1));
+                    tileSet, focus, Config::Rand(1, 4)));
         else
             rooms.emplace(n++, nullptr);
     }
