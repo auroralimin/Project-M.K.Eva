@@ -61,25 +61,15 @@ void Door::SetCurrentState(int state)
             state == DoorState::CLOSED) {
         sps[1].Open(path + "closed.png");
         isTransitioning = true;
-        if (direction != 2)
-            Game::GetInstance()->GetCurrentState().AddObject(
-                    new Animation(spritePos[direction], 0,
-                        path + "closing.png", 13, TRANSITIONING_TIME/13.0f));
-        else
-            Game::GetInstance()->GetCurrentState().AddObject(
-                    new Animation(spritePos[direction], 0,
-                        path + "closing.png", 4, TRANSITIONING_TIME/5.0f));
+        Game::GetInstance()->GetCurrentState().AddObject(
+                new Animation(spritePos[direction], 0,
+                    path + "closing.png", 13, TRANSITIONING_TIME/13.0f));
     } else if (this->state == DoorState::CLOSED &&
             state == DoorState::OPENED) {
         isTransitioning = true;
-        if (direction != 2)
-            Game::GetInstance()->GetCurrentState().AddObject(
-                    new Animation(spritePos[direction], 0,
-                        path + "opening.png", 13,  TRANSITIONING_TIME/13.0f));
-        else
-            Game::GetInstance()->GetCurrentState().AddObject(
-                    new Animation(spritePos[direction], 0,
-                        path + "opening.png", 4, TRANSITIONING_TIME/5.0f));
+        Game::GetInstance()->GetCurrentState().AddObject(
+                new Animation(spritePos[direction], 0,
+                    path + "opening.png", 13, TRANSITIONING_TIME/13.0f));
 
     } else if (this->state == DoorState::OPENED &&
             state == DoorState::WALL) {
