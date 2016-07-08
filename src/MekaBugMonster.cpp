@@ -106,7 +106,8 @@ void MekaBugMonster::MovementAndAttack(float dt)
                 animations.SetCurrentState(MekaBugMonsterState::AGRESSIVE);
                 restTimer.Restart();
                 if ((attackTimer.Get() >= 1)) {
-                    focus->TakeDamage(10);
+                    if (!focus->IsDead())
+                        focus->TakeDamage(10);
                     attackTimer.Restart();
                 }
             } else {
