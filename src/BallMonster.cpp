@@ -1,7 +1,6 @@
 #include "BallMonster.h"
 #include "Config.h"
 #include "Game.h"
-#include "InputManager.h"
 #include "Animation.h"
 #include "Bullet.h"
 
@@ -41,12 +40,6 @@ void BallMonster::Update(float dt)
         wasHit = false;
     }
 
-
-    InputManager &manager = InputManager::GetInstance();
-
-    if (manager.KeyPress(K_KEY)) { // temporary suicide button
-        TakeDamage(8000);
-    }
     animations.Update(dt);
     attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
 }

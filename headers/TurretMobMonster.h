@@ -19,8 +19,7 @@ class TurretMobMonster : public Monster
     GameObject *focus;
     TurretMobMonsterMovement movementMode;
     Vec2 previousPos, destination;
-    Timer restTimer;
-    Timer hitTimer;
+    Timer restTimer, attackTimer, hitTimer;
     bool wasHit;
 
     void LookAtFocus(void);

@@ -17,7 +17,7 @@ class TurretMonster : public Monster
 
     private:
         GameObject *focus;
-        Timer hitTimer;
+        Timer hitTimer, timer;
         bool wasHit;
 
         void ShootPattern1(void);

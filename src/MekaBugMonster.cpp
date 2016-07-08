@@ -2,7 +2,6 @@
 #include "Eva.h"
 #include "Config.h"
 #include "Game.h"
-#include "InputManager.h"
 #include "Animation.h"
 #include "Bullet.h"
 #include "Collision.h"
@@ -15,7 +14,7 @@
 
 MekaBugMonster::MekaBugMonster(Room *room, Vec2 pos, GameObject *focus)
     : focus(focus), movState(MekaBugMonsterMovement::RESTING), previousPos(pos),
-    stuck(false), hitTimer()
+    stuck(false), restTimer(), stuckTimer(), attackTimer(), hitTimer()
 {
     this->room = room;
     std::string files[MEKABUG_ANIMATIONS] = {
@@ -47,9 +46,6 @@ void MekaBugMonster::Update(float dt)
         hitTimer.Restart();
         wasHit = false;
     }
-    // temporary suicide button
-    if (InputManager::GetInstance().KeyPress(J_KEY))
-        TakeDamage(8000);
 
     MovementAndAttack(dt);
     animations.Update(dt);
@@ -87,8 +83,6 @@ void MekaBugMonster::TakeDamage(float dmg)
 
 void MekaBugMonster::MovementAndAttack(float dt)
 {
-    static Timer restTimer = Timer(), stuckTimer = Timer(), attackTimer = Timer();
-
     if (focus != nullptr) {
         Vec2 speed = Vec2(0, 0);
         attackTimer.Update(dt);

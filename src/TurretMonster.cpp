@@ -5,7 +5,6 @@
 #include "Config.h"
 #include "Timer.h"
 #include "Animation.h"
-#include "InputManager.h"
 
 #define TURRET_ANIMATIONS 1
 #define HITBOX_DIM_OFFSET_X 2
@@ -18,7 +17,7 @@
 #define AH_POS_OFFSET_Y box.dim.y/4
 
 TurretMonster::TurretMonster(Room *room, Vec2 pos, GameObject *focus) :
-    focus(focus), hitTimer()
+    focus(focus), hitTimer(), timer()
 {
     this->room = room;
     std::string files[TURRET_ANIMATIONS] = {
@@ -41,18 +40,11 @@ TurretMonster::TurretMonster(Room *room, Vec2 pos, GameObject *focus) :
 
 void TurretMonster::Update(float dt)
 {
-    static Timer timer = Timer();
-    InputManager &manager = InputManager::GetInstance();
-
     if (wasHit)
         hitTimer.Update(dt);
     if (hitTimer.Get() >= MONSTER_DAMAGE_DELAY){
         hitTimer.Restart();
         wasHit = false;
-    }
-
-    if (manager.KeyPress(H_KEY)) { // temporary suicide button
-        TakeDamage(8000);
     }
 
     if ((timer.Get() >= 2.5f) && (focus != nullptr)) {

@@ -5,7 +5,6 @@
 #include "Bullet.h"
 #include "Game.h"
 #include "Config.h"
-#include "InputManager.h"
 #include "Animation.h"
 
 #define TURRET_MOB_ANIMATIONS 5
@@ -20,7 +19,7 @@
 
 TurretMobMonster::TurretMobMonster(Room *room, Vec2 pos, GameObject *focus)
     : focus(focus), movementMode(TurretMobMonsterMovement::RESTING), previousPos(0, 0),
-      destination(0, 0), restTimer(), hitTimer()
+      destination(0, 0), restTimer(), attackTimer(), hitTimer()
 {
     this->room = room;
     std::string files[TURRET_MOB_ANIMATIONS] = {
@@ -55,9 +54,6 @@ void TurretMobMonster::Update(float dt)
         hitTimer.Restart();
         wasHit = false;
     }
-    // temporary suicide button
-    if (InputManager::GetInstance().KeyPress(J_KEY))
-        TakeDamage(8000);
 
     if (focus != nullptr) {
         LookAtFocus();
@@ -157,7 +153,6 @@ void TurretMobMonster::Movement(float dt)
 
 void TurretMobMonster::Attack(float dt)
 {
-    static Timer attackTimer = Timer();
     attackTimer.Update(dt);
 
     if (attackTimer.Get() >= Config::Rand(20, 60) / 10.0f) {

@@ -20,6 +20,7 @@ class MekaBugMonster : public Monster
     MekaBugMonsterMovement movState;
     Vec2 previousPos;
     bool stuck;
+    Timer restTimer, stuckTimer, attackTimer;
 
     bool wasHit;
     Timer hitTimer;
