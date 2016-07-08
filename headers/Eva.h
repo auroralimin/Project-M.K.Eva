@@ -88,8 +88,8 @@ class Eva : public GameObject
     std::string evaDeath;
     std::vector<std::unique_ptr<EvaClass>> evaClasses;
     unsigned int currentClass;
-    Timer spawnDelayTimer;
-    bool doneSpawning;
+    Timer spawnDelayTimer, hitTimer;
+    bool doneSpawning, wasHit;
 
     void SetClass(Classes c);
 };

@@ -10,7 +10,7 @@
 
 #define EVA_DRAWER_POSITION_X 130
 #define EVA_DRAWER_POSITION_Y 100
-#define EVA_SPAWN_POSITION_X 127
+#define EVA_SPAWN_POSITION_X 130
 #define EVA_SPAWN_POSITION_Y 100
 
 HubState::HubState(void) : map(), music("music/hubMusic.ogg")

@@ -49,6 +49,10 @@
       200, 200, 200, 100                                                       \
     }
 
+#define EVA_DAMAGE_DELAY 0.5
+
+#define MONSTER_DAMAGE_DELAY 0.3
+
 /***************************************************************************/ /**
   * The game config file.
   * Contains macros, constants and global values.

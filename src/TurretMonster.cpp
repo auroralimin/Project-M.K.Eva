@@ -18,7 +18,7 @@
 #define AH_POS_OFFSET_Y box.dim.y/4
 
 TurretMonster::TurretMonster(Room *room, Vec2 pos, GameObject *focus) :
-    focus(focus)
+    focus(focus), hitTimer()
 {
     this->room = room;
     std::string files[TURRET_ANIMATIONS] = {
@@ -35,12 +35,21 @@ TurretMonster::TurretMonster(Room *room, Vec2 pos, GameObject *focus) :
     attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
     hp = 100;
     rotation = 0;
+    hitTimer.Restart();
+    wasHit = false;
 }
 
 void TurretMonster::Update(float dt)
 {
     static Timer timer = Timer();
     InputManager &manager = InputManager::GetInstance();
+
+    if (wasHit)
+        hitTimer.Update(dt);
+    if (hitTimer.Get() >= MONSTER_DAMAGE_DELAY){
+        hitTimer.Restart();
+        wasHit = false;
+    }
 
     if (manager.KeyPress(H_KEY)) { // temporary suicide button
         TakeDamage(8000);
@@ -74,7 +83,10 @@ bool TurretMonster::Is(std::string className)
 
 void TurretMonster::TakeDamage(float dmg)
 {
-    hp -= dmg;
+    if (!wasHit){
+        wasHit = true;
+        hp -= dmg;
+    }
     std::cout << "turret: " << hp << std::endl;
     if (IsDead()) {
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(

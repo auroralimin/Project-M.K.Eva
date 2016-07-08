@@ -20,6 +20,8 @@ class TurretMobMonster : public Monster
     TurretMobMonsterMovement movementMode;
     Vec2 previousPos, destination;
     Timer restTimer;
+    Timer hitTimer;
+    bool wasHit;
 
     void LookAtFocus(void);
     void Movement(float dt);

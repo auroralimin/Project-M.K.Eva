@@ -19,16 +19,17 @@ Animation::Animation(Vec2 pos, float rotation, std::string sprite,
 void Animation::Update(float dt)
 {
     int oldFrame = sp.GetCurrentFrame();
-    sp.Update(dt);    
-    if (oldFrame > 0 && sp.GetCurrentFrame() == 0 && oneTimeOnly)
+    sp.Update(dt);
+    if (oldFrame > 0 && sp.GetCurrentFrame() == 0 && oneTimeOnly){
+        sp.SetFrame(sp.GetFrameCount() - 1);
         isDead = true;
+    }
 }
 
 void Animation::Render(void)
 {
-    if (!isDead)
-        sp.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y,
-                rotation);
+    sp.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y,
+              rotation);
 }
 
 bool Animation::IsDead(void)

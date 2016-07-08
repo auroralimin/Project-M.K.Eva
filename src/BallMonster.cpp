@@ -11,7 +11,7 @@
 #define AH_POS_OFFSET_X box.dim.x/3
 #define AH_POS_OFFSET_Y box.dim.y/2
 
-BallMonster::BallMonster(Room *room, Vec2 pos) : previousPos(pos)
+BallMonster::BallMonster(Room *room, Vec2 pos) : previousPos(pos), hitTimer()
 {
     this->room = room;
     std::string files[BALL_ANIMATIONS] = {
@@ -27,12 +27,21 @@ BallMonster::BallMonster(Room *room, Vec2 pos) : previousPos(pos)
     attackHitbox.dim = Vec2(box.dim.x/AH_DIM_OFFSET_X, box.dim.y/AH_DIM_OFFSET_Y);
     attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
 
+    hitTimer.Restart();
     hp = 100;
     rotation = 0;
 }
 
 void BallMonster::Update(float dt)
 {
+    if (wasHit)
+        hitTimer.Update(dt);
+    if (hitTimer.Get() >= MONSTER_DAMAGE_DELAY){
+        hitTimer.Restart();
+        wasHit = false;
+    }
+
+
     InputManager &manager = InputManager::GetInstance();
 
     if (manager.KeyPress(K_KEY)) { // temporary suicide button
@@ -61,7 +70,10 @@ bool BallMonster::Is(std::string className)
 
 void BallMonster::TakeDamage(float dmg)
 {
-    hp -= dmg;
+    if (!wasHit){
+        hp -= dmg;
+        wasHit = true;
+    }
     if (IsDead()) {
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
             box.pos, 0, "sprites/monsters/ball/BOLOTA_DEATH.png", 7,

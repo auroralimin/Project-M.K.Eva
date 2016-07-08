@@ -20,7 +20,7 @@
 
 TurretMobMonster::TurretMobMonster(Room *room, Vec2 pos, GameObject *focus)
     : focus(focus), movementMode(TurretMobMonsterMovement::RESTING), previousPos(0, 0),
-      destination(0, 0), restTimer()
+      destination(0, 0), restTimer(), hitTimer()
 {
     this->room = room;
     std::string files[TURRET_MOB_ANIMATIONS] = {
@@ -43,10 +43,18 @@ TurretMobMonster::TurretMobMonster(Room *room, Vec2 pos, GameObject *focus)
 
     hp = 100;
     rotation = 0;
+    hitTimer.Restart();
+    wasHit = false;
 }
 
 void TurretMobMonster::Update(float dt)
 {
+    if(wasHit)
+        hitTimer.Update(dt);
+    if(hitTimer.Get() >= MONSTER_DAMAGE_DELAY){
+        hitTimer.Restart();
+        wasHit = false;
+    }
     // temporary suicide button
     if (InputManager::GetInstance().KeyPress(J_KEY))
         TakeDamage(8000);
@@ -78,7 +86,10 @@ bool TurretMobMonster::Is(std::string className)
 
 void TurretMobMonster::TakeDamage(float dmg)
 {
-    hp -= dmg;
+    if (!wasHit){
+        hp -= dmg;
+        wasHit = true;
+    }
     if (IsDead())
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
             box.pos, 0, "sprites/monsters/turretmob/TurretMobDeath.png",

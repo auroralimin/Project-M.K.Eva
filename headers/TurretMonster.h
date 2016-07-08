@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Monster.h"
+#include "Timer.h"
 
 /*****************************************
  * The representation of the turret enemy
@@ -16,6 +17,8 @@ class TurretMonster : public Monster
 
     private:
         GameObject *focus;
+        Timer hitTimer;
+        bool wasHit;
 
         void ShootPattern1(void);
         void ShootPattern2(void);

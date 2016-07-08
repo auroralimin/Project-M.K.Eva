@@ -20,7 +20,7 @@
 #define AH_DIM_OFFSET_X 3
 #define AH_POS_OFFSET_X box.dim.x/3
 
-Eva::Eva(Vec2 pos) : spawnDelayTimer()
+Eva::Eva(Vec2 pos) : spawnDelayTimer(), hitTimer()
 {
     currentClass = BASE;
 
@@ -38,7 +38,9 @@ Eva::Eva(Vec2 pos) : spawnDelayTimer()
     rotation = 0;
     hp = 100;
     spawnDelayTimer.Restart();
+    hitTimer.Restart();
     doneSpawning = false;
+    wasHit = false;
 }
 
 void Eva::Render()
@@ -60,6 +62,13 @@ void Eva::Update(float dt)
     const int keys[4] = {UP_ARROW_KEY, LEFT_ARROW_KEY, DOWN_ARROW_KEY,
                          RIGHT_ARROW_KEY};
     Vec2 speed = Vec2(0, 0);
+    //eva cant be hit successively by many attacks
+    if (wasHit)
+        hitTimer.Update(dt);
+    if (hitTimer.Get() >= 0.5) {
+        wasHit = false;
+        hitTimer.Restart();
+    }
     InputManager &manager = InputManager::GetInstance();
     if (spawnDelayTimer.Get() < EVA_SPAWN_DELAY)
         spawnDelayTimer.Update(dt);
@@ -188,8 +197,11 @@ bool Eva::Is(std::string className)
 
 void Eva::TakeDamage(float dmg)
 {
-    if(!(evaClasses[currentClass]->IsAttacking() && currentClass == DECKER))
+    if(!(evaClasses[currentClass]->IsAttacking() && currentClass == DECKER) &&
+            !wasHit){
         hp -= (dmg - (float)dmg * evaClasses[currentClass]->def / 100);
+        wasHit = true;
+    }
     if (Config::DEBUG)
         std::cout << "[Eva] hp: " << hp << std::endl;
     if (IsDead()) {

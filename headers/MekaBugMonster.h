@@ -21,6 +21,8 @@ class MekaBugMonster : public Monster
     Vec2 previousPos;
     bool stuck;
 
+    bool wasHit;
+    Timer hitTimer;
     void MovementAndAttack(float dt);
 };
 

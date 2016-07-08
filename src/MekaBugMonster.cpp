@@ -15,7 +15,7 @@
 
 MekaBugMonster::MekaBugMonster(Room *room, Vec2 pos, GameObject *focus)
     : focus(focus), movState(MekaBugMonsterMovement::RESTING), previousPos(pos),
-    stuck(false)
+    stuck(false), hitTimer()
 {
     this->room = room;
     std::string files[MEKABUG_ANIMATIONS] = {
@@ -35,10 +35,18 @@ MekaBugMonster::MekaBugMonster(Room *room, Vec2 pos, GameObject *focus)
 
     hp = 100;
     rotation = 0;
+    wasHit = false;
+    hitTimer.Restart();
 }
 
 void MekaBugMonster::Update(float dt)
 {
+    if (wasHit)
+        hitTimer.Update(dt);
+    if (hitTimer.Get() >= MONSTER_DAMAGE_DELAY){
+        hitTimer.Restart();
+        wasHit = false;
+    }
     // temporary suicide button
     if (InputManager::GetInstance().KeyPress(J_KEY))
         TakeDamage(8000);
@@ -67,7 +75,10 @@ bool MekaBugMonster::Is(std::string className)
 
 void MekaBugMonster::TakeDamage(float dmg)
 {
-    hp -= dmg;
+    if (!wasHit){
+        hp -= dmg;
+        wasHit = true;
+    }
     if (IsDead())
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
             box.pos, 0, "sprites/monsters/mekabug/MEKABUG_DEATH.png", 3,

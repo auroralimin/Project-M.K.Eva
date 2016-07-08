@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Monster.h"
+#include "Timer.h"
 
 class BallMonster : public Monster
 {
@@ -15,5 +16,7 @@ class BallMonster : public Monster
 
   private:
     Vec2 previousPos;
+    Timer hitTimer;
+    bool wasHit;
 };
 
