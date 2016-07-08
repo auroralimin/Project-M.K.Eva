@@ -14,8 +14,6 @@ void InputManager::Update(void)
     updateCounter++;
 
     while (SDL_PollEvent(&event)) {
-        if (event.key.repeat == 1)
-            continue;
 
         SDL_GetMouseState(&mouseX, &mouseY);
         switch (event.type) {
@@ -41,6 +39,28 @@ void InputManager::Update(void)
         case SDL_MOUSEBUTTONUP:
             mouseState[event.button.button] = false;
             mouseUpdate[event.button.button] = updateCounter;
+            break;
+
+        case SDL_CONTROLLERBUTTONDOWN:
+            keyState[joy2Key[event.cbutton.button]] = true;
+            keyUpdate[joy2Key[event.cbutton.button]] = updateCounter;
+            break;
+
+        case SDL_CONTROLLERBUTTONUP:
+            keyState[joy2Key[event.cbutton.button]] = false;
+            keyUpdate[joy2Key[event.cbutton.button]] = updateCounter;
+            break;
+
+        case SDL_CONTROLLERAXISMOTION:
+            handleAxis(event.caxis);
+            break;
+
+        case SDL_CONTROLLERDEVICEADDED:
+            AddController(event.cdevice.which);
+            break;
+
+        case SDL_CONTROLLERDEVICEREMOVED:
+            RemoveController();
             break;
 
         default:
@@ -145,5 +165,58 @@ InputManager::InputManager(void)
 
     keyUpdate[NUM_1_KEY] = keyUpdate[NUM_2_KEY] = keyUpdate[NUM_3_KEY] = 0;
     keyState[NUM_1_KEY] = keyState[NUM_2_KEY] = keyState[NUM_3_KEY] = false;
+
+    SDL_GameControllerAddMappingsFromFile("gamecontrollerdb.txt");
+    for (int i = 0; i < SDL_NumJoysticks(); i++) {
+        if (AddController(i)) {
+            std::cout << "Joystick" << i << "connected!" << std::endl;
+            break;
+        }
+    }
+    joy2Key[SDL_CONTROLLER_BUTTON_X] = NUM_1_KEY;
+    joy2Key[SDL_CONTROLLER_BUTTON_Y] = NUM_2_KEY;
+    joy2Key[SDL_CONTROLLER_BUTTON_B] = NUM_3_KEY;
+    joy2Key[SDL_CONTROLLER_BUTTON_A] = SDLK_SPACE;
+
+    joy2Key[SDL_CONTROLLER_BUTTON_DPAD_UP] = W_KEY;
+    joy2Key[SDL_CONTROLLER_BUTTON_DPAD_LEFT] = A_KEY;
+    joy2Key[SDL_CONTROLLER_BUTTON_DPAD_DOWN] = S_KEY;
+    joy2Key[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] = D_KEY;
 }
 
+bool InputManager::AddController(int id)
+{
+    if (SDL_IsGameController(id)) {
+
+        gameController = SDL_GameControllerOpen(id);
+        if (gameController == NULL)
+            std::cout << "SDL GameController(" << id
+                      << ") Error: " << SDL_GetError() << std::endl;
+        return true;
+    }
+
+    return false;
+}
+
+void InputManager::RemoveController(void)
+{
+    SDL_GameControllerClose(gameController);
+}
+
+void InputManager::handleAxis(SDL_ControllerAxisEvent axis)
+{
+    static const int axis2key[8][2] = {{A_KEY, D_KEY},
+                                       {W_KEY, S_KEY},
+                                       {LEFT_ARROW_KEY, RIGHT_ARROW_KEY},
+                                       {UP_ARROW_KEY, DOWN_ARROW_KEY}};
+
+    keyState[axis2key[axis.axis][0]] = false;
+    keyUpdate[axis2key[axis.axis][0]] = updateCounter;
+    keyState[axis2key[axis.axis][1]] = false;
+    keyUpdate[axis2key[axis.axis][1]] = updateCounter;
+
+    if (axis.value < -DEADZONE)
+        keyState[axis2key[axis.axis][0]] = true;
+    else if (axis.value > DEADZONE)
+        keyState[axis2key[axis.axis][1]] = true;
+}

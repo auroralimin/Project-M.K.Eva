@@ -1,10 +1,10 @@
-#include "SDL2/SDL_mixer.h"
-#include "SDL2/SDL_ttf.h"
 #include "Game.h"
-#include "Resources.h"
-#include "InputManager.h"
 #include "Camera.h"
 #include "Config.h"
+#include "InputManager.h"
+#include "Resources.h"
+#include "SDL2/SDL_mixer.h"
+#include "SDL2/SDL_ttf.h"
 
 #include <iostream>
 #include <string>
@@ -69,7 +69,7 @@ void Game::Run(void)
     stateStack.emplace(storedState);
     storedState = nullptr;
 
-    Camera::pos = Vec2(-SCREEN_PADDING/2, -SCREEN_PADDING/2);
+    Camera::pos = Vec2(-SCREEN_PADDING / 2, -SCREEN_PADDING / 2);
     frameStart = SDL_GetTicks();
     while (!stateStack.empty()) {
         currentTime = SDL_GetTicks();
@@ -132,19 +132,20 @@ void Game::ClearRenderer(void)
  */
 Game::Game(std::string title, int w, int h)
 {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER |
+                 SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER) < 0) {
         std::cerr << "Unable to init SDL: " << SDL_GetError() << std::endl;
         exit(EXIT_SUCCESS);
     }
 
     if (Mix_Init(MIX_INIT_OGG) < 0) {
         std::cerr << "Unable to init Mix_Music: " << Mix_GetError()
-            << std::endl;
+                  << std::endl;
         exit(EXIT_SUCCESS);
     }
 
     if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-                MIX_DEFAULT_CHANNELS, 1024) == -1) {
+                      MIX_DEFAULT_CHANNELS, 1024) == -1) {
         std::cerr << "Unable to open audio: " << Mix_GetError() << std::endl;
         exit(EXIT_SUCCESS);
     }
@@ -156,22 +157,22 @@ Game::Game(std::string title, int w, int h)
 
     if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF) == 0) {
         std::cerr << "Unable to init SDL_Image: " << SDL_GetError()
-            << std::endl;
+                  << std::endl;
         exit(EXIT_SUCCESS);
     }
 
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
-            SDL_WINDOWPOS_CENTERED, w, h, 0);
+                              SDL_WINDOWPOS_CENTERED, w, h, 0);
     if (!window) {
         std::cerr << "Failed to create a window: " << SDL_GetError()
-            << std::endl;
+                  << std::endl;
         exit(EXIT_SUCCESS);
     }
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer) {
         std::cerr << "Failed to create a renderer: " << SDL_GetError()
-            << std::endl;
+                  << std::endl;
         exit(EXIT_SUCCESS);
     }
 
@@ -191,4 +192,3 @@ void Game::ClearResources(void)
     Resources::ClearSounds();
     Resources::ClearFonts();
 }
-

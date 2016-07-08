@@ -1,7 +1,7 @@
 #pragma once
+#include "SDL2/SDL.h"
 #include <iostream>
 #include <unordered_map>
-#include "SDL2/SDL.h"
 /** @file InputManager.h */
 
 /** \def LEFT_ARROW_KEY keyboard left arrow. */
@@ -66,6 +66,8 @@
 
 /** \def E_KEY keyboard E key */
 #define E_KEY SDLK_e
+
+#define DEADZONE 8000
 
 /***************************************************************************/ /**
   * This class manages the game input.
@@ -147,6 +149,9 @@ class InputManager
 
   private:
     InputManager(void);
+    bool AddController(int id);
+    void RemoveController(void);
+    void handleAxis(SDL_ControllerAxisEvent axis);
 
     bool quitRequested;
     bool mouseState[5];
@@ -155,5 +160,6 @@ class InputManager
     int mouseX, mouseY;
     std::unordered_map<int, bool> keyState;
     std::unordered_map<int, int> keyUpdate;
+    std::unordered_map<int, int> joy2Key;
+    SDL_GameController *gameController;
 };
-
