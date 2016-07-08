@@ -40,7 +40,7 @@ TurretMobMonster::TurretMobMonster(Room *room, Vec2 pos, GameObject *focus)
     attackHitbox.dim = Vec2(box.dim.x/AH_DIM_OFFSET_X, box.dim.y/AH_DIM_OFFSET_Y);
     attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
 
-    hp = 100;
+    hp = 20;
     rotation = 0;
     hitTimer.Restart();
     wasHit = false;
@@ -68,7 +68,7 @@ void TurretMobMonster::NotifyCollision(GameObject &other, bool movement)
     if (other.Is("Bullet") || other.Is("Attack")) {
         Bullet &bullet = (Bullet &)other;
         if (!bullet.targetsPlayer)
-            TakeDamage(10);
+            TakeDamage(other.dmg);
     } else if (movement && (!other.Is("Ball"))) {
         box.pos = previousPos;
         movementMode = TurretMobMonsterMovement::TRAPED;
@@ -164,7 +164,7 @@ void TurretMobMonster::Attack(float dt)
 
         evaPos -= box.GetCenter();
         angle = atan2(evaPos.y, evaPos.x);
-        Bullet *b = new Bullet(boxVector, angle, 200, 1000,
+        Bullet *b = new Bullet(boxVector, angle, 200, 1000, 10,
                                "sprites/monsters/projectiles/BlueBombSpritesheet.png",
                                Vec2(-2.5f, -2.5f), Vec2(5, 5), 8, 0.3, true);
 

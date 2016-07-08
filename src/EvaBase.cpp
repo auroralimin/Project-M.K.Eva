@@ -13,11 +13,11 @@ EvaBase::EvaBase(void) : EvaClass()
         "sprites/eva/movement/EVA-BASE-RIGHT.png"};
     files = tFiles;
     frameCounts = new int[BASE_ANIMATIONS]{6, 6, 6, 6, 6};
-    frameTimes = new float[BASE_ANIMATIONS]{0.08, 0.08, 0.08, 0.08, 0.08};
+    frameTimes = new float[BASE_ANIMATIONS]{0.09, 0.09, 0.09, 0.09, 0.09};
     for (int i = 0; i < BASE_ANIMATIONS; i++)
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
 
-    movSpeed = 200;
+    movSpeed = 250;
     atk = def = atkSpeed = 1;
     isAttacking = atkReady = false;
 }

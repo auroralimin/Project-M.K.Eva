@@ -8,7 +8,7 @@ AttackClass::AttackClass(Vec2 pos, Vec2 hitboxOffset, Vec2 hitboxDim, float dmg,
     : timeElapsed(),
       duration(frameCount * frameTime)
 {
-    damage = dmg;
+    this->dmg = dmg;
     if (sprite == ""){
         sp = Sprite();
         box.dim = hitboxDim;

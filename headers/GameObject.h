@@ -33,6 +33,8 @@ class GameObject
      */
     int frameCount;
 
+    float dmg = 0.0f;
+
     /**
      * It allows a instance of a derivade class to be deleted.
      * This is done through a pointer to this class.

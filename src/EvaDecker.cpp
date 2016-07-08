@@ -25,13 +25,13 @@ EvaDecker::EvaDecker()
     files = tFiles;
     frameCounts = new int[DECKER_ANIMATIONS]{6, 6, 6, 6, 6, 18};
     frameTimes =
-            new float[DECKER_ANIMATIONS]{0.08, 0.08, 0.08, 0.08, 0.08, 0.08};
+            new float[DECKER_ANIMATIONS]{0.09, 0.09, 0.09, 0.09, 0.09, 0.09};
     int spriteRows[DECKER_ANIMATIONS]{1, 1, 1, 1, 1, 3};
     for (int i = 0; i < DECKER_ANIMATIONS; i++)
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i], spriteRows[i]);
 
-    movSpeed = 200;
-    atk = 1;
+    movSpeed = 250;
+    atk = 5;
     def = 1;
     atkSpeed = 0.3;
     isAttacking = false;

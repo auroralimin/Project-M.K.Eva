@@ -27,7 +27,7 @@ BallMonster::BallMonster(Room *room, Vec2 pos) : previousPos(pos), hitTimer()
     attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
 
     hitTimer.Restart();
-    hp = 100;
+    hp = 5;
     rotation = 0;
 }
 
@@ -51,7 +51,7 @@ void BallMonster::NotifyCollision(GameObject &other, bool movement)
     if (other.Is("Bullet") || other.Is("Attack")) {
         Bullet &bullet = (Bullet &)other;
         if (!bullet.targetsPlayer) {
-            TakeDamage(10);
+            TakeDamage(other.dmg);
         }
     }
 }

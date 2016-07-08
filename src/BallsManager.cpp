@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Config.h"
 #include "Eva.h"
+#include "Collision.h"
 #include "Animation.h"
 
 #define ARENA_WIDTH_INIT 128
@@ -73,7 +74,7 @@ void BallsManager::Update(float dt)
                 evaPos.y -= focus->box.dim.y / 2;
                 ballArray[i]->box.pos += evaPos;
 
-                focus->TakeDamage(0.02);
+                focus->TakeDamage(ballArray.size() * 1.5);
             }
             if (timer.Get() >= ATTACK_TIME) {
                 currentState = BallsState::RESTING;
@@ -115,10 +116,16 @@ void BallsManager::SetCurrentState(int currentState)
 
 void BallsManager::RandTeleport()
 {
+    Rect box;
     for (size_t i = 0; i < ballArray.size(); i++) {
-        float x = Config::Rand(85, 1109);
-        float y = Config::Rand(146, 466);
-        ballArray[i]->box.pos = Vec2(x, y);
+        do {
+            box = ballArray[i]->box;
+            float x = Config::Rand(85, 1109);
+            float y = Config::Rand(146, 466);
+            box.pos = Vec2(x, y);
+        } while (Collision::IsColliding(box, focus->box, 0, 0));
+
+        ballArray[i]->box.pos = box.pos;
         ballArray[i]->attackHitbox.pos = Vec2(box.pos.x + 43, box.pos.y + 110);
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
             ballArray[i]->box.pos, 0, "sprites/monsters/ball/BOLOTA_BLINK.png", 6,

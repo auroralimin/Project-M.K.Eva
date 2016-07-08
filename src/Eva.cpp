@@ -180,11 +180,7 @@ void Eva::NotifyCollision(GameObject &other, bool movement)
     if (other.Is("Bullet")) {
         Bullet &bullet = (Bullet &)other;
         if (bullet.targetsPlayer)
-            TakeDamage(3);
-    } else if (other.Is("Ball")) {
-        TakeDamage(0);
-    } else if (other.Is("MonsterBallManager")) {
-        TakeDamage(0.1);
+            TakeDamage(other.dmg);
     } else if (other.Is("SamuraiCard") ||
                other.Is("GunnerCard")  ||
                other.Is("DeckerCard")){

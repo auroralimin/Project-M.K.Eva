@@ -26,13 +26,13 @@ EvaGunslinger::EvaGunslinger() : EvaClass(),
         "sprites/eva/attack/EVA-GUN-ATTACK-RIGHT.png"};
     files = tFiles;
     frameCounts = new int[GUN_ANIMATIONS]{6, 6, 6, 6, 6, 6, 6, 6, 6};
-    frameTimes = new float[GUN_ANIMATIONS]{0.08, 0.08, 0.08, 0.08, 0.08,
-                                           0.08, 0.08, 0.08, 0.08};
+    frameTimes = new float[GUN_ANIMATIONS]{0.06, 0.06, 0.06, 0.06, 0.06,
+                                           0.06, 0.06, 0.06, 0.06};
     for (int i = 0; i < GUN_ANIMATIONS; i++)
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
 
-    movSpeed = 300;
-    atk = 1;
+    movSpeed = 350;
+    atk = 5;
     def = 1;
     atkSpeed = 2;
     atkCooldown.Restart();
@@ -76,8 +76,8 @@ void EvaGunslinger::Attack(Vec2 pos, int direction)
         Vec2 offsets[4] = {{62, 0}, {10, 28}, {65, 102}, {110, 28}};
         Game::GetInstance()->GetCurrentState().AddObject(new Bullet(
             pos + offsets[direction], 3 * (M_PI / 2) - (M_PI / 2) * direction,
-            500, 400, "sprites/eva/attack/GUN-SPELLEFFECT.png", Vec2(-10, -10),
-            Vec2(20, 20), 4, 0.08f));
+            500, 400, atk, "sprites/eva/attack/GUN-SPELLEFFECT.png",
+            Vec2(-10, -10), Vec2(20, 20), 4, 0.08f));
     }
 }
 

@@ -4,13 +4,14 @@
 #include "Camera.h"
 #include "Animation.h"
 
-Bullet::Bullet(Vec2 pos, float angle, float speed, float maxDistance,
+Bullet::Bullet(Vec2 pos, float angle, float speed, float maxDistance, float dmg,
                std::string sprite, Vec2 hitboxOffset, Vec2 hitboxDim,
                int frameCount, float frameTime, bool targetsPlayer)
     : sp(sprite, frameCount, frameTime),
       speed(speed * cos(angle), speed * sin(angle)), hitboxOffset(hitboxOffset),
       previousPos(pos), distanceLeft(maxDistance)
 {
+    this->dmg = dmg;
     this->targetsPlayer = targetsPlayer;
 
     box.pos = pos;

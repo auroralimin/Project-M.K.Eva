@@ -32,7 +32,7 @@ MekaBugMonster::MekaBugMonster(Room *room, Vec2 pos, GameObject *focus)
     attackHitbox.dim = Vec2(box.dim.x, box.dim.y/AH_DIM_OFFSET_Y);
     attackHitbox.pos = Vec2(box.pos.x, box.pos.y + AH_POS_OFFSET_Y);
 
-    hp = 100;
+    hp = 50;
     rotation = 0;
     wasHit = false;
     hitTimer.Restart();
@@ -53,10 +53,14 @@ void MekaBugMonster::Update(float dt)
 
 void MekaBugMonster::NotifyCollision(GameObject &other, bool movement)
 {
-    if (other.Is("Bullet") || other.Is("Attack")) {
+    if (other.Is("Attack")) {
         Bullet &bullet = (Bullet &)other;
         if (!bullet.targetsPlayer)
-            TakeDamage(10);
+            TakeDamage(other.dmg/2);
+    } else if (other.Is("Bullet")) {
+        Bullet &bullet = (Bullet &)other;
+        if (!bullet.targetsPlayer)
+            TakeDamage(other.dmg*2);
     } else if (movement && (!other.Is("Ball"))) {
         box.pos = previousPos;
         if (other.Is("MekaBugMonster"))

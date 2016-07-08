@@ -26,12 +26,12 @@ EvaSamurai::EvaSamurai() : EvaClass(),
     files = tFiles;
     frameCounts = new int[SAMURAI_ANIMATIONS]{6, 6, 6, 6, 6, 4, 4, 4, 4};
     frameTimes = new float[SAMURAI_ANIMATIONS]{
-        0.08f, 0.08f, 0.08f, 0.08f, 0.08f, 0.08f, 0.08f, 0.08f, 0.08f};
+        0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f, 0.12f};
     for (int i = 0; i < SAMURAI_ANIMATIONS; i++)
         animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i]);
 
-    movSpeed = 100;
-    atk = 100;
+    movSpeed = 175;
+    atk = 10;
     def = 40;
     atkSpeed = 0.8;
     isAttacking = false;

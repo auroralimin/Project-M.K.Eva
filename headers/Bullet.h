@@ -6,7 +6,7 @@
 class Bullet : public GameObject
 {
   public:
-    Bullet(Vec2 pos, float angle, float speed, float maxDistance,
+    Bullet(Vec2 pos, float angle, float speed, float maxDistance, float dmg,
            std::string sprite, Vec2 hitboxOffset, Vec2 hitboxDim,
            int frameCount = 1, float frameTime = 1, bool targetsPlayer = false);
     void Render();
