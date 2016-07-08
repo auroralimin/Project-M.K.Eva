@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Config.h"
 #include "Camera.h"
+#include "Animation.h"
 
 Bullet::Bullet(Vec2 pos, float angle, float speed, float maxDistance,
                std::string sprite, Vec2 hitboxOffset, Vec2 hitboxDim,
@@ -72,6 +73,22 @@ void Bullet::NotifyCollision(GameObject &other, bool movement)
         distanceLeft = 0;
     } else if ((!targetsPlayer) && (!other.Is("Eva")) && (!other.Is("Bullet"))) {
         distanceLeft = 0;
+    }
+
+    if ((!targetsPlayer) && (distanceLeft == 0)) {
+        Vec2 otherPos = other.box.GetCenter();
+        otherPos -= box.GetCenter();
+        float angle = atan2(otherPos.y, otherPos.x);
+        Game::GetInstance()->GetCurrentState().AddObject(new Animation(
+            box.pos, angle * 180 / M_PI, "sprites/eva/attack/BULLET_IMPACT.png", 2,
+            0.1, true));
+    } else if ((targetsPlayer) && (distanceLeft == 0)) {
+        Vec2 otherPos = other.box.GetCenter();
+        otherPos -= box.GetCenter();
+        float angle = atan2(otherPos.y, otherPos.x);
+        Game::GetInstance()->GetCurrentState().AddObject(new Animation(
+            box.pos, angle * 180 / M_PI, "sprites/monsters/projectiles/BlueBomb_Impact.png", 2,
+            0.1, true));
     }
 }
 
