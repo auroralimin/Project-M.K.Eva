@@ -5,8 +5,8 @@
 
 Minimap::Minimap(std::string file) : sp(file)
 {
-    sp.SetScaleX(8);
-    sp.SetScaleY(3);
+//    sp.SetScaleX(8);
+//    sp.SetScaleY(3);
 }
 
 void Minimap::Render()
