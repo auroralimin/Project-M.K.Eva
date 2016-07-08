@@ -31,8 +31,9 @@ void AnimationFSM::SetCurrentState(int state)
     // Resets all the animations when the state changes
     if (currentState != state) {
         currentState = state;
-        for (int i = 0; i < nAnimations; ++i)
+        for (int i = 0; i < nAnimations; i++){
             animationsArray[i].get()->SetFrame(0);
+        }
     }
 }
 
@@ -55,7 +56,7 @@ void AnimationFSM::SetAnimation(unsigned long index, std::string file,
         int frameCount, float frameTime, int rows)
 {
     if (index >= animationsArray.size()) {
-        nAnimations = index;
+        nAnimations = index + 1;
         animationsArray.emplace(animationsArray.begin() + index, new Sprite());
     }
 

@@ -66,9 +66,9 @@ class Config
     /*
      * Attribute to set if the game is on hitbox mode.
      */
-    static const bool HITBOX_MODE = false;
+    static const bool HITBOX_MODE = true;
 
-    static const bool ATTACK_HITBOX_MODE = false;
+    static const bool ATTACK_HITBOX_MODE = true;
 
     static int Rand(int fMin, int fMax)
     {

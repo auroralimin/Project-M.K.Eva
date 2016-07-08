@@ -66,16 +66,16 @@ void EvaSamurai::Attack(Vec2 pos, int direction)
         SetCurrentState(direction + 5);
         isAttacking = true;
         atkReady = false;
-        //fix this. this is wrong in so many ways
+
         std::string sprites[4] = {
             "sprites/eva/attack/EVA-SAMURAI-ATTACK-UP-SpellEffect.png",
             "sprites/eva/attack/EVA-SAMURAI-ATTACK-LEFT-SpellEffect.png",
             "sprites/eva/attack/EVA-SAMURAI-ATTACK-DOWN-SpellEffect.png",
             "sprites/eva/attack/EVA-SAMURAI-ATTACK-RIGHT-SpellEffect.png"};
 
-        Vec2 offsets[4] = {{0, -85}, {-100, 0}, {0, 65}, {35, 0}};
-        Vec2 hitboxOffsets[4] = {{0, 0}, {0, 0}, {0, 0}, {0, 0}};
-        Vec2 hitboxDim[4] = {{120, 184}, {184, 120}, {120, 184}, {184, 120}};
+        Vec2 offsets[4] = {{0, -60}, {-60, 0}, {0, 0}, {0, 0}};
+        Vec2 hitboxOffsets[4] = {{0, 0}, {0, 0}, {0, 40}, {35, 0}};
+        Vec2 hitboxDim[4] = {{120, 160}, {150, 120}, {120, 140}, {150, 120}};
         Game::GetInstance()->GetCurrentState().AddObject(new AttackClass(
             pos + offsets[direction], hitboxOffsets[direction],
             hitboxDim[direction], atk, sprites[direction], 4, 0.08f));

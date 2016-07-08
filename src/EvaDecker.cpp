@@ -42,7 +42,6 @@ void EvaDecker::Update(float dt, float hp)
     animations.Update(dt);
     healthBar.Update(hp);
 
-    // hardcoded numbers will be changed with final sprite
     if (isAttacking) {
         if (animations.GetCurrentFrame() == 13 && atkStarted)
             Shockwave(atkPos);
