@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "AnimationFSM.h"
 #include "BossHealthBar.h"
+#include "Timer.h"
 
 class Boss : public GameObject
 {
@@ -21,5 +22,6 @@ private:
     BossHealthBar healthBar;
     int currentPhase;
     int currentState;
+
 
 };

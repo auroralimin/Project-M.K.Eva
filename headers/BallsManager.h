@@ -16,6 +16,7 @@ class BallsManager : public GameObject
     void NotifyCollision(GameObject &other, bool movement);
     bool Is(std::string className);
     void TakeDamage(float dmg = 1);
+    void ClearDeadBalls();
 
   private:
     enum BallsState { RESTING, WARNING, ATTACKING };
@@ -28,6 +29,5 @@ class BallsManager : public GameObject
 
     void SetCurrentState(int state);
     void RandTeleport();
-    void ClearDeadBalls();
 };
 

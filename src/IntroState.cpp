@@ -9,6 +9,7 @@
 #include "Timer.h"
 #include "HubState.h"
 #include "Item.h"
+#include "BallsManager.h"
 
 IntroState::IntroState(Vec2 evaPos) : map(), music("music/introMusic.ogg"),
     evaDead(false)
@@ -71,16 +72,18 @@ void IntroState::UpdateArray(float dt)
                 evaDead = true;
             } else if (objectArray[i]->Is("Turret") ||
                     objectArray[i]->Is("TurretMob") ||
-                    objectArray[i]->Is("Mekabug")   ||
-                    objectArray[i]->Is("BallMonster")) {
+                    objectArray[i]->Is("Mekabug")) {
                 map.NotifyDeadMonster();
             } else if (objectArray[i]->Is(evaDeath)) {
                 popRequested = quitRequested = true;
                 Game *game = Game::GetInstance();
                 game->Push(new HubState());
-            }/* if (objectArray[i]->Is("BallMonster")) {
+            } if (objectArray[i]->Is("BallMonster")) {
+                for (int j = 0; j < objectArray.size(); j++)
+                    if (objectArray[j]->Is("BallsManager"))
+                        ((BallsManager *) objectArray[j].get())->ClearDeadBalls();
                 objectArray[i] = nullptr;
-            }*/
+            }
 
             objectArray.erase(objectArray.begin() + i);
         } else {

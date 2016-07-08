@@ -83,7 +83,7 @@ void Eva::Update(float dt)
         doneSpawning = true;
 
     if (manager.KeyPress(SPACEBAR)) // temporary suicide button
-        IncreaseAvailableClasses();
+        TakeDamage(8000);
 
     if (doneSpawning){
         previousPos = box.pos;

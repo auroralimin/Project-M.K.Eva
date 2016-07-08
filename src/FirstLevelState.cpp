@@ -11,6 +11,7 @@
 #include "HubState.h"
 #include "Collision.h"
 #include "Boss.h"
+#include "BallsManager.h"
 
 FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), 
     music("music/introMusic.ogg"), evaDead(false)
@@ -84,6 +85,9 @@ void FirstLevelState::UpdateArray(float dt)
                 Game *game = Game::GetInstance();
                 game->Push(new HubState());
             } if (objectArray[i]->Is("BallMonster")) {
+                for (int j = 0; j < objectArray.size(); j++)
+                    if (objectArray[j]->Is("BallsManager"))
+                        ((BallsManager *) objectArray[j].get())->ClearDeadBalls();
                 objectArray[i] = nullptr;
             }
 
