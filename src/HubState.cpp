@@ -14,19 +14,19 @@
 #define EVA_SPAWN_POSITION_X 192
 #define EVA_SPAWN_POSITION_Y 95
 
-HubState::HubState(void) : map(), music("music/hubMusic.ogg")
+HubState::HubState(void) : map() /*music("music/hubMusic.ogg")*/
 {
     map.SetType(2);
     map.Load("hub", "map/hub.txt");
     AddObject(new Animation(Vec2(EVA_DRAWER_POSITION_X, EVA_DRAWER_POSITION_Y),
                             0, "sprites/eva/drawer/DRAWER-EVA.png",
                             48, 0.08, true, 3));
-    music.Play(-1);
+    //music.Play(-1);
 }
 
 HubState::~HubState(void)
 {
-    music.Stop();
+    //music.Stop();
 }
 
 void HubState::Update(float dt)
