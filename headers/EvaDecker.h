@@ -3,6 +3,7 @@
 #include "EvaClass.h"
 #include "Timer.h"
 #include "HealthBar.h"
+#include "Minimap.h"
 
 class EvaDecker : public EvaClass
 {
@@ -26,5 +27,6 @@ class EvaDecker : public EvaClass
     void Shockwave(Vec2 pos);
 
     HealthBar healthBar;
+    Minimap minimap;
 };
 

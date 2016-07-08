@@ -10,7 +10,9 @@
 
 EvaGunslinger::EvaGunslinger() : EvaClass(),
     healthBar("sprites/hud/healthbar/GUN/HUD-EVA-GUN.png",
-              "sprites/hud/healthbar/GUN/HUD-EVA-GUN-OVERLAY.png")
+              "sprites/hud/healthbar/GUN/HUD-EVA-GUN-OVERLAY.png"),
+    minimap("sprites/hud/minimap/HUD-EVA-GUN-MINIMAP.png")
+
 {
     std::string tFiles[GUN_ANIMATIONS] = {
         "sprites/eva/movement/EVA-GUN-IDLE.png",
@@ -93,5 +95,6 @@ void EvaGunslinger::Render(float x, float y)
     else
         animations.Render(x, y);
     healthBar.Render();
+    minimap.Render();
 }
 

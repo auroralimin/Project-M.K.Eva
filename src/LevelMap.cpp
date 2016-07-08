@@ -14,7 +14,7 @@
 #define MINI_ROOM_SIZE_Y 22
 #define MINI_ROOM_BORDER 2
 #define MINIMAP_X 1000
-#define MINIMAP_Y 10
+#define MINIMAP_Y 20
 
 LevelMap::LevelMap(void) : drawMiniroom(false)
 {
@@ -75,7 +75,9 @@ void LevelMap::Update(float dt)
 void LevelMap::Render(void)
 {
     rooms[index]->Render(Camera::pos.x, Camera::pos.y);
+}
 
+void LevelMap::RenderMinimap(void) {
     if (!drawMiniroom)
         return;
 

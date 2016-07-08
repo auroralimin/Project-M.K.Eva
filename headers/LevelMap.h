@@ -42,6 +42,11 @@ class LevelMap
     void Render(void);
 
     /**
+     * Renders the minimap
+     */
+    void RenderMinimap(void);
+
+    /**
      * Sets the current map room.
      */
     void SetCurrentRoom(Vec2 room);

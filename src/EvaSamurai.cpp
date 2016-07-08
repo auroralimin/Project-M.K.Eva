@@ -9,7 +9,9 @@
 #define SAMURAI_ATTACK_DAMAGE 5.6
 EvaSamurai::EvaSamurai() : EvaClass(),
   healthBar("sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI.png",
-            "sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI-OVERLAY.png")
+            "sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI-OVERLAY.png"),
+  minimap("sprites/hud/minimap/HUD-EVA-SAMURAI-MINIMAP.png")
+
 {
     std::string tFiles[SAMURAI_ANIMATIONS] = {
         "sprites/eva/movement/EVA-SAMURAI-IDLE.png",
@@ -92,5 +94,6 @@ void EvaSamurai::Render(float x, float y)
 {
     animations.Render(x, y);
     healthBar.Render();
+    minimap.Render();
 }
 

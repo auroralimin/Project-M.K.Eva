@@ -47,6 +47,7 @@ void FirstLevelState::Render(void)
 {
     map.Render();
     RenderArray();
+    map.RenderMinimap();
 }
 
 void FirstLevelState::Pause(void)

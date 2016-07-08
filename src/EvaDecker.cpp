@@ -12,7 +12,8 @@
 EvaDecker::EvaDecker()
     : EvaClass(), atkTimer(), atkCooldown(), atkStarted(false), atkPos(0, 0),
       healthBar("sprites/hud/healthbar/DECKER/HUD-EVA-DECKER.png",
-                "sprites/hud/healthbar/DECKER/HUD-EVA-DECKER-OVERLAY.png")
+                "sprites/hud/healthbar/DECKER/HUD-EVA-DECKER-OVERLAY.png"),
+      minimap("sprites/hud/minimap/HUD-EVA-DECKER-MINIMAP.png")
 {
     std::string tFiles[DECKER_ANIMATIONS] = {
         "sprites/eva/movement/EVA-DECKER-IDLE.png",
@@ -82,6 +83,7 @@ void EvaDecker::Render(float x, float y)
     else
         animations.Render(x, y);
     healthBar.Render();
+    minimap.Render();
 }
 
 void EvaDecker::Shockwave(Vec2 pos)

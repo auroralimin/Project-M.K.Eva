@@ -38,6 +38,7 @@ void IntroState::Render(void)
 {
     map.Render();
     RenderArray();
+    map.RenderMinimap();
 }
 
 void IntroState::Pause(void)

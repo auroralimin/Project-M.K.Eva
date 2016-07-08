@@ -3,6 +3,7 @@
 #include "EvaClass.h"
 #include "Timer.h"
 #include "HealthBar.h"
+#include "Minimap.h"
 
 class EvaGunslinger : public EvaClass
 {
@@ -22,5 +23,6 @@ class EvaGunslinger : public EvaClass
     Timer atkCooldown;
 
     HealthBar healthBar;
+    Minimap minimap;
 };
 
