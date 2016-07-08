@@ -3,12 +3,13 @@
 #include "GameObject.h"
 #include "Sprite.h"
 #include "Timer.h"
+#include "Sound.h"
 
 class Cutscene : public GameObject
 {
     public:
         Cutscene(Vec2 pos, std::string name, int nFrames, float frameTime = 0.1,
-                bool oneTimeOnly = true);
+                std::string soundFile = "", bool oneTimeOnly = true);
         void Update(float dt);
         void Render(void);
         bool IsDead(void);
@@ -23,7 +24,8 @@ class Cutscene : public GameObject
         int currentFrame, nFrames;
         float frameTime;
         Timer timer;
-        bool isDead, oneTimeOnly;
+        bool isDead, oneTimeOnly, playSound, soundStopped;
+        Sound sound;
         Sprite *sp;
 };
 

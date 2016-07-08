@@ -2,8 +2,9 @@
 #include "Config.h"
 
 Cutscene::Cutscene(Vec2 pos, std::string name, int nFrames, float frameTime,
-        bool oneTimeOnly) : name(name), currentFrame(0), nFrames(nFrames),
-    frameTime(frameTime), timer(), isDead(false), oneTimeOnly(oneTimeOnly)
+        std::string soundFile, bool oneTimeOnly) : name(name), currentFrame(0),
+    nFrames(nFrames),frameTime(frameTime), timer(), isDead(false),
+    oneTimeOnly(oneTimeOnly), playSound(false), soundStopped(true)
 {
     box.pos = pos;
     sp = new Sprite[nFrames];
@@ -11,6 +12,11 @@ Cutscene::Cutscene(Vec2 pos, std::string name, int nFrames, float frameTime,
         sp[i].Open("cutscene/" + name + "/" + std::to_string(i + 1) + ".png");
     box.dim.x = sp[0].GetWidth();
     box.dim.y = sp[0].GetHeight();
+
+    if (soundFile != "") {
+        playSound = true;
+        sound.Open(soundFile);
+    }
 }
 
 void Cutscene::Update(float dt)
@@ -22,15 +28,26 @@ void Cutscene::Update(float dt)
     }
 
     if (currentFrame >= nFrames) {
-        if (oneTimeOnly)
+        if (oneTimeOnly) {
+            if (!soundStopped) {
+                sound.Stop();
+                soundStopped = true;
+            }
             isDead = true;
-        else
+        } else {
             currentFrame = 0;
+        }
     }
 }
 
 void Cutscene::Render(void)
 {
+    if (playSound) {
+        sound.Play(1);
+        playSound = false;
+        soundStopped = false;
+    }
+
     if (!isDead)
         sp[currentFrame].Render(box.pos.x, box.pos.y);
 }
@@ -60,6 +77,8 @@ void Cutscene::TakeDamage(float dmg)
 
 void Cutscene::Kill(void)
 {
+    if (!soundStopped)
+        sound.Stop();
     isDead = true;    
 }
 

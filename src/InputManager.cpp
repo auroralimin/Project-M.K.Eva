@@ -117,18 +117,30 @@ InputManager::InputManager(void)
     keyUpdate[UP_ARROW_KEY] = keyUpdate[DOWN_ARROW_KEY] = 0;
     keyState[UP_ARROW_KEY] = keyState[DOWN_ARROW_KEY] = false;
 
-    keyUpdate[W_KEY] = keyUpdate[S_KEY] = 0;
-    keyUpdate[A_KEY] = keyUpdate[D_KEY] = 0;
+    keyUpdate[DOWN_ARROW_KEY] = keyUpdate[DOWN_ARROW_KEY] = 0;
+    keyState[DOWN_ARROW_KEY] = keyState[DOWN_ARROW_KEY] = false;
 
+    keyUpdate[RIGHT_ARROW_KEY] = keyUpdate[DOWN_ARROW_KEY] = 0;
+    keyState[RIGHT_ARROW_KEY] = keyState[DOWN_ARROW_KEY] = false;
+
+    keyUpdate[W_KEY] = keyUpdate[S_KEY] = 0;
     keyState[W_KEY] = keyState[S_KEY] = false;
+
+    keyUpdate[A_KEY] = keyUpdate[D_KEY] = 0;
     keyState[A_KEY] = keyState[D_KEY] = false;
+
+    keyUpdate[S_KEY] = keyUpdate[D_KEY] = 0;
+    keyState[S_KEY] = keyState[D_KEY] = false;
+
+    keyUpdate[D_KEY] = keyUpdate[D_KEY] = 0;
+    keyState[D_KEY] = keyState[D_KEY] = false;
 
     keyUpdate[Q_KEY] = keyUpdate[E_KEY] = 0;
     keyState[Q_KEY] = keyState[E_KEY] = false;
 
-    keyUpdate[H_KEY] = keyUpdate[J_KEY] = keyUpdate[K_KEY] = keyUpdate[L_KEY] =
+    keyUpdate[E_KEY] = keyUpdate[J_KEY] = keyUpdate[K_KEY] = keyUpdate[L_KEY] =
         0;
-    keyState[H_KEY] = keyState[J_KEY] = keyState[K_KEY] = keyState[L_KEY] =
+    keyState[E_KEY] = keyState[J_KEY] = keyState[K_KEY] = keyState[L_KEY] =
         false;
 
     keyUpdate[NUM_1_KEY] = keyUpdate[NUM_2_KEY] = keyUpdate[NUM_3_KEY] = 0;

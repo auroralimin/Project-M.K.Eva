@@ -4,7 +4,8 @@
 #include "Config.h"
 #include "InputManager.h"
 
-TitleState::TitleState(void) : cutscene(Vec2(0, 0), "begin", 70, 0.1),
+TitleState::TitleState(void) :
+    cutscene(Vec2(0, 0), "begin", 70, 0.1, "soundeffect/begin.wav"),
     titleFadeIn(Vec2(0, 0), "title", 14, 0.1),
     title("img/title.png"), msg("img/msg.png"), timer()
 {
@@ -16,24 +17,24 @@ void TitleState::Update(float dt)
 {
 	InputManager input = InputManager::GetInstance(); 
 
-	if (input.KeyPress(ESCAPE_KEY) || input.IsQuitRequested())
-		popRequested = true;
-	if (input.KeyPress(SPACEBAR))
-	{
-        if (cutscene.IsDead()) {
-	    	Game::GetInstance()->Push(new HubState());
-	    	popRequested = true;
-        } else {
-            cutscene.Kill();
-        }
-	}
-
     if (!cutscene.IsDead())
         cutscene.Update(dt);
     else if (!titleFadeIn.IsDead())
         titleFadeIn.Update(dt);
     else
     	timer.Update(dt);
+
+	if (input.KeyPress(SPACEBAR))
+	{
+        if (!cutscene.IsDead()) {
+            cutscene.Kill();
+        } else if (titleFadeIn.IsDead()) {
+            titleFadeIn.Kill();
+	    	Game *game = Game::GetInstance();
+            game->Push(new HubState());
+	    	popRequested = quitRequested = true;
+        }
+	}
 }
 
 void TitleState::Render(void)
