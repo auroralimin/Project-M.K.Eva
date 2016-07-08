@@ -8,14 +8,18 @@
 #include "Collision.h"
 #include "Timer.h"
 #include "HubState.h"
+#include "Item.h"
 
 IntroState::IntroState(Vec2 evaPos) : map(), music("music/introMusic.ogg")
 {
-    Eva *eva = new Eva(evaPos);
+    Eva *eva = new Eva(evaPos, false);
     AddObject(eva);
     map.SetFocus(eva);
     map.SetDrawMiniroom(true);
     map.Load("intro", "map/intro.txt");
+    AddObject(new Item("SamuraiCard", Vec2(1000, 400)));
+    AddObject(new Item("DeckerCard", Vec2(800, 400)));
+    AddObject(new Item("GunnerCard", Vec2(900, 400)));
     map.SetFocus(eva);
     music.Play(-1);
 }

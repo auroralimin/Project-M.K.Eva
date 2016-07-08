@@ -20,14 +20,14 @@
 #define AH_DIM_OFFSET_X 3
 #define AH_POS_OFFSET_X box.dim.x/3
 
-Eva::Eva(Vec2 pos) : spawnDelayTimer(), hitTimer()
+Eva::Eva(Vec2 pos, bool hasAllClasses) : spawnDelayTimer(), hitTimer()
 {
     currentClass = BASE;
 
     evaClasses.emplace_back(new EvaBase());
     evaClasses.emplace_back(new EvaSamurai());
-    evaClasses.emplace_back(new EvaDecker());
     evaClasses.emplace_back(new EvaGunslinger());
+    evaClasses.emplace_back(new EvaDecker());
     box.pos = pos;
     box.dim = Vec2(evaClasses[currentClass]->animations.GetCurrentWidth(),
                    evaClasses[currentClass]->animations.GetCurrentHeight());
@@ -41,6 +41,9 @@ Eva::Eva(Vec2 pos) : spawnDelayTimer(), hitTimer()
     hitTimer.Restart();
     doneSpawning = false;
     wasHit = false;
+    availableClasses = hasAllClasses ? 3 : 0;
+    currentClass = hasAllClasses ? 1 : 0;
+
 }
 
 void Eva::Render()
@@ -62,6 +65,10 @@ void Eva::Update(float dt)
     const int keys[4] = {UP_ARROW_KEY, LEFT_ARROW_KEY, DOWN_ARROW_KEY,
                          RIGHT_ARROW_KEY};
     Vec2 speed = Vec2(0, 0);
+
+    if (availableClasses > 0 && currentClass == 0)
+        currentClass = 1;
+
     //eva cant be hit successively by many attacks
     if (wasHit)
         hitTimer.Update(dt);
@@ -76,7 +83,7 @@ void Eva::Update(float dt)
         doneSpawning = true;
 
     if (manager.KeyPress(SPACEBAR)) // temporary suicide button
-        TakeDamage(8000);
+        IncreaseAvailableClasses();
 
     if (doneSpawning){
         previousPos = box.pos;
@@ -94,17 +101,12 @@ void Eva::Update(float dt)
 
         //Check for class change input
         if (!evaClasses[currentClass]->IsAttacking()) {
-            if (manager.KeyPress(Q_KEY)) {
-                if (currentClass == 0)
-                    currentClass = evaClasses.size() - 1;
-                currentClass -= 1;
-                if (currentClass < 1)
-                    currentClass = evaClasses.size() - 1;
-            } else if (manager.KeyPress(E_KEY)) {
-                currentClass += 1;
-                if (currentClass > evaClasses.size() - 1)
-                    currentClass = 1;
-            }
+            if (manager.KeyPress(NUM_1_KEY) && availableClasses > 0)
+                currentClass = 1;
+            else if (manager.KeyPress(NUM_2_KEY) && availableClasses > 1)
+                currentClass = 2;
+            else if (manager.KeyPress(NUM_3_KEY) && availableClasses > 2)
+                currentClass = 3;
         }
 
         //Check for movement input
@@ -183,7 +185,13 @@ void Eva::NotifyCollision(GameObject &other, bool movement)
         TakeDamage(0);
     } else if (other.Is("MonsterBallManager")) {
         TakeDamage(0.1);
-    } else if (other.Is("LifeItem")) { 
+    } else if (other.Is("SamuraiCard") ||
+               other.Is("GunnerCard")  ||
+               other.Is("DeckerCard")){
+        std::cout << "new class!" << std::endl;
+        IncreaseAvailableClasses();
+    } else if (other.Is("LifeItem")) {
+        std::cout << "Life" << std::endl;
         hp += 20; 
     } else if (movement && (!other.Is("Ball"))) {
         box.pos = previousPos;
@@ -214,5 +222,13 @@ void Eva::TakeDamage(float dmg)
 std::string Eva::GetEvaDeath(void)
 {
     return evaDeath;
+}
+
+void Eva::IncreaseAvailableClasses()
+{
+    if (availableClasses < 3){
+        availableClasses++;
+        currentClass++;
+    }
 }
 

@@ -19,13 +19,13 @@ class Eva : public GameObject
     /**
      * Enum to represent eva's classes.
      */
-    enum Classes { BASE, SAMURAI, DECKER, GUNSLINGER };
+    enum Classes { BASE, SAMURAI, GUNSLINGER, DECKER };
 
     /**
      * Initializes Eva with parameters.
      * @param pos a Vec2 contains eva's initial position
      */
-    Eva(Vec2 pos);
+    Eva(Vec2 pos, bool hasAllClasses);
 
     /**
      * Renders the current animation.
@@ -67,6 +67,12 @@ class Eva : public GameObject
 
     std::string GetEvaDeath(void);
 
+    /**
+     * Method to be called by class unlock items at intro. Increments the number
+     * of available classes and immediately changes to the new class.
+     */
+    void IncreaseAvailableClasses(void);
+
     enum Animations {
         IDLE,
         MOVING_UP,
@@ -90,6 +96,7 @@ class Eva : public GameObject
     unsigned int currentClass;
     Timer spawnDelayTimer, hitTimer;
     bool doneSpawning, wasHit;
+    int availableClasses;
 
     void SetClass(Classes c);
 };

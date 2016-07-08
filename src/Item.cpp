@@ -28,8 +28,10 @@ bool Item::IsDead(void)
 void Item::NotifyCollision(GameObject &other, bool movement)
 {
     UNUSED_VAR movement;
-    if (other.Is("Eva"))
+    if (other.Is("Eva")){
+        std::cout << "Picked up: " << name << std::endl;
         isDead = true;
+    }
 }
 
 bool Item::Is(std::string className)

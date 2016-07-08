@@ -21,7 +21,7 @@ FirstLevelState::FirstLevelState(Vec2 evaPos) : map(),
     std::string mapString = ProceduralMap::GenerateMap(
         7, 5, 15, ProceduralMap::MapConfig::SPARSE, false);
 
-    Eva *eva = new Eva(evaPos);
+    Eva *eva = new Eva(evaPos, true);
     AddObject(eva);
     map.SetFocus(eva);
     map.SetDrawMiniroom(true);

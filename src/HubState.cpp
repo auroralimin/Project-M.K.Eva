@@ -69,7 +69,7 @@ void HubState::UpdateArray(float dt)
             if (objectArray[i]->Is(
                         "Animation:sprites/eva/drawer/DRAWER-EVA.png"))
                 AddObject(new Eva(Vec2(EVA_SPAWN_POSITION_X,
-                                       EVA_SPAWN_POSITION_Y)));
+                                       EVA_SPAWN_POSITION_Y), false));
             objectArray.erase(objectArray.begin() + i);
         } else {
             if (objectArray[i]->Is("Eva"))
