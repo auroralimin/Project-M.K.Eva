@@ -3,7 +3,7 @@
 #include "Monster.h"
 #include "Timer.h"
 
-/*******************************************************************************
+/**************************************************************************/ /**
   * The representation of the TurretMob enemy                                  *
   * This enemy wander aimless around the room while facing and shooting        *
   * the player.                                                                *

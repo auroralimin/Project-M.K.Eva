@@ -5,7 +5,7 @@
 #include "BallMonster.h"
 #include "Timer.h"
 
-/*******************************************************************************
+/**************************************************************************/ /**
   * The representation of the Balls Manager                                    *
   * This manager syncronizes all of the animations and attacks of all the      *
   * Balls in the room its set in.                                              *

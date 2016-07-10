@@ -3,7 +3,7 @@
 #include "Monster.h"
 #include "Timer.h"
 
-/*******************************************************************************
+/**************************************************************************/ /**
  * The representation of the Turret enemey.                                    *
  * This enemy is stationary and fire's at its focus, usually the player's      *
  * character, Eva.                                                             *

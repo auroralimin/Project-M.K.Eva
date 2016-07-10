@@ -3,7 +3,7 @@
 #include "Monster.h"
 #include "Timer.h"
 
-/*******************************************************************************
+/**************************************************************************/ /**
   * The representation of the enemey Ball.                                     *
   * This enemy is managed by the class BallsManager, so                        *
   * its actions are always syncronized with all of the                         *

@@ -4,7 +4,7 @@
 #include "Room.h"
 #include "AnimationFSM.h"
 
-/*******************************************************************************
+/**************************************************************************/ /**
   * The representation of a enemy monster in the game.                         *
   * The enemies in the game will inherit from this class.                      *
   *****************************************************************************/
