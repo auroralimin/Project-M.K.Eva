@@ -5,7 +5,7 @@
 #include "HealthBar.h"
 
 /***************************************************************************/ /**
-  * A virtual class that is the base to all Eva class implementations
+  * Eva's ranged class
   ******************************************************************************/
 
 class EvaGunslinger : public EvaClass
