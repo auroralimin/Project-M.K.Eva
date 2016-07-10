@@ -1,8 +1,8 @@
 #include "Item.h"
 #include "Config.h"
 
-Item::Item(std::string name, Vec2 pos) : sp("img/item/" + name + ".png"),
-    name(name), isDead(false)
+Item::Item(std::string name, Vec2 pos)
+    : sp("img/item/" + name + ".png"), name(name), isDead(false)
 {
     box.pos = hitbox.pos = pos;
     box.dim.x = hitbox.dim.x = sp.GetWidth();
@@ -17,7 +17,7 @@ void Item::Render(void)
 void Item::Update(float dt)
 {
     UNUSED_VAR dt;
-    //do nothing
+    // do nothing
 }
 
 bool Item::IsDead(void)
@@ -28,7 +28,7 @@ bool Item::IsDead(void)
 void Item::NotifyCollision(GameObject &other, bool movement)
 {
     UNUSED_VAR movement;
-    if (other.Is("Eva")){
+    if (other.Is("Eva")) {
         std::cout << "Picked up: " << name << std::endl;
         isDead = true;
     }
@@ -42,6 +42,6 @@ bool Item::Is(std::string className)
 void Item::TakeDamage(float dmg)
 {
     UNUSED_VAR dmg;
-    //do nothing
+    // do nothing
 }
 

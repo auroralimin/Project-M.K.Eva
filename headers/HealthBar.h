@@ -9,7 +9,7 @@
   *****************************************************************************/
 class HealthBar
 {
-public:
+  public:
     /**
       * Initializes the HealthBar with parameters.
       * @param baseFile String containing the path to the baseFile sprite.
@@ -28,11 +28,9 @@ public:
       */
     void Update(float hp);
 
-private:
+  private:
     Sprite base;
     Sprite bar;
     Sprite overlay;
 };
-
-
 

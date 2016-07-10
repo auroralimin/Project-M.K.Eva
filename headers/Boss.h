@@ -11,7 +11,7 @@
   *****************************************************************************/
 class Boss : public GameObject
 {
-public:
+  public:
     /**
       * Initializes the Boss with parameters.
       * @param pos A Vec2 vector with its spwan position.
@@ -46,12 +46,12 @@ public:
       */
     void NotifyCollision(GameObject &other, bool movement);
 
-   /**
-     * Returns if this class is the class indicated by className.
-     * @param className Name of the class to be tested.
-     * @return If className is equal to this class' name then returns true,
-     * returns false otherwise.
-     */
+    /**
+      * Returns if this class is the class indicated by className.
+      * @param className Name of the class to be tested.
+      * @return If className is equal to this class' name then returns true,
+      * returns false otherwise.
+      */
     bool Is(std::string className);
 
     /**
@@ -60,11 +60,10 @@ public:
      */
     void TakeDamage(float dmg = 1);
 
-private:
+  private:
     AnimationFSM animations[2];
     BossHealthBar healthBar;
     int currentPhase;
     int currentState;
-
-
 };
+

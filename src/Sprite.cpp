@@ -45,7 +45,8 @@ void Sprite::Update(float dt)
 void Sprite::SetFrame(int frame)
 {
     currentFrame = frame;
-    SetClip((frame % (frameCount/rows)) * width, (frame / (frameCount/rows)) * height, width, height);
+    SetClip((frame % (frameCount / rows)) * width,
+            (frame / (frameCount / rows)) * height, width, height);
     timeElapsed = 0.0;
 }
 

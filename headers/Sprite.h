@@ -24,7 +24,8 @@ class Sprite
      * @param frameTime a int argument containing how long will a frame be
      * displayed
      */
-    Sprite(std::string file, int frameCount = 1, float frameTime = 1.0, int rows = 1);
+    Sprite(std::string file, int frameCount = 1, float frameTime = 1.0,
+           int rows = 1);
 
     /**
      * Loads a sprite from a given file.

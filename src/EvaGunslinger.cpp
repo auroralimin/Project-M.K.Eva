@@ -11,10 +11,11 @@
 #define MINIMAP_X 900
 #define MINIMAP_Y 5
 
-EvaGunslinger::EvaGunslinger() : EvaClass(),
-    healthBar("sprites/hud/healthbar/GUN/HUD-EVA-GUN.png",
-              "sprites/hud/healthbar/GUN/HUD-EVA-GUN-OVERLAY.png"),
-    minimap("sprites/hud/minimap/HUD-EVA-GUN-MINIMAP.png")
+EvaGunslinger::EvaGunslinger()
+    : EvaClass(),
+      healthBar("sprites/hud/healthbar/GUN/HUD-EVA-GUN.png",
+                "sprites/hud/healthbar/GUN/HUD-EVA-GUN-OVERLAY.png"),
+      minimap("sprites/hud/minimap/HUD-EVA-GUN-MINIMAP.png")
 
 {
     std::string tFiles[GUN_ANIMATIONS] = {
@@ -87,8 +88,7 @@ void EvaGunslinger::Attack(Vec2 pos, int direction)
 void EvaGunslinger::Die(Vec2 pos)
 {
     Game::GetInstance()->GetCurrentState().AddObject(
-                new Animation(pos, 0, "sprites/eva/death/EVA-GUN-DEATH.png",
-                              16, 0.08));
+        new Animation(pos, 0, "sprites/eva/death/EVA-GUN-DEATH.png", 16, 0.08));
 }
 
 void EvaGunslinger::Render(float x, float y)

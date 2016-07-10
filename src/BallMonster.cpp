@@ -7,8 +7,8 @@
 #define BALL_ANIMATIONS 3
 #define AH_DIM_OFFSET_X 3
 #define AH_DIM_OFFSET_Y 3
-#define AH_POS_OFFSET_X box.dim.x/3
-#define AH_POS_OFFSET_Y box.dim.y/2
+#define AH_POS_OFFSET_X box.dim.x / 3
+#define AH_POS_OFFSET_Y box.dim.y / 2
 
 BallMonster::BallMonster(Room *room, Vec2 pos) : previousPos(pos), hitTimer()
 {
@@ -23,8 +23,10 @@ BallMonster::BallMonster(Room *room, Vec2 pos) : previousPos(pos), hitTimer()
 
     box.pos = pos;
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
-    attackHitbox.dim = Vec2(box.dim.x/AH_DIM_OFFSET_X, box.dim.y/AH_DIM_OFFSET_Y);
-    attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
+    attackHitbox.dim =
+        Vec2(box.dim.x / AH_DIM_OFFSET_X, box.dim.y / AH_DIM_OFFSET_Y);
+    attackHitbox.pos =
+        Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
 
     hitTimer.Restart();
     hp = 5;
@@ -35,13 +37,14 @@ void BallMonster::Update(float dt)
 {
     if (wasHit)
         hitTimer.Update(dt);
-    if (hitTimer.Get() >= MONSTER_DAMAGE_DELAY){
+    if (hitTimer.Get() >= MONSTER_DAMAGE_DELAY) {
         hitTimer.Restart();
         wasHit = false;
     }
 
     animations.Update(dt);
-    attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
+    attackHitbox.pos =
+        Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
 }
 
 void BallMonster::NotifyCollision(GameObject &other, bool movement)
@@ -63,14 +66,14 @@ bool BallMonster::Is(std::string className)
 
 void BallMonster::TakeDamage(float dmg)
 {
-    if (!wasHit){
+    if (!wasHit) {
         hp -= dmg;
         wasHit = true;
     }
     if (IsDead()) {
-        Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-            box.pos, 0, "sprites/monsters/ball/BOLOTA_DEATH.png", 7,
-            0.2, true));
+        Game::GetInstance()->GetCurrentState().AddObject(
+            new Animation(box.pos, 0, "sprites/monsters/ball/BOLOTA_DEATH.png",
+                          7, 0.2, true));
     }
 }
 

@@ -28,8 +28,8 @@ void State::UpdateArray(float dt)
         objectArray[i]->Update((float)(dt / 1000));
 }
 
-bool WayToSort(std::unique_ptr<GameObject> const& obj1,
-        std::unique_ptr<GameObject> const& obj2)
+bool WayToSort(std::unique_ptr<GameObject> const &obj1,
+               std::unique_ptr<GameObject> const &obj2)
 {
     return (obj1->hitbox.pos.y < obj2->hitbox.pos.y);
 }
@@ -41,5 +41,4 @@ void State::RenderArray(void)
     for (unsigned int i = 0; i < objectArray.size(); ++i)
         objectArray[i]->Render();
 }
-
 

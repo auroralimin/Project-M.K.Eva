@@ -32,8 +32,8 @@ _OBJ += AnimationFSM.o Eva.o TurretMonster.o Bullet.o MekaBugMonster.o
 _OBJ += TurretMobMonster.o BallMonster.o BallsManager.o Eva.o HubState.o
 _OBJ += FirstLevelState.o ProceduralFirstRooms.o EvaClass.o EvaBase.o 
 _OBJ += EvaDecker.o EvaGunslinger.o EvaSamurai.o Bullet.o AttackClass.o Room.o
-_OBJ += HealthBar.o TitleState.o Monster.o Door.o Item.o Cutscene.o Minimap.o
-_OBJ += Boss.o BossHealthBar.o
+_OBJ += HealthBar.o TitleState.o Monster.o Door.o Item.o Cutscene.o Boss.o
+_OBJ += BossHealthBar.o
 OBJ = $(patsubst %,$(BIN_PATH)/%,$(_OBJ))
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_PATH)/$*.Td

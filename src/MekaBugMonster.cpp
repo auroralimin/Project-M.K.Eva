@@ -10,11 +10,11 @@
 #define HITBOX_DIM_OFFSET_Y 2
 #define HITBOX_POS_OFFSET_Y 35
 #define AH_DIM_OFFSET_Y 1.5
-#define AH_POS_OFFSET_Y box.dim.y/3
+#define AH_POS_OFFSET_Y box.dim.y / 3
 
 MekaBugMonster::MekaBugMonster(Room *room, Vec2 pos, GameObject *focus)
     : focus(focus), movState(MekaBugMonsterMovement::RESTING), previousPos(pos),
-    stuck(false), restTimer(), stuckTimer(), attackTimer(), hitTimer()
+      stuck(false), restTimer(), stuckTimer(), attackTimer(), hitTimer()
 {
     this->room = room;
     std::string files[MEKABUG_ANIMATIONS] = {
@@ -27,9 +27,9 @@ MekaBugMonster::MekaBugMonster(Room *room, Vec2 pos, GameObject *focus)
 
     box.pos = pos;
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
-    hitbox.dim = Vec2(box.dim.x, box.dim.y/HITBOX_DIM_OFFSET_Y);
+    hitbox.dim = Vec2(box.dim.x, box.dim.y / HITBOX_DIM_OFFSET_Y);
     hitbox.pos = Vec2(box.pos.x, box.pos.y + HITBOX_POS_OFFSET_Y);
-    attackHitbox.dim = Vec2(box.dim.x, box.dim.y/AH_DIM_OFFSET_Y);
+    attackHitbox.dim = Vec2(box.dim.x, box.dim.y / AH_DIM_OFFSET_Y);
     attackHitbox.pos = Vec2(box.pos.x, box.pos.y + AH_POS_OFFSET_Y);
 
     hp = 50;
@@ -42,7 +42,7 @@ void MekaBugMonster::Update(float dt)
 {
     if (wasHit)
         hitTimer.Update(dt);
-    if (hitTimer.Get() >= MONSTER_DAMAGE_DELAY){
+    if (hitTimer.Get() >= MONSTER_DAMAGE_DELAY) {
         hitTimer.Restart();
         wasHit = false;
     }
@@ -56,11 +56,11 @@ void MekaBugMonster::NotifyCollision(GameObject &other, bool movement)
     if (other.Is("Attack")) {
         Bullet &bullet = (Bullet &)other;
         if (!bullet.targetsPlayer)
-            TakeDamage(other.dmg/2);
+            TakeDamage(other.dmg / 2);
     } else if (other.Is("Bullet")) {
         Bullet &bullet = (Bullet &)other;
         if (!bullet.targetsPlayer)
-            TakeDamage(other.dmg*2);
+            TakeDamage(other.dmg * 2);
     } else if (movement && (!other.Is("Ball"))) {
         box.pos = previousPos;
         if (other.Is("MekaBugMonster"))
@@ -75,14 +75,14 @@ bool MekaBugMonster::Is(std::string className)
 
 void MekaBugMonster::TakeDamage(float dmg)
 {
-    if (!wasHit){
+    if (!wasHit) {
         hp -= dmg;
         wasHit = true;
     }
     if (IsDead())
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-            box.pos, 0, "sprites/monsters/mekabug/MEKABUG_DEATH.png", 3,
-            0.5, true));
+            box.pos, 0, "sprites/monsters/mekabug/MEKABUG_DEATH.png", 3, 0.5,
+            true));
 }
 
 void MekaBugMonster::MovementAndAttack(float dt)
@@ -126,7 +126,8 @@ void MekaBugMonster::MovementAndAttack(float dt)
                 }
             }
 
-            if (Game::GetInstance()->GetCurrentState().IsCollidingWithWall(this)) {
+            if (Game::GetInstance()->GetCurrentState().IsCollidingWithWall(
+                    this)) {
                 box.pos = previousPos;
                 movState = MekaBugMonsterMovement::RESTING;
                 restTimer.Restart();

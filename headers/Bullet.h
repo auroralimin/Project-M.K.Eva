@@ -14,10 +14,10 @@ class Bullet : public GameObject
       * @param pos A Vec2 vector containing its spwan position.
       * @param angle Angle of the vector containing direction it was fired.
       * @param speed Speed of the bullet.
-      * @param maxDistance Maximum travel distance of the Bullet, without 
+      * @param maxDistance Maximum travel distance of the Bullet, without
       * colliding with anything.
       * @param dmg The damage dealt by the Bullet.
-      * @param sprite String contaning the path of the sprite used in the 
+      * @param sprite String contaning the path of the sprite used in the
       * Bullet.
       * @param hitboxOffset A Vec2 containing the offset of the hitbox of the
       * Bullet.
@@ -68,14 +68,13 @@ class Bullet : public GameObject
      */
     bool Is(std::string className);
 
-    
     /**
       * Does nothing.
       */
     void TakeDamage(float dmg = 1);
 
     /**
-      * Boolean indicanting if the Bullet was fired by an enemy or by the 
+      * Boolean indicanting if the Bullet was fired by an enemy or by the
       * player.
       */
     bool targetsPlayer;

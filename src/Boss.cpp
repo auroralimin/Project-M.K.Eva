@@ -18,13 +18,13 @@ Boss::Boss(Vec2 pos)
         "sprites/boss/animations/phase1/BOSS-ATTACK-LEFT.png",
         "sprites/boss/animations/phase1/BOSS-ATTACK-DOWN.png",
         "sprites/boss/animations/phase1/BOSS-ATTACK-RIGHT.png",
-        "sprites/boss/animations/phase1/BOSS-SUMMON-BALL.png"
-    };
+        "sprites/boss/animations/phase1/BOSS-SUMMON-BALL.png"};
     int frameCounts1[BOSS_ANIMATIONS_1]{10, 10, 10, 10, 10, 10, 10, 10, 20};
     float frameTimes1[BOSS_ANIMATIONS_1]{0.08, 0.08, 0.08, 0.08, 0.08,
-        0.08, 0.08, 0.08, 0.08};
+                                         0.08, 0.08, 0.08, 0.08};
     for (int i = 0; i < BOSS_ANIMATIONS_1; i++)
-        animations[0].SetAnimation(i, files1[i], frameCounts1[i], frameTimes1[i]);
+        animations[0].SetAnimation(i, files1[i], frameCounts1[i],
+                                   frameTimes1[i]);
 
     std::string files2[BOSS_ANIMATIONS_2] = {
         "sprites/boss/animations/phase2/BOSS-MOVE-UP.png",
@@ -36,14 +36,13 @@ Boss::Boss(Vec2 pos)
         "sprites/boss/animations/phase2/BOSS-ATTACK-DOWN.png",
         "sprites/boss/animations/phase2/BOSS-ATTACK-RIGHT.png",
         "sprites/boss/animations/phase2/BOSS-TELEPORT.png",
-        "sprites/boss/animations/phase2/BOSS-TELEPORT-BACKWARDS.png"
-    };
-    int frameCounts2[BOSS_ANIMATIONS_2]{10, 10, 10, 10, 15, 15, 20, 15, 20,
-        20};
-    float frameTimes2[BOSS_ANIMATIONS_2]{0.08, 0.08, 0.08, 0.08, 0.08, 0.08,
-        0.08, 0.08, 0.08, 0.08};
+        "sprites/boss/animations/phase2/BOSS-TELEPORT-BACKWARDS.png"};
+    int frameCounts2[BOSS_ANIMATIONS_2]{10, 10, 10, 10, 15, 15, 20, 15, 20, 20};
+    float frameTimes2[BOSS_ANIMATIONS_2]{0.08, 0.08, 0.08, 0.08, 0.08,
+                                         0.08, 0.08, 0.08, 0.08, 0.08};
     for (int i = 0; i < BOSS_ANIMATIONS_2; i++)
-        animations[1].SetAnimation(i, files2[i], frameCounts2[i], frameTimes2[i]);
+        animations[1].SetAnimation(i, files2[i], frameCounts2[i],
+                                   frameTimes2[i]);
 
     box.pos = pos;
     box.dim = Vec2(128, 128);
@@ -55,7 +54,6 @@ Boss::Boss(Vec2 pos)
     currentPhase = 0;
     currentState = 2;
     animations[currentPhase].SetCurrentState(currentState);
-
 }
 
 void Boss::Render()
@@ -103,3 +101,4 @@ void Boss::TakeDamage(float dmg)
 {
     hp -= dmg;
 }
+

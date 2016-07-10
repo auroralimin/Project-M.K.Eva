@@ -20,8 +20,9 @@ LevelMap::LevelMap(void) : drawMinimap(false), type(0)
 {
 }
 
-LevelMap::LevelMap(std::string name, std::string file, GameObject *focus, int type) :
-    focus(focus), drawMinimap(false), type(type)
+LevelMap::LevelMap(std::string name, std::string file, GameObject *focus,
+                   int type)
+    : focus(focus), drawMinimap(false), type(type)
 {
     Load(name, file);
 }
@@ -51,46 +52,50 @@ void LevelMap::Load(std::string name, std::string file)
     while (fscanf(fp, "%d,", &r) != EOF) {
         if (r != -1) {
             switch (type) {
-                case 1:
-                {
-                    if (r == 110) {
-                        rooms.emplace(
-                                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
-                                    tileSet, focus, 999));
-                    } else if (r == 11000) {
-                        rooms.emplace(
-                                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
-                                    tileSet, focus, 1));
-                    } else if (r == 1010) {
-                        rooms.emplace(
-                                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
-                                    tileSet, focus, 2));
-                    } else {
-                        rooms.emplace(
-                                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
-                                    tileSet, focus, 3));
-                    }
-                    break;
-                }
-                case 2:
-                {
-                    if (r == 10000) {
-                        rooms.emplace(
-                                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
-                                    tileSet, focus, 4));
-                    } else {
-                        rooms.emplace(
-                                n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
-                                    tileSet, focus, 999));
-                    }
-                    break;
-                }
-                default :
-                {
+            case 1: {
+                if (r == 110) {
                     rooms.emplace(
-                            n++, new Room(name, r, roomsPath + std::to_string(r) + ".txt",
-                                tileSet, focus, Config::Rand(5, 9)));
+                        n++, new Room(name, r,
+                                      roomsPath + std::to_string(r) + ".txt",
+                                      tileSet, focus, 999));
+                } else if (r == 11000) {
+                    rooms.emplace(
+                        n++, new Room(name, r,
+                                      roomsPath + std::to_string(r) + ".txt",
+                                      tileSet, focus, 1));
+                } else if (r == 1010) {
+                    rooms.emplace(
+                        n++, new Room(name, r,
+                                      roomsPath + std::to_string(r) + ".txt",
+                                      tileSet, focus, 2));
+                } else {
+                    rooms.emplace(
+                        n++, new Room(name, r,
+                                      roomsPath + std::to_string(r) + ".txt",
+                                      tileSet, focus, 3));
                 }
+                break;
+            }
+            case 2: {
+                if (r == 10000) {
+                    rooms.emplace(
+                        n++, new Room(name, r,
+                                      roomsPath + std::to_string(r) + ".txt",
+                                      tileSet, focus, 4));
+                } else {
+                    rooms.emplace(
+                        n++, new Room(name, r,
+                                      roomsPath + std::to_string(r) + ".txt",
+                                      tileSet, focus, 999));
+                }
+                break;
+            }
+            default: {
+                rooms.emplace(n++,
+                              new Room(name, r,
+                                       roomsPath + std::to_string(r) + ".txt",
+                                       tileSet, focus, Config::Rand(5, 9)));
+            }
             }
         } else {
             rooms.emplace(n++, nullptr);
@@ -117,7 +122,8 @@ void LevelMap::Render(void)
     rooms[index]->Render(Camera::pos.x, Camera::pos.y);
 }
 
-void LevelMap::RenderMinimap(void) {
+void LevelMap::RenderMinimap(void)
+{
     if (!drawMinimap)
         return;
 
@@ -131,19 +137,22 @@ void LevelMap::RenderMinimap(void) {
                 int x = i * MINI_ROOM_SIZE_X + MINIMAP_X - MINI_ROOM_BORDER * i;
                 int y = j * MINI_ROOM_SIZE_Y + MINIMAP_Y - MINI_ROOM_BORDER * j;
                 if (currentRoom.x == i && currentRoom.y == j) {
-                    Sprite(VISITED_PATH + std::to_string(rooms[roomId]->GetId())
-                            + ".png").Render(x, y);
+                    Sprite(VISITED_PATH +
+                           std::to_string(rooms[roomId]->GetId()) +
+                           ".png").Render(x, y);
                     Sprite(IMG2).Render(x, y);
                 } else if (rooms[roomId]->WasVisited()) {
-                    Sprite(VISITED_PATH + std::to_string(rooms[roomId]->GetId())
-                            + ".png").Render(x, y);
+                    Sprite(VISITED_PATH +
+                           std::to_string(rooms[roomId]->GetId()) +
+                           ".png").Render(x, y);
                 } else if (rooms[roomId]->GetIsNeighbour() ||
-                        (currentRoom.x == i && (currentRoom.y == j + 1
-                                                || currentRoom.y == j - 1)) ||
-                        (currentRoom.y == j && (currentRoom.x == i + 1
-                                                || currentRoom.x == i - 1))) {
-                    Sprite(VISITED_PATH + std::to_string(rooms[roomId]->GetId())
-                            + ".png").Render(x, y);
+                           (currentRoom.x == i && (currentRoom.y == j + 1 ||
+                                                   currentRoom.y == j - 1)) ||
+                           (currentRoom.y == j && (currentRoom.x == i + 1 ||
+                                                   currentRoom.x == i - 1))) {
+                    Sprite(VISITED_PATH +
+                           std::to_string(rooms[roomId]->GetId()) +
+                           ".png").Render(x, y);
                     Sprite(IMG1).Render(x, y);
                     rooms[roomId]->SetIsNeighbour(true);
                 }

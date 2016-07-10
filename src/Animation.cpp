@@ -7,7 +7,7 @@
 Animation::Animation(Vec2 pos, float rotation, std::string sprite,
                      int frameCount, float frameTime, bool ends, int rows)
     : sp(sprite, frameCount, frameTime, rows), oneTimeOnly(ends), isDead(false),
-    is("Animation:" + sprite)
+      is("Animation:" + sprite)
 {
     animationImg = "";
     box.pos = pos;
@@ -20,7 +20,7 @@ void Animation::Update(float dt)
 {
     int oldFrame = sp.GetCurrentFrame();
     sp.Update(dt);
-    if (oldFrame > 0 && sp.GetCurrentFrame() == 0 && oneTimeOnly){
+    if (oldFrame > 0 && sp.GetCurrentFrame() == 0 && oneTimeOnly) {
         sp.SetFrame(sp.GetFrameCount() - 1);
         isDead = true;
     }
@@ -28,8 +28,7 @@ void Animation::Update(float dt)
 
 void Animation::Render(void)
 {
-    sp.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y,
-              rotation);
+    sp.Render(box.pos.x - Camera::pos.x, box.pos.y - Camera::pos.y, rotation);
 }
 
 bool Animation::IsDead(void)

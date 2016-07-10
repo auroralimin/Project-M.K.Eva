@@ -6,8 +6,7 @@
   *****************************************************************************/
 class BossHealthBar
 {
-public:
-
+  public:
     /**
       * Initializes the BossHealthBar.
       */
@@ -24,6 +23,7 @@ public:
       */
     void Update(float hp);
 
-private:
+  private:
     Sprite bar;
 };
+

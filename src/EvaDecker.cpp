@@ -28,10 +28,11 @@ EvaDecker::EvaDecker()
     files = tFiles;
     frameCounts = new int[DECKER_ANIMATIONS]{6, 6, 6, 6, 6, 18};
     frameTimes =
-            new float[DECKER_ANIMATIONS]{0.09, 0.09, 0.09, 0.09, 0.09, 0.09};
+        new float[DECKER_ANIMATIONS]{0.09, 0.09, 0.09, 0.09, 0.09, 0.09};
     int spriteRows[DECKER_ANIMATIONS]{1, 1, 1, 1, 1, 3};
     for (int i = 0; i < DECKER_ANIMATIONS; i++)
-        animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i], spriteRows[i]);
+        animations.SetAnimation(i, files[i], frameCounts[i], frameTimes[i],
+                                spriteRows[i]);
 
     movSpeed = 250;
     atk = 5;
@@ -49,7 +50,7 @@ void EvaDecker::Update(float dt, float hp)
     if (isAttacking) {
         if (animations.GetCurrentFrame() == 13 && atkStarted)
             Shockwave(atkPos);
-        if (animations.GetCurrentFrame() ==  17) {
+        if (animations.GetCurrentFrame() == 17) {
             isAttacking = false;
         }
     }
@@ -76,7 +77,7 @@ void EvaDecker::Attack(Vec2 pos, int direction)
 void EvaDecker::Die(Vec2 pos)
 {
     Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-                                                         pos, 0, "sprites/eva/death/EVA-DECKER-DEATH.png", 16, 0.08));
+        pos, 0, "sprites/eva/death/EVA-DECKER-DEATH.png", 16, 0.08));
 }
 
 void EvaDecker::Render(float x, float y)
@@ -98,9 +99,6 @@ void EvaDecker::Shockwave(Vec2 pos)
     Vec2 hitboxDim(260, 260);
 
     Game::GetInstance()->GetCurrentState().AddObject(new AttackClass(
-                                                         pos + offset,
-                                                         hitboxOffset,
-                                                         hitboxDim,
-                                                         atk, "", 5, 0.08));
+        pos + offset, hitboxOffset, hitboxDim, atk, "", 5, 0.08));
 }
 

@@ -13,7 +13,7 @@ void Monster::Render(void)
     int attackColor[4] = COLOR_ATTACK_HITBOX;
     if (Config::ATTACK_HITBOX_MODE)
         attackHitbox.RenderFilledRect(attackColor);
-    
+
     int color[4] = COLOR_HITBOX;
     if (Config::HITBOX_MODE)
         hitbox.RenderFilledRect(color);

@@ -57,8 +57,7 @@ void Bullet::Render()
         attackHitbox.RenderFilledRect(attackColor);
 
     sp.Render(box.pos.x - box.dim.x / 2 - Camera::pos.x,
-              box.pos.y - box.dim.y / 2 - Camera::pos.y,
-              rotation * 180 / M_PI);
+              box.pos.y - box.dim.y / 2 - Camera::pos.y, rotation * 180 / M_PI);
 }
 
 bool Bullet::IsDead()
@@ -72,7 +71,8 @@ void Bullet::NotifyCollision(GameObject &other, bool movement)
 
     if (targetsPlayer && other.Is("Eva")) {
         distanceLeft = 0;
-    } else if ((!targetsPlayer) && (!other.Is("Eva")) && (!other.Is("Bullet"))) {
+    } else if ((!targetsPlayer) && (!other.Is("Eva")) &&
+               (!other.Is("Bullet"))) {
         distanceLeft = 0;
     }
 
@@ -81,15 +81,15 @@ void Bullet::NotifyCollision(GameObject &other, bool movement)
         otherPos -= box.GetCenter();
         float angle = atan2(otherPos.y, otherPos.x);
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-            box.pos, angle * 180 / M_PI, "sprites/eva/attack/BULLET_IMPACT.png", 2,
-            0.1, true));
+            box.pos, angle * 180 / M_PI, "sprites/eva/attack/BULLET_IMPACT.png",
+            2, 0.1, true));
     } else if ((targetsPlayer) && (distanceLeft == 0)) {
         Vec2 otherPos = other.box.GetCenter();
         otherPos -= box.GetCenter();
         float angle = atan2(otherPos.y, otherPos.x);
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-            box.pos, angle * 180 / M_PI, "sprites/monsters/projectiles/BlueBomb_Impact.png", 2,
-            0.1, true));
+            box.pos, angle * 180 / M_PI,
+            "sprites/monsters/projectiles/BlueBomb_Impact.png", 2, 0.1, true));
     }
 }
 

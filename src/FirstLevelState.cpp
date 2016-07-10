@@ -13,8 +13,8 @@
 #include "Boss.h"
 #include "BallsManager.h"
 
-FirstLevelState::FirstLevelState(Vec2 evaPos) : map(), 
-    music("music/introMusic.ogg"), evaDead(false)
+FirstLevelState::FirstLevelState(Vec2 evaPos)
+    : map(), music("music/introMusic.ogg"), evaDead(false)
 {
     seed = std::time(0);
     if (Config::DEBUG)
@@ -77,17 +77,19 @@ void FirstLevelState::UpdateArray(float dt)
                 evaDeath = ((Eva *)(objectArray[i].get()))->GetEvaDeath();
                 evaDead = true;
             } else if (objectArray[i]->Is("Turret") ||
-                    objectArray[i]->Is("TurretMob") ||
-                    objectArray[i]->Is("Mekabug")) {
+                       objectArray[i]->Is("TurretMob") ||
+                       objectArray[i]->Is("Mekabug")) {
                 map.NotifyDeadMonster();
             } else if (objectArray[i]->Is(evaDeath)) {
                 popRequested = quitRequested = true;
                 Game *game = Game::GetInstance();
                 game->Push(new HubState());
-            } if (objectArray[i]->Is("BallMonster")) {
+            }
+            if (objectArray[i]->Is("BallMonster")) {
                 for (unsigned long j = 0; j < objectArray.size(); j++)
                     if (objectArray[j]->Is("BallsManager"))
-                        ((BallsManager *) objectArray[j].get())->ClearDeadBalls();
+                        ((BallsManager *)objectArray[j].get())
+                            ->ClearDeadBalls();
                 objectArray[i] = nullptr;
             }
 
@@ -105,11 +107,11 @@ void FirstLevelState::CheckMovementCollisions(void)
 {
     for (size_t i = 0; i < objectArray.size(); i++) {
         for (size_t j = i + 1; j < objectArray.size(); j++) {
-            if (!(objectArray[i]->Is("Bullet")        ||
-                  objectArray[j]->Is("Bullet")        || 
-                  objectArray[i]->Is("BallMonster")   ||
-                  objectArray[j]->Is("BallMonster")   ||
-                  objectArray[i]->Is("Attack")        ||
+            if (!(objectArray[i]->Is("Bullet") ||
+                  objectArray[j]->Is("Bullet") ||
+                  objectArray[i]->Is("BallMonster") ||
+                  objectArray[j]->Is("BallMonster") ||
+                  objectArray[i]->Is("Attack") ||
                   objectArray[j]->Is("Attack"))) {
                 if (Collision::IsColliding(
                         objectArray[i]->hitbox, objectArray[j]->hitbox,
@@ -121,9 +123,10 @@ void FirstLevelState::CheckMovementCollisions(void)
                                                     true);
                 }
             } else {
-                if (Collision::IsColliding(
-                        objectArray[i]->attackHitbox, objectArray[j]->attackHitbox,
-                        objectArray[i]->rotation, objectArray[j]->rotation)) {
+                if (Collision::IsColliding(objectArray[i]->attackHitbox,
+                                           objectArray[j]->attackHitbox,
+                                           objectArray[i]->rotation,
+                                           objectArray[j]->rotation)) {
 
                     objectArray[i]->NotifyCollision(*objectArray[j].get(),
                                                     true);

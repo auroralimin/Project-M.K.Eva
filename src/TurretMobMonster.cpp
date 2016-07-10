@@ -14,12 +14,13 @@
 #define HITBOX_POS_OFFSET_Y 80
 #define AH_DIM_OFFSET_X 3
 #define AH_DIM_OFFSET_Y 1.5
-#define AH_POS_OFFSET_X box.dim.x/3
-#define AH_POS_OFFSET_Y box.dim.y/4
+#define AH_POS_OFFSET_X box.dim.x / 3
+#define AH_POS_OFFSET_Y box.dim.y / 4
 
 TurretMobMonster::TurretMobMonster(Room *room, Vec2 pos, GameObject *focus)
-    : focus(focus), movementMode(TurretMobMonsterMovement::RESTING), previousPos(0, 0),
-      destination(0, 0), restTimer(), attackTimer(), hitTimer()
+    : focus(focus), movementMode(TurretMobMonsterMovement::RESTING),
+      previousPos(0, 0), destination(0, 0), restTimer(), attackTimer(),
+      hitTimer()
 {
     this->room = room;
     std::string files[TURRET_MOB_ANIMATIONS] = {
@@ -35,10 +36,14 @@ TurretMobMonster::TurretMobMonster(Room *room, Vec2 pos, GameObject *focus)
 
     box.pos = pos;
     box.dim = Vec2(animations.GetCurrentWidth(), animations.GetCurrentHeight());
-    hitbox.dim = Vec2(box.dim.x/HITBOX_DIM_OFFSET_X , box.dim.y/HITBOX_DIM_OFFSET_Y);
-    hitbox.pos = Vec2(box.pos.x + HITBOX_POS_OFFSET_X, box.pos.y + HITBOX_POS_OFFSET_Y);
-    attackHitbox.dim = Vec2(box.dim.x/AH_DIM_OFFSET_X, box.dim.y/AH_DIM_OFFSET_Y);
-    attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
+    hitbox.dim =
+        Vec2(box.dim.x / HITBOX_DIM_OFFSET_X, box.dim.y / HITBOX_DIM_OFFSET_Y);
+    hitbox.pos =
+        Vec2(box.pos.x + HITBOX_POS_OFFSET_X, box.pos.y + HITBOX_POS_OFFSET_Y);
+    attackHitbox.dim =
+        Vec2(box.dim.x / AH_DIM_OFFSET_X, box.dim.y / AH_DIM_OFFSET_Y);
+    attackHitbox.pos =
+        Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
 
     hp = 20;
     rotation = 0;
@@ -48,9 +53,9 @@ TurretMobMonster::TurretMobMonster(Room *room, Vec2 pos, GameObject *focus)
 
 void TurretMobMonster::Update(float dt)
 {
-    if(wasHit)
+    if (wasHit)
         hitTimer.Update(dt);
-    if(hitTimer.Get() >= MONSTER_DAMAGE_DELAY){
+    if (hitTimer.Get() >= MONSTER_DAMAGE_DELAY) {
         hitTimer.Restart();
         wasHit = false;
     }
@@ -82,14 +87,14 @@ bool TurretMobMonster::Is(std::string className)
 
 void TurretMobMonster::TakeDamage(float dmg)
 {
-    if (!wasHit){
+    if (!wasHit) {
         hp -= dmg;
         wasHit = true;
     }
     if (IsDead())
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-            box.pos, 0, "sprites/monsters/turretmob/TurretMobDeath.png",
-            7, 0.2, true));
+            box.pos, 0, "sprites/monsters/turretmob/TurretMobDeath.png", 7, 0.2,
+            true));
 }
 
 void TurretMobMonster::LookAtFocus(void)
@@ -147,8 +152,10 @@ void TurretMobMonster::Movement(float dt)
         movementMode = TurretMobMonsterMovement::MOVING;
     }
 
-    hitbox.pos = Vec2(box.pos.x + HITBOX_POS_OFFSET_X, box.pos.y + HITBOX_POS_OFFSET_Y);
-    attackHitbox.pos = Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
+    hitbox.pos =
+        Vec2(box.pos.x + HITBOX_POS_OFFSET_X, box.pos.y + HITBOX_POS_OFFSET_Y);
+    attackHitbox.pos =
+        Vec2(box.pos.x + AH_POS_OFFSET_X, box.pos.y + AH_POS_OFFSET_Y);
 }
 
 void TurretMobMonster::Attack(float dt)
@@ -164,9 +171,10 @@ void TurretMobMonster::Attack(float dt)
 
         evaPos -= box.GetCenter();
         angle = atan2(evaPos.y, evaPos.x);
-        Bullet *b = new Bullet(boxVector, angle, 200, 1000, 10,
-                               "sprites/monsters/projectiles/BlueBombSpritesheet.png",
-                               Vec2(-2.5f, -2.5f), Vec2(5, 5), 8, 0.3, true);
+        Bullet *b =
+            new Bullet(boxVector, angle, 200, 1000, 10,
+                       "sprites/monsters/projectiles/BlueBombSpritesheet.png",
+                       Vec2(-2.5f, -2.5f), Vec2(5, 5), 8, 0.3, true);
 
         Game::GetInstance()->GetCurrentState().AddObject(b);
 

@@ -220,3 +220,4 @@ void InputManager::handleAxis(SDL_ControllerAxisEvent axis)
     else if (axis.value > DEADZONE)
         keyState[axis2key[axis.axis][1]] = true;
 }
+

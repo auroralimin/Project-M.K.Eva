@@ -163,3 +163,4 @@ class InputManager
     std::unordered_map<int, int> joy2Key;
     SDL_GameController *gameController;
 };
+

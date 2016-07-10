@@ -1,9 +1,8 @@
 #include "HealthBar.h"
 
-HealthBar::HealthBar(std::string baseFile, std::string overlayFile) :
-    base(baseFile),
-    bar("sprites/hud/healthbar/HEALTHBAR.png"),
-    overlay(overlayFile)
+HealthBar::HealthBar(std::string baseFile, std::string overlayFile)
+    : base(baseFile), bar("sprites/hud/healthbar/HEALTHBAR.png"),
+      overlay(overlayFile)
 {
 }
 
@@ -18,5 +17,6 @@ void HealthBar::Update(float hp)
 {
     if (hp < 0)
         hp = 0;
-    bar.SetClip(0, 0, bar.GetWidth()*hp/100, bar.GetHeight());
+    bar.SetClip(0, 0, bar.GetWidth() * hp / 100, bar.GetHeight());
 }
+

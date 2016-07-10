@@ -45,12 +45,12 @@ class BallsManager : public GameObject
       * @param dt Time elapsed between the current and the last frame.
       */
     void Update(float dt);
-    
+
     /**
       * Does nothing.
       */
     void NotifyCollision(GameObject &other, bool movement);
-    
+
     /**
      * Returns if this class is the class indicated by className.
      * @param className Name of the class to be tested.

@@ -30,7 +30,6 @@ BallMonster **BallsManager::AddBall(void)
 
 void BallsManager::Render()
 {
-
 }
 
 bool BallsManager::IsDead()
@@ -56,15 +55,17 @@ void BallsManager::Update(float dt)
             currentState = BallsState::ATTACKING;
             timer.Restart();
             SetCurrentState(ATTACKING);
-            for (size_t i = 0; (i < ballArray.size()) && (focus != nullptr); i++) {
+            for (size_t i = 0; (i < ballArray.size()) && (focus != nullptr);
+                 i++) {
                 Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-                        ballArray[i]->box.pos, 0, "sprites/monsters/ball/BOLOTA_BLINK.png", 6,
-                        0.02, true));
+                    ballArray[i]->box.pos, 0,
+                    "sprites/monsters/ball/BOLOTA_BLINK.png", 6, 0.02, true));
             }
 
         } else if (currentState == BallsState::ATTACKING) {
             attackHitbox.dim = Vec2(220, 180);
-            for (size_t i = 0; (i < ballArray.size()) && (focus != nullptr); i++) {
+            for (size_t i = 0; (i < ballArray.size()) && (focus != nullptr);
+                 i++) {
                 float angle = 2 * M_PI * (i + 1) / ballArray.size();
                 Vec2 pos = Vec2(BALL_EVA_DISTANCE, 60);
                 ballArray[i]->box.pos =
@@ -127,14 +128,14 @@ void BallsManager::RandTeleport()
         ballArray[i]->box.pos = box.pos;
         ballArray[i]->attackHitbox.pos = Vec2(box.pos.x + 43, box.pos.y + 110);
         Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-            ballArray[i]->box.pos, 0, "sprites/monsters/ball/BOLOTA_BLINK.png", 6,
-            0.02, true));
+            ballArray[i]->box.pos, 0, "sprites/monsters/ball/BOLOTA_BLINK.png",
+            6, 0.02, true));
     }
 }
 
 void BallsManager::ClearDeadBalls()
 {
-    for (unsigned int i = 0; i < ballArray.size(); i ++) {
+    for (unsigned int i = 0; i < ballArray.size(); i++) {
         if (ballArray[i]->IsDead()) {
             ballArray.erase(ballArray.begin() + i);
         }

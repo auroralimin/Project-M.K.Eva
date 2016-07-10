@@ -192,3 +192,4 @@ void Game::ClearResources(void)
     Resources::ClearSounds();
     Resources::ClearFonts();
 }
+

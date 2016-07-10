@@ -19,14 +19,14 @@ HubState::HubState(void) : map() /*music("music/hubMusic.ogg")*/
     map.SetType(2);
     map.Load("hub", "map/hub.txt");
     AddObject(new Animation(Vec2(EVA_DRAWER_POSITION_X, EVA_DRAWER_POSITION_Y),
-                            0, "sprites/eva/drawer/DRAWER-EVA.png",
-                            48, 0.08, true, 3));
-    //music.Play(-1);
+                            0, "sprites/eva/drawer/DRAWER-EVA.png", 48, 0.08,
+                            true, 3));
+    // music.Play(-1);
 }
 
 HubState::~HubState(void)
 {
-    //music.Stop();
+    // music.Stop();
 }
 
 void HubState::Update(float dt)
@@ -50,7 +50,8 @@ void HubState::Pause(void)
 void HubState::Resume(void)
 {
     //    music.Play(-1);
-    //    AddObject(new Animation(Vec2(EVA_DRAWER_POSITION_X, EVA_DRAWER_POSITION_Y),
+    //    AddObject(new Animation(Vec2(EVA_DRAWER_POSITION_X,
+    //    EVA_DRAWER_POSITION_Y),
     //                            0, "sprites/eva/drawer/DRAWER-EVA.png",
     //                            48, 0.08, true, 3));
     //    for (unsigned int i = 0; i < objectArray.size(); i++) {
@@ -69,9 +70,9 @@ void HubState::UpdateArray(float dt)
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i]->IsDead()) {
             if (objectArray[i]->Is(
-                        "Animation:sprites/eva/drawer/DRAWER-EVA.png"))
-                AddObject(new Eva(Vec2(EVA_SPAWN_POSITION_X,
-                                       EVA_SPAWN_POSITION_Y), false));
+                    "Animation:sprites/eva/drawer/DRAWER-EVA.png"))
+                AddObject(new Eva(
+                    Vec2(EVA_SPAWN_POSITION_X, EVA_SPAWN_POSITION_Y), false));
             objectArray.erase(objectArray.begin() + i);
         } else {
             if (objectArray[i]->Is("Eva"))
@@ -103,9 +104,10 @@ void HubState::UpdateEva(int i)
         map.RoomUp();
         objectArray[i]->box.pos.y = roomHeight;
     } else if (objectArray[i]->box.pos.y >= roomHeight) {
-        Game::GetInstance()->GetCurrentState().AddObject(new Boss(Vec2(600, 400)));
+        Game::GetInstance()->GetCurrentState().AddObject(
+            new Boss(Vec2(600, 400)));
         for (int j = 0; j < 3; ++j)
-            ((Eva*)objectArray[i].get())->IncreaseAvailableClasses();
+            ((Eva *)objectArray[i].get())->IncreaseAvailableClasses();
         map.RoomDown();
         objectArray[i]->box.pos.y = 0 - objectArray[i]->box.dim.y;
     }
@@ -113,6 +115,6 @@ void HubState::UpdateEva(int i)
 
 void HubState::CheckMovementCollisions(void)
 {
-    //do nothing
+    // do nothing
 }
 

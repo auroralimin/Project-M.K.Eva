@@ -3,17 +3,14 @@
 #include "Camera.h"
 
 AttackClass::AttackClass(Vec2 pos, Vec2 hitboxOffset, Vec2 hitboxDim, float dmg,
-                         std::string sprite, int frameCount,
-                         float frameTime)
-    : timeElapsed(),
-      duration(frameCount * frameTime)
+                         std::string sprite, int frameCount, float frameTime)
+    : timeElapsed(), duration(frameCount * frameTime)
 {
     this->dmg = dmg;
-    if (sprite == ""){
+    if (sprite == "") {
         sp = Sprite();
         box.dim = hitboxDim;
-    }
-    else{
+    } else {
         sp = Sprite(sprite, frameCount, frameTime);
         box.dim = Vec2(sp.GetWidth(), sp.GetHeight());
     }
@@ -48,10 +45,9 @@ void AttackClass::NotifyCollision(GameObject &other, bool movements)
 {
     UNUSED_VAR movements;
     // TODO: make it only hit enemies once
-    
+
     if (!(other.Is("Bullet") || other.Is("Eva")))
         other.TakeDamage(attackDamage);
-    
 }
 
 bool AttackClass::Is(std::string className)

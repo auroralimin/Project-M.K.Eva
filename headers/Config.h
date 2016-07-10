@@ -46,7 +46,7 @@
     }
 #define COLOR_T_GREY_4                                                         \
     {                                                                          \
-      200, 200, 200, 100                                                       \
+        200, 200, 200, 100                                                     \
     }
 
 #define EVA_DAMAGE_DELAY 0.5

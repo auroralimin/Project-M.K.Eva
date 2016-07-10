@@ -2,9 +2,10 @@
 #include "Config.h"
 
 Cutscene::Cutscene(Vec2 pos, std::string name, int nFrames, float frameTime,
-        std::string soundFile, bool oneTimeOnly) : name(name), currentFrame(0),
-    nFrames(nFrames),frameTime(frameTime), timer(), isDead(false),
-    oneTimeOnly(oneTimeOnly), playSound(false), soundStopped(true)
+                   std::string soundFile, bool oneTimeOnly)
+    : name(name), currentFrame(0), nFrames(nFrames), frameTime(frameTime),
+      timer(), isDead(false), oneTimeOnly(oneTimeOnly), playSound(false),
+      soundStopped(true)
 {
     box.pos = pos;
     sp = new Sprite[nFrames];
@@ -61,7 +62,7 @@ void Cutscene::NotifyCollision(GameObject &other, bool movement)
 {
     UNUSED_VAR other;
     UNUSED_VAR movement;
-    //do nothing
+    // do nothing
 }
 
 bool Cutscene::Is(std::string className)
@@ -72,14 +73,14 @@ bool Cutscene::Is(std::string className)
 void Cutscene::TakeDamage(float dmg)
 {
     UNUSED_VAR dmg;
-    //do nothing
+    // do nothing
 }
 
 void Cutscene::Kill(void)
 {
     if (!soundStopped)
         sound.Stop();
-    isDead = true;    
+    isDead = true;
 }
 
 void Cutscene::SetPos(Vec2 pos)

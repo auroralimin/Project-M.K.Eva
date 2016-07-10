@@ -11,10 +11,11 @@
 #define MINIMAP_X 900
 #define MINIMAP_Y 5
 
-EvaSamurai::EvaSamurai() : EvaClass(),
-  healthBar("sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI.png",
-            "sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI-OVERLAY.png"),
-  minimap("sprites/hud/minimap/HUD-EVA-SAMURAI-MINIMAP.png")
+EvaSamurai::EvaSamurai()
+    : EvaClass(),
+      healthBar("sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI.png",
+                "sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI-OVERLAY.png"),
+      minimap("sprites/hud/minimap/HUD-EVA-SAMURAI-MINIMAP.png")
 
 {
     std::string tFiles[SAMURAI_ANIMATIONS] = {
@@ -91,7 +92,7 @@ void EvaSamurai::Attack(Vec2 pos, int direction)
 void EvaSamurai::Die(Vec2 pos)
 {
     Game::GetInstance()->GetCurrentState().AddObject(new Animation(
-                                                         pos, 0, "sprites/eva/death/EVA-SAMURAI-DEATH.png", 16, 0.08));
+        pos, 0, "sprites/eva/death/EVA-SAMURAI-DEATH.png", 16, 0.08));
 }
 
 void EvaSamurai::Render(float x, float y)

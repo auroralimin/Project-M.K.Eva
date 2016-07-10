@@ -14,13 +14,17 @@ int main(int argc, char **argv)
         ProceduralFirstRooms::GenerateRooms(variants, i);
 
     if (argc < 2) {
-        Game *game = Game::GetInstance("Project M.K.Eva", SCREEN_W + SCREEN_PADDING, SCREEN_H + SCREEN_PADDING);
+        Game *game =
+            Game::GetInstance("Project M.K.Eva", SCREEN_W + SCREEN_PADDING,
+                              SCREEN_H + SCREEN_PADDING);
         game->Push(new TitleState());
         game->Run();
         delete game;
     } else {
         if (std::string(argv[1]) == "intro") {
-            Game *game = Game::GetInstance("Project M.K.Eva", SCREEN_W + SCREEN_PADDING, SCREEN_H + SCREEN_PADDING);
+            Game *game =
+                Game::GetInstance("Project M.K.Eva", SCREEN_W + SCREEN_PADDING,
+                                  SCREEN_H + SCREEN_PADDING);
             game->Push(new IntroState(Vec2(SCREEN_W / 2, SCREEN_H / 2)));
             game->Run();
             delete game;
@@ -30,7 +34,9 @@ int main(int argc, char **argv)
             game->Run();
             delete game;
         } else if (std::string(argv[1]) == "hub") {
-            Game *game = Game::GetInstance("Project M.K.Eva", SCREEN_W + SCREEN_PADDING, SCREEN_H + SCREEN_PADDING);
+            Game *game =
+                Game::GetInstance("Project M.K.Eva", SCREEN_W + SCREEN_PADDING,
+                                  SCREEN_H + SCREEN_PADDING);
             game->Push(new HubState());
             game->Run();
             delete game;
