@@ -60,6 +60,7 @@ class HubState : public State
     void CheckMovementCollisions();
 
   private:
+    bool animationEnded;
     LevelMap map;
     Music music;
 

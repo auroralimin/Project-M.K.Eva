@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "Monster.h"
 #include "AnimationFSM.h"
 #include "BossHealthBar.h"
 #include "Timer.h"
@@ -9,7 +9,7 @@
   * The representation of the Boss enemy                                       *
   * Currently its not fully implemented.                                       *
   *****************************************************************************/
-class Boss : public GameObject
+class Boss : public Monster
 {
   public:
     /**

@@ -16,7 +16,7 @@
 #define MINIMAP_X 1000
 #define MINIMAP_Y 20
 
-LevelMap::LevelMap(void) : drawMinimap(false), type(0)
+LevelMap::LevelMap(void) : focus(nullptr), drawMinimap(false), type(0)
 {
 }
 
@@ -114,7 +114,8 @@ void LevelMap::SetFocus(GameObject *focus)
 
 void LevelMap::Update(float dt)
 {
-    rooms[index]->Update(dt);
+    if (focus != nullptr)
+        rooms[index]->Update(dt);
 }
 
 void LevelMap::Render(void)

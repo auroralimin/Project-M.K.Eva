@@ -74,7 +74,7 @@ class State
      * @return If the state is requesting to be quit
      */
     virtual void CheckMovementCollisions() = 0;
-
+        
   protected:
     bool popRequested, quitRequested;
     std::vector<std::unique_ptr<GameObject>> objectArray;

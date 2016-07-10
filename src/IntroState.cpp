@@ -23,7 +23,6 @@ IntroState::IntroState(Vec2 evaPos)
     AddObject(new Item("SamuraiCard", Vec2(1000, 400)));
     AddObject(new Item("DeckerCard", Vec2(800, 400)));
     AddObject(new Item("GunnerCard", Vec2(900, 400)));
-    map.SetFocus(eva);
     music.Play(-1);
 }
 
@@ -71,10 +70,6 @@ void IntroState::UpdateArray(float dt)
             if (objectArray[i]->Is("Eva")) {
                 evaDeath = ((Eva *)(objectArray[i].get()))->GetEvaDeath();
                 evaDead = true;
-            } else if (objectArray[i]->Is("Turret") ||
-                       objectArray[i]->Is("TurretMob") ||
-                       objectArray[i]->Is("Mekabug")) {
-                map.NotifyDeadMonster();
             } else if (objectArray[i]->Is(evaDeath)) {
                 popRequested = quitRequested = true;
                 Game *game = Game::GetInstance();

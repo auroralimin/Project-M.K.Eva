@@ -15,25 +15,25 @@
 #define EVA_SPAWN_POSITION_X 192
 #define EVA_SPAWN_POSITION_Y 95
 
-HubState::HubState(void) : map() /*music("music/hubMusic.ogg")*/
+HubState::HubState(void) : animationEnded(false), map()
 {
     map.SetType(2);
     map.Load("hub", "map/hub.txt");
     AddObject(new Animation(Vec2(EVA_DRAWER_POSITION_X, EVA_DRAWER_POSITION_Y),
                             0, "sprites/eva/drawer/DRAWER-EVA.png", 48, 0.08,
                             true, 3));
-    // music.Play(-1);
 }
 
 HubState::~HubState(void)
 {
-    // music.Stop();
 }
 
 void HubState::Update(float dt)
 {
     InputManager input = InputManager::GetInstance();
     quitRequested = (input.IsKeyDown(ESCAPE_KEY) || input.IsQuitRequested());
+    if (animationEnded)
+        map.Update(dt);
     UpdateArray(dt);
     CheckMovementCollisions();
 }
@@ -51,15 +51,7 @@ void HubState::Pause(void)
 
 void HubState::Resume(void)
 {
-    //    music.Play(-1);
-    //    AddObject(new Animation(Vec2(EVA_DRAWER_POSITION_X,
-    //    EVA_DRAWER_POSITION_Y),
-    //                            0, "sprites/eva/drawer/DRAWER-EVA.png",
-    //                            48, 0.08, true, 3));
-    //    for (unsigned int i = 0; i < objectArray.size(); i++) {
-    //        if (objectArray[i]->Is("Eva"))
-    //            objectArray.erase(objectArray.begin() + i);
-    //
+    // do nothing
 }
 
 bool HubState::IsCollidingWithWall(GameObject *o)
@@ -72,9 +64,13 @@ void HubState::UpdateArray(float dt)
     for (unsigned int i = 0; i < objectArray.size(); i++) {
         if (objectArray[i]->IsDead()) {
             if (objectArray[i]->Is(
-                    "Animation:sprites/eva/drawer/DRAWER-EVA.png"))
-                AddObject(new Eva(
-                    Vec2(EVA_SPAWN_POSITION_X, EVA_SPAWN_POSITION_Y), false));
+                    "Animation:sprites/eva/drawer/DRAWER-EVA.png")) {
+                Eva *eva = new Eva(
+                    Vec2(EVA_SPAWN_POSITION_X, EVA_SPAWN_POSITION_Y), false);
+                AddObject(eva);
+                map.Load("hub", "map/hub.txt");
+                animationEnded = true;
+            }
             objectArray.erase(objectArray.begin() + i);
         } else {
             if (objectArray[i]->Is("Eva"))
@@ -149,4 +145,5 @@ void HubState::CheckMovementCollisions(void)
         }
     }
 }
+
 

@@ -76,10 +76,6 @@ void FirstLevelState::UpdateArray(float dt)
             if (objectArray[i]->Is("Eva")) {
                 evaDeath = ((Eva *)(objectArray[i].get()))->GetEvaDeath();
                 evaDead = true;
-            } else if (objectArray[i]->Is("Turret") ||
-                       objectArray[i]->Is("TurretMob") ||
-                       objectArray[i]->Is("Mekabug")) {
-                map.NotifyDeadMonster();
             } else if (objectArray[i]->Is(evaDeath)) {
                 popRequested = quitRequested = true;
                 Game *game = Game::GetInstance();

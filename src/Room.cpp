@@ -172,23 +172,25 @@ void Room::ActivateRoom(void)
 
         break;
     }
+    case 4: {
+        Game::GetInstance()->GetCurrentState().AddObject(
+            new Boss(Vec2(600, 400)));
+        nMonsters++;
+        break;
+    }
     case 5: {
         Game::GetInstance()->GetCurrentState().AddObject(new TurretMonster(
             this, Vec2(9 * TILE_SIZE, +5.4 * TILE_SIZE), focus));
-        nMonsters++;
         Game::GetInstance()->GetCurrentState().AddObject(new MekaBugMonster(
             this, Vec2(5 * TILE_SIZE, +3 * TILE_SIZE), focus));
-        nMonsters++;
         Game::GetInstance()->GetCurrentState().AddObject(new MekaBugMonster(
             this, Vec2(8 * TILE_SIZE, +5 * TILE_SIZE), focus));
-        nMonsters++;
+        nMonsters += 3;
         break;
     }
     case 6: {
         Game::GetInstance()->GetCurrentState().AddObject(new TurretMonster(
             this, Vec2(9 * TILE_SIZE, +5.4 * TILE_SIZE), focus));
-        nMonsters++;
-
         Game::GetInstance()->GetCurrentState().AddObject(new TurretMobMonster(
             this, Vec2(Game::GetInstance()->GetWinWidth() / 2 - 250,
                        Game::GetInstance()->GetWinHeight() / 2 - 200),
@@ -201,7 +203,7 @@ void Room::ActivateRoom(void)
             this, Vec2(Game::GetInstance()->GetWinWidth() / 2,
                        Game::GetInstance()->GetWinHeight() / 3 + 100),
             focus));
-        nMonsters += 3;
+        nMonsters += 4;
 
         break;
     }
@@ -212,11 +214,9 @@ void Room::ActivateRoom(void)
             Game::GetInstance()->GetCurrentState().AddObject(
                 *(ballManager->AddBall()));
         }
-        nMonsters += 5;
-
         Game::GetInstance()->GetCurrentState().AddObject(new TurretMonster(
             this, Vec2(9 * TILE_SIZE, +5.4 * TILE_SIZE), focus));
-        nMonsters++;
+        nMonsters += 6;
         break;
     }
     case 8: {
@@ -230,15 +230,10 @@ void Room::ActivateRoom(void)
         }
         Game::GetInstance()->GetCurrentState().AddObject(new MekaBugMonster(
             this, Vec2(5 * TILE_SIZE, +3 * TILE_SIZE), focus));
-        nMonsters++;
         Game::GetInstance()->GetCurrentState().AddObject(new MekaBugMonster(
             this, Vec2(8 * TILE_SIZE, +5 * TILE_SIZE), focus));
-        nMonsters++;
+        nMonsters += 8;
         break;
-    }
-    case 4: {
-        Game::GetInstance()->GetCurrentState().AddObject(
-            new Boss(Vec2(600, 400)));
     }
     default: {
         // do nothing
