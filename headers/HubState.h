@@ -53,6 +53,10 @@ class HubState : public State
      */
     void UpdateArray(float dt);
 
+    /**
+     * This method does nothing.
+     * It is implemented only as a requirement of inheriting from GameObjetc.
+     */
     void CheckMovementCollisions();
 
   private:

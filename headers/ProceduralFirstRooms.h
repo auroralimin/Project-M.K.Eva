@@ -5,11 +5,17 @@
 #include "Vec2.h"
 
 /***************************************************************************/ /**
-  * Static module that can procedural generates maps
+  * Static module that can procedural generates maps for the first level.
   ******************************************************************************/
 class ProceduralFirstRooms
 {
   public:
+    /**
+     * Procedural generates the rooms for the first level.
+     * @param variants an int vector containing the variants used to the
+     * procedural generation
+     * @param pathId the id of the procedural generated first rooms directory
+     */
     static void GenerateRooms(int variants[2], int pathId);
 
   private:

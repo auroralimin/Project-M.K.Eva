@@ -33,6 +33,9 @@ class GameObject
      */
     int frameCount;
 
+    /**
+     * Contains the possibly damage that a class can cause.
+     */
     float dmg = 0.0f;
 
     /**
@@ -60,6 +63,8 @@ class GameObject
 
     /**
      * If possible, when implemented it should process collisions.
+     * @param other a pointer to the other GameObject involved in the collision
+     * @param movement a bool representing if the collision involved movement
      */
     virtual void NotifyCollision(GameObject &other, bool movement) = 0;
 

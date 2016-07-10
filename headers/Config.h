@@ -72,8 +72,15 @@ class Config
      */
     static const bool HITBOX_MODE = false;
 
+    /*
+     * Attribute to set if the game is on attack hitbox mode.
+     */
     static const bool ATTACK_HITBOX_MODE = false;
 
+    /*
+     * Static function that return an randomically generated number between a
+     * given interval
+     */
     static int Rand(int fMin, int fMax)
     {
         return fMin + (rand() % (fMax - fMin + 1));

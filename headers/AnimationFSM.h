@@ -17,6 +17,7 @@ class AnimationFSM
 
     /**
      * Initializes a FSM instance given the arguments.
+     * @param nAnimations an int conntaining the number of animations
      * @param files[] an array of string containing the sprites file paths
      * @param frameCont a int argument containing the animations frameCount
      * @param frameTime a int argument containing the animations frameTime
@@ -71,9 +72,17 @@ class AnimationFSM
      */
     int GetCurrentHeight(void);
 
+    /**
+     * Sets the number of animations
+     * @param nAnimations an int with the number of animations
+     */
     void SetNAnimations(int nAnimations);
 
-    int GetCurrentFrame();
+    /**
+     * Gets the current frame
+     * @return returns the current frame
+     */
+    int GetCurrentFrame(void);
 
   private:
     int nAnimations;

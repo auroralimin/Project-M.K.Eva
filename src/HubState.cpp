@@ -111,7 +111,8 @@ void HubState::UpdateEva(int i)
     }
 }
 
-void HubState::CheckMovementCollisions()
+void HubState::CheckMovementCollisions(void)
 {
+    //do nothing
 }
 

@@ -62,8 +62,17 @@ class State
      */
     bool IsQuitRequested(void);
 
+    /**
+     * When implementated, it should checks if the object is colliding with a
+     * wall.
+     * @return If the state is requesting to be quit
+     */
     virtual bool IsCollidingWithWall(GameObject *o) = 0;
 
+    /**
+     * When implementated, it should check which kind of collision is happening.
+     * @return If the state is requesting to be quit
+     */
     virtual void CheckMovementCollisions() = 0;
 
   protected:

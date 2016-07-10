@@ -6,9 +6,9 @@
 #include "Vec2.h"
 #include "Music.h"
 
-/***************************************************************************/ /**
+/**************************************************************************/ /**
   * FirstLevel level managment state.
-  ******************************************************************************/
+  *****************************************************************************/
 class FirstLevelState : public State
 {
   public:
@@ -51,7 +51,11 @@ class FirstLevelState : public State
      */
     void UpdateArray(float dt);
 
-    void CheckMovementCollisions();
+    /**
+     * Checks which type of collision it is happening based on the hitbox or
+     * the attack hitbox
+     */
+    void CheckMovementCollisions(void);
 
   private:
     unsigned int seed;

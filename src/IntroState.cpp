@@ -80,7 +80,7 @@ void IntroState::UpdateArray(float dt)
                 Game *game = Game::GetInstance();
                 game->Push(new HubState());
             } if (objectArray[i]->Is("BallMonster")) {
-                for (int j = 0; j < objectArray.size(); j++)
+                for (unsigned long j = 0; j < objectArray.size(); j++)
                     if (objectArray[j]->Is("BallsManager"))
                         ((BallsManager *) objectArray[j].get())->ClearDeadBalls();
                 objectArray[i] = nullptr;
@@ -96,7 +96,7 @@ void IntroState::UpdateArray(float dt)
     }
 }
 
-void IntroState::CheckMovementCollisions()
+void IntroState::CheckMovementCollisions(void)
 {
     for (size_t i = 0; i < objectArray.size(); i++) {
         for (size_t j = i + 1; j < objectArray.size(); j++) {

@@ -47,7 +47,7 @@ void AnimationFSM::SetNAnimations(int nAnimations)
     this->nAnimations = nAnimations;
 }
 
-int AnimationFSM::GetCurrentFrame()
+int AnimationFSM::GetCurrentFrame(void)
 {
     return animationsArray[currentState]->GetCurrentFrame();
 }

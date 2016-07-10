@@ -101,7 +101,7 @@ void FirstLevelState::UpdateArray(float dt)
     }
 }
 
-void FirstLevelState::CheckMovementCollisions()
+void FirstLevelState::CheckMovementCollisions(void)
 {
     for (size_t i = 0; i < objectArray.size(); i++) {
         for (size_t j = i + 1; j < objectArray.size(); j++) {

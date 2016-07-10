@@ -16,12 +16,12 @@
 #define MINIMAP_X 1000
 #define MINIMAP_Y 20
 
-LevelMap::LevelMap(void) : drawMiniroom(false), type(0)
+LevelMap::LevelMap(void) : drawMinimap(false), type(0)
 {
 }
 
 LevelMap::LevelMap(std::string name, std::string file, GameObject *focus, int type) :
-    focus(focus), drawMiniroom(false), type(type)
+    focus(focus), drawMinimap(false), type(type)
 {
     Load(name, file);
 }
@@ -118,7 +118,7 @@ void LevelMap::Render(void)
 }
 
 void LevelMap::RenderMinimap(void) {
-    if (!drawMiniroom)
+    if (!drawMinimap)
         return;
 
     int color1[4] = COLOR_T_GREY_1;
@@ -224,9 +224,9 @@ void LevelMap::NotifyDeadMonster(void)
     rooms[index]->DecreaseNMonsters();
 }
 
-void LevelMap::SetDrawMiniroom(bool drawMiniroom)
+void LevelMap::SetDrawMiniroom(bool drawMinimap)
 {
-    this->drawMiniroom = drawMiniroom;
+    this->drawMinimap = drawMinimap;
 }
 
 void LevelMap::SetType(int type)

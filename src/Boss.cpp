@@ -86,6 +86,7 @@ void Boss::Update(float dt)
 
 void Boss::NotifyCollision(GameObject &other, bool movement)
 {
+    UNUSED_VAR movement;
     if (other.Is("Bullet") || other.Is("Attack")) {
         Bullet &bullet = (Bullet &)other;
         if (!bullet.targetsPlayer)

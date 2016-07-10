@@ -4,11 +4,11 @@
 #include "Vec2.h"
 #include "Timer.h"
 
-/***************************************************************************/ /**
+/**************************************************************************/ /**
   * Creates a game animation given a sprite sheet.
   * This animation can be played
   * once or repeatedly.
-  ******************************************************************************/
+  *****************************************************************************/
 class Animation : public GameObject
 {
   public:
@@ -50,7 +50,9 @@ class Animation : public GameObject
 
     /**
      * This method does nothing.
-     * It is implemented only as a requirement of inheriting from GameObjetc.
+     * It is implemented only as a requirement of inheriting from GameObject.
+     * @param other unused argument
+     * @param movement unused argument
      */
     void NotifyCollision(GameObject &other, bool movement);
 

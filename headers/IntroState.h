@@ -54,6 +54,10 @@ class IntroState : public State
      */
     void UpdateArray(float dt);
 
+    /**
+     * Checks which type of collision it is happening based on the hitbox or
+     * the attack hitbox
+     */
     void CheckMovementCollisions();
 
   private:
