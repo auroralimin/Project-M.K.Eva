@@ -25,7 +25,6 @@ EvaBase::EvaBase(void) : EvaClass()
 void EvaBase::Update(float dt, float hp)
 {
     UNUSED_VAR hp;
-    // TODO: update possible timers
     animations.Update(dt);
 }
 

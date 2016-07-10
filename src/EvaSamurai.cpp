@@ -7,6 +7,10 @@
 
 #define SAMURAI_ANIMATIONS 9
 #define SAMURAI_ATTACK_DAMAGE 5.6
+
+#define MINIMAP_X 900
+#define MINIMAP_Y 5
+
 EvaSamurai::EvaSamurai() : EvaClass(),
   healthBar("sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI.png",
             "sprites/hud/healthbar/SAMURAI/HUD-EVA-SAMURAI-OVERLAY.png"),
@@ -94,6 +98,6 @@ void EvaSamurai::Render(float x, float y)
 {
     animations.Render(x, y);
     healthBar.Render();
-    minimap.Render();
+    minimap.Render(MINIMAP_X, MINIMAP_Y);
 }
 

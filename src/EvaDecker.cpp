@@ -9,6 +9,9 @@
 #define ATTACK_RENDER_OFFSET 60
 #define DECKER_ATTACK_DAMAGE 4
 
+#define MINIMAP_X 900
+#define MINIMAP_Y 5
+
 EvaDecker::EvaDecker()
     : EvaClass(), atkTimer(), atkCooldown(), atkStarted(false), atkPos(0, 0),
       healthBar("sprites/hud/healthbar/DECKER/HUD-EVA-DECKER.png",
@@ -83,7 +86,7 @@ void EvaDecker::Render(float x, float y)
     else
         animations.Render(x, y);
     healthBar.Render();
-    minimap.Render();
+    minimap.Render(MINIMAP_X, MINIMAP_Y);
 }
 
 void EvaDecker::Shockwave(Vec2 pos)

@@ -33,7 +33,8 @@ class Eva : public GameObject
     void Render();
 
     /**
-     * Sets the current animation based on input and updates sprites.
+     * Sets the current animation based on input, updates sprites and gets
+     * attack and movement input.
      * @param dt time elapsed between th current and the last frame
      */
     void Update(float dt);
@@ -65,6 +66,10 @@ class Eva : public GameObject
      */
     void TakeDamage(float dmg = 1);
 
+    /**
+     * Returns which eva death animation file is being used
+     * @return the path to the death animation file
+     */
     std::string GetEvaDeath(void);
 
     /**

@@ -8,6 +8,9 @@
 #define GUN_MOVEMENT 4
 #define ANIMATION_OFFSET 60
 
+#define MINIMAP_X 900
+#define MINIMAP_Y 5
+
 EvaGunslinger::EvaGunslinger() : EvaClass(),
     healthBar("sprites/hud/healthbar/GUN/HUD-EVA-GUN.png",
               "sprites/hud/healthbar/GUN/HUD-EVA-GUN-OVERLAY.png"),
@@ -95,6 +98,6 @@ void EvaGunslinger::Render(float x, float y)
     else
         animations.Render(x, y);
     healthBar.Render();
-    minimap.Render();
+    minimap.Render(MINIMAP_X, MINIMAP_Y);
 }
 
