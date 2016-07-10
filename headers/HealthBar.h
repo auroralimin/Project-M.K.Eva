@@ -3,9 +3,10 @@
 #include "Sprite.h"
 #include "Vec2.h"
 
-/*****************************************************************************
-  * The representation of the Health Bar used by the players character, Eva. *
-  ****************************************************************************/
+/*******************************************************************************
+  * The representation of the Health Bar.                                      *
+  * Used by the players character, Eva.                                        *
+  *****************************************************************************/
 class HealthBar
 {
 public:

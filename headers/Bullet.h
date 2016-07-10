@@ -3,9 +3,9 @@
 #include "GameObject.h"
 #include "Sprite.h"
 
-/*****************************************************************
-  * Representation of the Bullets that can be fired in the game. *
-  ****************************************************************/
+/*******************************************************************************
+  * Representation of the Bullets.                                             *
+  *****************************************************************************/
 class Bullet : public GameObject
 {
   public:

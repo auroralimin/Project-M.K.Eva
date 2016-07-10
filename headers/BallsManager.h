@@ -5,11 +5,11 @@
 #include "BallMonster.h"
 #include "Timer.h"
 
-/*********************************************************************
-  * The representation of the Manager that controls the enemy Ball.  *
-  * This manager syncronizes all of the animations and attacks Balls * 
-  * in the room its set in.                                          *
-  ********************************************************************/
+/*******************************************************************************
+  * The representation of the Balls Manager                                    *
+  * This manager syncronizes all of the animations and attacks of all the      *
+  * Balls in the room its set in.                                              *
+  *****************************************************************************/
 class BallsManager : public GameObject
 {
   public:

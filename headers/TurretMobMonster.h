@@ -3,11 +3,11 @@
 #include "Monster.h"
 #include "Timer.h"
 
-/************************************************************************
-  * The representation of one of the enemies of the game.               *
-  * This enemy wander aimless around the room while facing and shooting *
-  * the player.                                                         *
-  ***********************************************************************/
+/*******************************************************************************
+  * The representation of the TurretMob enemy                                  *
+  * This enemy wander aimless around the room while facing and shooting        *
+  * the player.                                                                *
+  *****************************************************************************/
 class TurretMobMonster : public Monster
 {
   public:

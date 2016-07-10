@@ -3,11 +3,11 @@
 #include "Monster.h"
 #include "Timer.h"
 
-/****************************************************************************
-  * The representation of one of the game's enemies.                        *
-  * This enemy chases down its focus, usually the player's character, Eva.  *
-  * When it is close enough, attacks the player with its eletrical current. *
-  ***************************************************************************/
+/*******************************************************************************
+  * The representation of the MekaBug enemy                                    *
+  * This enemy chases down its focus, usually the player's character, Eva.     *
+  * When it is close enough, attacks the player with its eletrical current.    *
+  *****************************************************************************/
 class MekaBugMonster : public Monster
 {
   public:

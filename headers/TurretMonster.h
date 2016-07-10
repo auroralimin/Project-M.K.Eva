@@ -3,11 +3,11 @@
 #include "Monster.h"
 #include "Timer.h"
 
-/**************************************************************************
- * The representation of one of the game's enemy.                         *
- * This enemy is stationary and fire's at its focus, usually the player's *
- * character, Eva.                                                        *
- **************************************************************************/
+/*******************************************************************************
+ * The representation of the Turret enemey.                                    *
+ * This enemy is stationary and fire's at its focus, usually the player's      *
+ * character, Eva.                                                             *
+ ******************************************************************************/
 class TurretMonster : public Monster
 {
     public:

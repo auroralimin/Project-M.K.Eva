@@ -5,10 +5,10 @@
 #include "BossHealthBar.h"
 #include "Timer.h"
 
-/*************************************************
-  * The representation of the game's first Boss. *
-  * Currently its not fully implemented.         *
-  ************************************************/
+/*******************************************************************************
+  * The representation of the Boss enemy                                       *
+  * Currently its not fully implemented.                                       *
+  *****************************************************************************/
 class Boss : public GameObject
 {
 public:
