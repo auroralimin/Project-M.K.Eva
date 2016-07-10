@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Eva.h"
 #include "Boss.h"
+#include "Collision.h"
 #include "InputManager.h"
 #include "IntroState.h"
 #include "FirstLevelState.h"
@@ -34,6 +35,7 @@ void HubState::Update(float dt)
     InputManager input = InputManager::GetInstance();
     quitRequested = (input.IsKeyDown(ESCAPE_KEY) || input.IsQuitRequested());
     UpdateArray(dt);
+    CheckMovementCollisions();
 }
 
 void HubState::Render(void)
@@ -115,6 +117,36 @@ void HubState::UpdateEva(int i)
 
 void HubState::CheckMovementCollisions(void)
 {
-    // do nothing
+    for (size_t i = 0; i < objectArray.size(); i++) {
+        for (size_t j = i + 1; j < objectArray.size(); j++) {
+            if (!(objectArray[i]->Is("Bullet") ||
+                  objectArray[j]->Is("Bullet") ||
+                  objectArray[i]->Is("BallMonster") ||
+                  objectArray[j]->Is("BallMonster") ||
+                  objectArray[i]->Is("Attack") ||
+                  objectArray[j]->Is("Attack"))) {
+                if (Collision::IsColliding(
+                        objectArray[i]->hitbox, objectArray[j]->hitbox,
+                        objectArray[i]->rotation, objectArray[j]->rotation)) {
+
+                    objectArray[i]->NotifyCollision(*objectArray[j].get(),
+                                                    true);
+                    objectArray[j]->NotifyCollision(*objectArray[i].get(),
+                                                    true);
+                }
+            } else {
+                if (Collision::IsColliding(objectArray[i]->attackHitbox,
+                                           objectArray[j]->attackHitbox,
+                                           objectArray[i]->rotation,
+                                           objectArray[j]->rotation)) {
+
+                    objectArray[i]->NotifyCollision(*objectArray[j].get(),
+                                                    true);
+                    objectArray[j]->NotifyCollision(*objectArray[i].get(),
+                                                    true);
+                }
+            }
+        }
+    }
 }
 
