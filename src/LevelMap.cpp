@@ -77,18 +77,10 @@ void LevelMap::Load(std::string name, std::string file)
                 break;
             }
             case 2: {
-                if (r == 10000) {
-                    rooms.emplace(
-                        n++, new Room(name, r,
-                                      roomsPath + std::to_string(r) + ".txt",
-                                      tileSet, focus, 4));
-                } else {
-                    rooms.emplace(
-                        n++, new Room(name, r,
-                                      roomsPath + std::to_string(r) + ".txt",
-                                      tileSet, focus, 999));
-                }
-                break;
+                 rooms.emplace(n++, new Room(name, r,
+                             roomsPath + std::to_string(r) + ".txt",
+                             tileSet, focus, 999));
+                 break;
             }
             default: {
                 rooms.emplace(n++,

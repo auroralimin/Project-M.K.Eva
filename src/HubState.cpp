@@ -71,7 +71,9 @@ void HubState::UpdateArray(float dt)
                 map.Load("hub", "map/hub.txt");
                 animationEnded = true;
             }
-            objectArray.erase(objectArray.begin() + i);
+            
+            if (!objectArray[i]->Is("Boss"))
+                objectArray.erase(objectArray.begin() + i);
         } else {
             if (objectArray[i]->Is("Eva"))
                 UpdateEva(i);
@@ -121,7 +123,8 @@ void HubState::CheckMovementCollisions(void)
                   objectArray[j]->Is("BallMonster") ||
                   objectArray[i]->Is("Attack") ||
                   objectArray[j]->Is("Attack"))) {
-                if (Collision::IsColliding(
+                if (!objectArray[i]->IsDead() &&
+                        Collision::IsColliding(
                         objectArray[i]->hitbox, objectArray[j]->hitbox,
                         objectArray[i]->rotation, objectArray[j]->rotation)) {
 
@@ -131,7 +134,8 @@ void HubState::CheckMovementCollisions(void)
                                                     true);
                 }
             } else {
-                if (Collision::IsColliding(objectArray[i]->attackHitbox,
+                if (!objectArray[i]->IsDead() &&
+                        Collision::IsColliding(objectArray[i]->attackHitbox,
                                            objectArray[j]->attackHitbox,
                                            objectArray[i]->rotation,
                                            objectArray[j]->rotation)) {
@@ -146,4 +150,18 @@ void HubState::CheckMovementCollisions(void)
     }
 }
 
+bool WayToSort2(std::unique_ptr<GameObject> const &obj1,
+               std::unique_ptr<GameObject> const &obj2)
+{
+    return (obj1->hitbox.pos.y < obj2->hitbox.pos.y);
+}
+
+void HubState::RenderArray(void)
+{
+    sort(objectArray.begin(), objectArray.end(), WayToSort2);
+
+    for (unsigned int i = 0; i < objectArray.size(); ++i)
+        if (!objectArray[i]->IsDead())
+            objectArray[i]->Render();
+}
 

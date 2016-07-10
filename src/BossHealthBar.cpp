@@ -15,6 +15,6 @@ void BossHealthBar::Update(float hp)
 {
     if (hp < 0)
         hp = 0;
-    bar.SetClip(0, 0, bar.GetWidth() * hp / 500, bar.GetHeight());
+    bar.SetClip(0, 0, bar.GetWidth() * hp / 5000, bar.GetHeight());
 }
 

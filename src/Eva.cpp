@@ -180,6 +180,9 @@ bool Eva::IsDead()
 
 void Eva::NotifyCollision(GameObject &other, bool movement)
 {
+    if (other.IsDead())
+        return;
+
     if (other.Is("Bullet")) {
         Bullet &bullet = (Bullet &)other;
         if (bullet.targetsPlayer)

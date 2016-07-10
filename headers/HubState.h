@@ -59,6 +59,8 @@ class HubState : public State
      */
     void CheckMovementCollisions();
 
+    void RenderArray(void);
+
   private:
     bool animationEnded;
     LevelMap map;

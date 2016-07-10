@@ -50,7 +50,7 @@ Boss::Boss(Vec2 pos)
     hitbox.dim = box.dim;
     attackHitbox.pos = box.pos;
     attackHitbox.dim = box.dim;
-    hp = 500;
+    hp = 5000;
     currentPhase = 0;
     currentState = 2;
     animations[currentPhase].SetCurrentState(currentState);
