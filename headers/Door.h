@@ -5,6 +5,10 @@
 #include "Sprite.h"
 #include "Timer.h"
 
+/***************************************************************************/ /**
+  * An abstraction of a door.
+  * Used to implement the opening/closing/sealing door actions.
+  ******************************************************************************/
 class Door
 {
     public:

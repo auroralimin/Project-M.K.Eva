@@ -4,6 +4,10 @@
 #include "Timer.h"
 #include "Cutscene.h"
 
+/***************************************************************************/ /**
+  * The game first state.
+  * It shows the firsy cutscenes and the initial screen with the game logo.
+  ******************************************************************************/
 class TitleState : public State
 {
     public:

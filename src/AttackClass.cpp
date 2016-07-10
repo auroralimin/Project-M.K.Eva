@@ -46,7 +46,6 @@ void AttackClass::Update(float dt)
 
 void AttackClass::NotifyCollision(GameObject &other, bool movements)
 {
-    UNUSED_VAR other;
     UNUSED_VAR movements;
     // TODO: make it only hit enemies once
     
