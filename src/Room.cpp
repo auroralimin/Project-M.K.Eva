@@ -220,8 +220,6 @@ void Room::ActivateRoom(void)
         break;
     }
     case 8: {
-        Game::GetInstance()->GetCurrentState().AddObject(
-            new Boss(Vec2(600, 400)));
         BallsManager *ballManager = new BallsManager(this, focus);
         Game::GetInstance()->GetCurrentState().AddObject(ballManager);
         for (int i = 0; i < 5; ++i) {
@@ -232,7 +230,7 @@ void Room::ActivateRoom(void)
             this, Vec2(5 * TILE_SIZE, +3 * TILE_SIZE), focus));
         Game::GetInstance()->GetCurrentState().AddObject(new MekaBugMonster(
             this, Vec2(8 * TILE_SIZE, +5 * TILE_SIZE), focus));
-        nMonsters += 8;
+        nMonsters += 7;
         break;
     }
     default: {

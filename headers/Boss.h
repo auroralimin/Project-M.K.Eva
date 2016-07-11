@@ -9,7 +9,7 @@
   * The representation of the Boss enemy                                       *
   * Currently its not fully implemented.                                       *
   *****************************************************************************/
-class Boss : public Monster
+class Boss : public GameObject
 {
   public:
     /**
